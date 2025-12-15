@@ -5,9 +5,19 @@
   <title>Harada Open Window 64 – Dillon</title>
   <style>
     :root {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      
+      /* Pillar Colors - Soft Pastels */
+      --pillar-p1: #E8F0FE; /* Soft Blue - Skill & Craft */
+      --pillar-p2: #F1ECFF; /* Soft Violet - Technical */
+      --pillar-p3: #EAF7EF; /* Soft Green - Career */
+      --pillar-p4: #E6F6F4; /* Soft Teal - SaaS */
+      --pillar-p5: #FFF1E6; /* Soft Peach - Art Business */
+      --pillar-p6: #FDECEF; /* Soft Pink - Brand */
+      --pillar-p7: #FFF8E1; /* Soft Yellow - Health */
+      --pillar-p8: #F2F3F7; /* Soft Gray-Lavender - Identity */
     }
 
     body {
@@ -27,7 +37,7 @@
 
     .subtitle {
       font-size: 0.95rem;
-      color: #9ca3af;
+      color: #6e6e73;
       text-align: center;
       max-width: 700px;
     }
@@ -35,94 +45,206 @@
     .grid-wrapper {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, auto);
+      grid-template-rows: repeat(3, 1fr);
       gap: 8px;
       max-width: 980px;
       width: 100%;
+      aspect-ratio: 1 / 1;
+      border: 1px solid #d2d2d7;
+      border-radius: 12px;
+      padding: 16px;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     .pillar-box, .center-box {
-      border: 1px solid #374151;
-      border-radius: 8px;
-      padding: 6px;
-      background: #020617;
       display: flex;
       flex-direction: column;
       gap: 4px;
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      height: 100%;
     }
 
     .pillar-title {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
-      text-align: center;
-      padding: 2px 4px;
-      border-radius: 6px;
-      background: #111827;
-      border: 1px solid #1f2937;
-    }
-
-    .center-goal {
-      font-size: 0.85rem;
       text-align: center;
       padding: 8px;
       border-radius: 8px;
-      background: radial-gradient(circle at top, #1d4ed8, #020617 60%);
-      border: 1px solid #1d4ed8;
-      line-height: 1.4;
+      background: #f5f5f7;
+      border: 1px solid #d2d2d7;
+      color: #1d1d1f;
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 1 / 1;
+      overflow: auto;
+      word-wrap: break-word;
+      hyphens: auto;
     }
 
-    .subpillars-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 4px;
-      margin-top: 8px;
-    }
-
-    .subpillar-cell {
-      font-size: 0.65rem;
-      padding: 4px 5px;
-      border-radius: 9999px;
-      border: 1px solid #1f2937;
-      background: #020617;
+    .center-title {
+      font-size: 0.7rem;
+      font-weight: 700;
       text-align: center;
-      line-height: 1.25;
-      white-space: normal;
+      padding: 8px;
+      border-radius: 8px;
+      background: #f5f5f7;
+      border: 2px solid #d2d2d7;
+      color: #1d1d1f;
+      grid-column: 2;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      line-height: 1.2;
+      overflow: hidden;
     }
+
+    .center-title strong {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #1d1d1f;
+    }
+
+    .center-title span {
+      font-size: 0.6rem;
+      font-weight: 400;
+      line-height: 1.3;
+    }
+
+    .pillar-card {
+      font-size: 0.6rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 6px;
+      border-radius: 8px;
+      background: #f5f5f7;
+      border: 1px solid #d2d2d7;
+      color: #1d1d1f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+      word-wrap: break-word;
+      hyphens: auto;
+      overflow: hidden;
+    }
+
+    /* Pillar Card Colors */
+    .pillar-card[data-pillar="P1"] { background: var(--pillar-p1); }
+    .pillar-card[data-pillar="P2"] { background: var(--pillar-p2); }
+    .pillar-card[data-pillar="P3"] { background: var(--pillar-p3); }
+    .pillar-card[data-pillar="P4"] { background: var(--pillar-p4); }
+    .pillar-card[data-pillar="P5"] { background: var(--pillar-p5); }
+    .pillar-card[data-pillar="P6"] { background: var(--pillar-p6); }
+    .pillar-card[data-pillar="P7"] { background: var(--pillar-p7); }
+    .pillar-card[data-pillar="P8"] { background: var(--pillar-p8); }
 
     .tasks-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 4px;
-      margin-top: 4px;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 6px;
+      flex: 1;
+      width: 100%;
+      height: 100%;
     }
 
     .task-cell {
-      font-size: 0.72rem;
-      line-height: 1.2;
-      padding: 6px;
-      border-radius: 6px;
-      border: 1px solid #1f2937;
-      background: #020617;
+      font-size: 0.65rem;
+      line-height: 1.3;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #d2d2d7;
+      border-left-width: 3px;
+      background: #f5f5f7;
+      color: #1d1d1f;
       cursor: pointer;
       user-select: none;
-      min-height: 40px;
+      aspect-ratio: 1 / 1;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
+      text-align: center;
+      gap: 2px;
       position: relative;
-      transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
+      overflow: hidden;
+      scrollbar-width: none;
+    }
+
+    .task-cell::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Task Cell Pillar Color Accents - Subtle Left Border */
+    .task-cell[data-pillar="P1"] { border-left-color: var(--pillar-p1); }
+    .task-cell[data-pillar="P2"] { border-left-color: var(--pillar-p2); }
+    .task-cell[data-pillar="P3"] { border-left-color: var(--pillar-p3); }
+    .task-cell[data-pillar="P4"] { border-left-color: var(--pillar-p4); }
+    .task-cell[data-pillar="P5"] { border-left-color: var(--pillar-p5); }
+    .task-cell[data-pillar="P6"] { border-left-color: var(--pillar-p6); }
+    .task-cell[data-pillar="P7"] { border-left-color: var(--pillar-p7); }
+    .task-cell[data-pillar="P8"] { border-left-color: var(--pillar-p8); }
+
+    .task-title {
+      font-weight: 600;
+      font-size: 0.7rem;
+      color: #1d1d1f;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+    }
+
+    .task-hint {
+      font-weight: 400;
+      font-size: 0.6rem;
+      color: #6e6e73;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
     }
 
     .task-cell:hover {
-      border-color: #4b5563;
+      border-color: #86868b;
+      background: #ffffff;
       transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
     .task-cell.completed {
-      background: #16a34a22;
-      border-color: #22c55e;
-      text-decoration: line-through;
+      border-color: #d2d2d7;
+      border-left-width: 3px;
+      opacity: 0.7;
     }
+
+    /* Completed task backgrounds use pillar colors */
+    .task-cell.completed[data-pillar="P1"] { background: var(--pillar-p1); }
+    .task-cell.completed[data-pillar="P2"] { background: var(--pillar-p2); }
+    .task-cell.completed[data-pillar="P3"] { background: var(--pillar-p3); }
+    .task-cell.completed[data-pillar="P4"] { background: var(--pillar-p4); }
+    .task-cell.completed[data-pillar="P5"] { background: var(--pillar-p5); }
+    .task-cell.completed[data-pillar="P6"] { background: var(--pillar-p6); }
+    .task-cell.completed[data-pillar="P7"] { background: var(--pillar-p7); }
+    .task-cell.completed[data-pillar="P8"] { background: var(--pillar-p8); }
+
+    /* Fallback for tasks without pillar */
+    .task-cell.completed:not([data-pillar]) { background: #e8e8ed; }
 
     .task-cell.completed::after {
       content: "✔";
@@ -130,22 +252,24 @@
       right: 6px;
       top: 4px;
       font-size: 0.8rem;
-      color: #22c55e;
+      color: #1d1d1f;
+      opacity: 0.5;
     }
 
     .meta {
       font-size: 0.8rem;
-      color: #9ca3af;
+      color: #6e6e73;
       text-align: center;
     }
 
     .stats {
       max-width: 980px;
       width: 100%;
-      background: #020617;
-      border-radius: 10px;
-      border: 1px solid #1f2937;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #d2d2d7;
       padding: 12px 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     .stats h2 {
@@ -160,32 +284,74 @@
     }
 
     th, td {
-      border: 1px solid #1f2937;
-      padding: 6px 8px;
+      border: 1px solid #d2d2d7;
+      padding: 0;
       text-align: left;
     }
 
+    td:first-child {
+      padding: 6px 8px;
+    }
+
+    .progress-cell {
+      position: relative;
+      min-height: 32px;
+      padding: 0;
+    }
+
+    .progress-cell-container {
+      position: relative;
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f5f5f7;
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 6px 8px;
+    }
+
+    .progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      transition: width 0.3s ease;
+      border-radius: 6px;
+    }
+
+    .progress-value {
+      position: relative;
+      z-index: 1;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #1d1d1f;
+      padding: 6px 8px;
+    }
+
     th {
-      background: #111827;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      font-weight: 600;
     }
 
     tr:nth-child(even) td {
-      background: #020617;
+      background: #fbfbfd;
     }
 
     tr:nth-child(odd) td {
-      background: #030712;
+      background: #ffffff;
     }
 
     .stats-summary {
       margin-top: 8px;
       font-size: 0.8rem;
-      color: #9ca3af;
+      color: #6e6e73;
     }
 
     .today {
       font-weight: 600;
-      color: #e5e7eb;
+      color: #1d1d1f;
     }
 
     @media (max-width: 900px) {
@@ -194,14 +360,64 @@
         grid-template-rows: auto;
       }
     }
+
+    /* Mobile-first tuning for smaller screens */
+    @media (max-width: 720px) {
+      body {
+        padding: 12px;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      .subtitle {
+        font-size: 0.85rem;
+      }
+
+      .grid-wrapper {
+        gap: 12px;
+      }
+
+
+
+      .pillar-title {
+        font-size: 0.9rem;
+      }
+
+      .subpillars-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
+
+      .tasks-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .task-cell {
+        font-size: 0.8rem;
+        min-height: 48px;
+        padding: 10px 12px;
+      }
+
+      .stats {
+        padding: 10px;
+      }
+
+      table {
+        font-size: 0.75rem;
+      }
+
+      th,
+      td {
+        padding: 4px;
+      }
+    }
+    }
   </style>
 </head>
 <body>
   <h1>Harada Open Window 64</h1>
-  <div class="subtitle">
-    Central Goal: <strong>Achieve financial independence through creativity + tech</strong><br>
-    Click tasks to mark them complete for today. A new day resets checkmarks but keeps lifetime stats.
-  </div>
   <div class="meta" id="dateDisplay"></div>
 
   <div class="grid-wrapper" id="gridWrapper">
@@ -224,117 +440,129 @@
   </div>
 
   <script>
+    // Pillar color map
+    const pillarColors = {
+      'P1': '#E8F0FE', // Soft Blue
+      'P2': '#F1ECFF', // Soft Violet
+      'P3': '#EAF7EF', // Soft Green
+      'P4': '#E6F6F4', // Soft Teal
+      'P5': '#FFF1E6', // Soft Peach
+      'P6': '#FDECEF', // Soft Pink
+      'P7': '#FFF8E1', // Soft Yellow
+      'P8': '#F2F3F7'  // Soft Gray-Lavender
+    };
+
     const pillars = [
       {
         id: "P1",
         name: "Skill & Craft Mastery",
         tasks: [
-          "Line control drill: 20 minutes of slow, clean lines, ellipses, and curves",
-          "Form & perspective drill: draw 3–5 simple objects from different angles",
-          "Lighting & values drill: 1 small study with clear light and shadow",
-          "Composition drill: 3–5 tiny thumbnails exploring framing and balance",
-          "Gesture & anatomy drill: 10 quick figure gestures (30–60 seconds)",
-          "Edge & texture drill: 1 study focusing on sharp vs soft edges",
-          "Reference translation drill: simplify 1 photo into clear graphic shapes",
-          "Refinement drill: pick 1 of today's studies and push it 10% cleaner"
+          { title: "Sketch Idea", hint: "Head to paper" },
+          { title: "Finish Piece", hint: "Push to done" },
+          { title: "Single Focus", hint: "One element" },
+          { title: "Simplify", hint: "Reduce forms" },
+          { title: "Use Reference", hint: "Apply direct" },
+          { title: "Iterate", hint: "Make variation" },
+          { title: "Polish 10%", hint: "Make cleaner" },
+          { title: "Frame Intent", hint: "Write meaning" }
         ]
       },
       {
         id: "P2",
         name: "Technical Leverage (AI / Code / Data)",
         tasks: [
-          "Core code block: 30 minutes focused on SellerIQ or core projects (no distractions)",
-          "Database drill: write or refine 1 SQL/query tied to real business data",
-          "TypeScript drill: add or tighten types in 1 module",
-          "LLM prompt drill: improve 1 system/prompt template and test it",
-          "Bug/error drill: fix or attempt to fix 1 bug, warning, or rough edge",
-          "Reading rep: read 1 doc/page about a tool you're using and note 1 takeaway",
-          "Scenario test: run 1 real-world question through the app and observe the output",
-          "Architecture check: update or sketch how data flows through your system"
+          { title: "Code Block", hint: "30 min focus" },
+          { title: "SQL Drill", hint: "Write query" },
+          { title: "Type Module", hint: "Add types" },
+          { title: "Prompt Test", hint: "Improve one" },
+          { title: "Fix Bug", hint: "One issue" },
+          { title: "Read Docs", hint: "Note takeaway" },
+          { title: "Test Scenario", hint: "Real question" },
+          { title: "Sketch Flow", hint: "Data paths" }
         ]
       },
       {
         id: "P3",
         name: "Career Money Systems",
         tasks: [
-          "Impact log: document 1 concrete result or win from your work",
-          "Resume/portfolio rep: improve 1 bullet, case study, or screenshot",
-          "Interview story drill: rehearse 1 STAR story out loud",
-          "Skill gap rep: 20 minutes practicing a skill needed for your next role",
-          "Visibility rep: share 1 useful update, insight, or help with your team",
-          "Network rep: touch 1 relationship in your field (DM, comment, or email)",
-          "Promotion map check: review expectations for your target level and note 1 action",
-          "Opportunity pipeline: add or review 1 target company or role on your list"
+          { title: "Log Impact", hint: "Document win" },
+          { title: "Update Resume", hint: "One bullet" },
+          { title: "Practice STAR", hint: "Out loud" },
+          { title: "Practice Skill", hint: "20 minutes" },
+          { title: "Share Update", hint: "With team" },
+          { title: "Touch Network", hint: "One person" },
+          { title: "Plan Promo", hint: "Next action" },
+          { title: "Track Roles", hint: "Add target" }
         ]
       },
       {
         id: "P4",
         name: "SaaS / Business Systems",
         tasks: [
-          "CSV pipeline build: write or refine code that parses, validates, or stores CSV orders",
-          "Sample data rep: load or clean 1 real CSV and verify it's usable",
-          "Metrics mapping: define or refine 1 business metric (e.g., TACoS, profit) in your schema",
-          "Chat UI rep: improve or wire 1 part of the SellerIQ chat interface",
-          "LLM query drill: add or refine 1 question type the assistant must answer well",
-          "User scenario test: simulate 1 seller's question and see how the system responds",
-          "Positioning rep: write 1 clear sentence about SellerIQ's promise to sellers",
-          "Outreach rep: identify or ping 1 potential user to eventually test SellerIQ"
+          { title: "Build CSV", hint: "Parse data" },
+          { title: "Test Data", hint: "Load + verify" },
+          { title: "Map Metric", hint: "Define KPI" },
+          { title: "Wire Chat", hint: "One part" },
+          { title: "Refine Query", hint: "One type" },
+          { title: "Test User", hint: "Seller Q" },
+          { title: "Write Promise", hint: "Value prop" },
+          { title: "Ping User", hint: "Find tester" }
         ]
       },
       {
         id: "P5",
         name: "Art Business Systems",
         tasks: [
-          "Idea bank rep: add at least 1 Pixzo content idea (visual + story angle)",
-          "Capture rep: film or screenshot at least 1 moment of your art process",
-          "Edit rep: turn raw footage into 1 usable clip or sequence",
-          "Story rep: write 1 caption or short narrative for a piece or WIP",
-          "Publish rep: post 1 Pixzo piece (WIP, detail, or finished) to a platform",
-          "Product rep: move 1 piece closer to sellable (format for print, merch, or store)",
-          "Engagement rep: reply to comments/DMs or connect with 3 people around your art",
-          "Cohesion check: review your grid/feed and note 1 improvement for visual consistency"
+          { title: "Create Art", hint: "20+ minutes" },
+          { title: "Capture Process", hint: "One moment" },
+          { title: "Assemble Content", hint: "Make usable" },
+          { title: "Publish Pixzo", hint: "Post one" },
+          { title: "Add Story", hint: "Add meaning" },
+          { title: "Engage Fans", hint: "3 people" },
+          { title: "Prep Product", hint: "Toward sale" },
+          { title: "Build Series", hint: "Theme work" }
         ]
       },
       {
         id: "P6",
         name: "Brand & Audience",
         tasks: [
-          "Daily signal: publish 1 thing that reflects your world (art, build log, or insight)",
-          "Face/voice rep: show up once as a person (story, video, or voice note)",
-          "Hook drill: write 1 headline or hook for current or future content",
-          "Comment drill: leave 3 thoughtful comments where your people hang out",
-          "Analytics rep: check performance of your last 1–2 posts and note 1 lesson",
-          "Consistency rep: outline or schedule tomorrow's post",
-          "Clarity rep: tweak 1 sentence in your bio, profile, or website for more precision",
-          "Storyworld rep: add 1 note to the \"Dillon / Pixzo universe\" (themes, motifs, phrases)"
+          { title: "Post Signal", hint: "One piece" },
+          { title: "Show Face", hint: "Be human" },
+          { title: "Write Hook", hint: "One headline" },
+          { title: "Comment", hint: "3 thoughtful" },
+          { title: "Share WIP", hint: "Post draft" },
+          { title: "Reshare Old", hint: "Amplify signal" },
+          { title: "Share POV", hint: "State belief" },
+          { title: "Add Context", hint: "Explain work" }
         ]
       },
       {
         id: "P7",
         name: "Health & Energy",
         tasks: [
-          "Lift rep: complete today's planned gym session with intent (push / pull / legs)",
-          "Protein rep: hit your daily protein target (e.g., 130g+)",
-          "Calorie rep: eat at least 1 deliberate surplus meal built from whole foods",
-          "Posture/mobility rep: 10 minutes on hips, hamstrings, or thoracic spine",
-          "Hydration ritual: 16 oz water plus electrolytes in the morning",
-          "Sleep rep: maintain ~7+ hours by logging sleep and wake times",
-          "Weed boundary: respect your chosen THC cutoff or reduction target",
-          "Recovery rep: 5–10 minutes of something that calms your nervous system"
+          { title: "Lift", hint: "Full session" },
+          { title: "Eat Protein", hint: "130g target" },
+          { title: "Surplus Meal", hint: "Whole foods" },
+          { title: "Stretch", hint: "10 minutes" },
+          { title: "Hydrate", hint: "16oz + lytes" },
+          { title: "Log Sleep", hint: "7+ hours" },
+          { title: "THC Cutoff", hint: "Respect limit" },
+          { title: "Recover", hint: "Calm nerves" }
         ]
       },
       {
         id: "P8",
         name: "Identity & Discipline",
         tasks: [
-          "I start my day by touching my hardest meaningful task for at least 5 minutes",
-          "I protect my first 30 minutes after waking from my phone",
-          "I protect my last 30 minutes before sleep from my phone",
-          "I keep at least 1 promise I made to myself today",
-          "I speak to myself like a coach, not a critic, when I mess up",
-          "I keep my environment intentional with a 5-minute reset of one area",
-          "I treat people I care about with presence (1 undistracted moment or conversation)",
-          "I review my Harada grid and choose 3 cells that define today's effort"
+          { title: "Start Hard", hint: "5 min task" },
+          { title: "No Phone AM", hint: "First 30 min" },
+          { title: "No Phone PM", hint: "Last 30 min" },
+          { title: "Keep Promise", hint: "One today" },
+          { title: "Coach Self", hint: "Not critic" },
+          { title: "Reset Space", hint: "5 min tidy" },
+          { title: "Be Present", hint: "Undistracted" },
+          { title: "Review Grid", hint: "Pick 3 cells" }
         ]
       }
     ];
@@ -401,21 +629,30 @@
       const box = document.createElement("div");
       box.className = "pillar-box";
 
-      const title = document.createElement("div");
-      title.className = "pillar-title";
-      title.textContent = pillar.name;
-      box.appendChild(title);
-
       const tasksGrid = document.createElement("div");
       tasksGrid.className = "tasks-grid";
 
-      pillar.tasks.forEach((taskText, index) => {
+      const title = document.createElement("div");
+      title.className = "pillar-title";
+      title.textContent = pillar.name;
+
+      pillar.tasks.forEach((task, index) => {
         const cell = document.createElement("div");
         cell.className = "task-cell";
         const cellId = `${pillar.id}-T${index + 1}`;
         cell.dataset.id = cellId;
         cell.dataset.pillar = pillar.id;
-        cell.textContent = taskText;
+        
+        const titleEl = document.createElement("div");
+        titleEl.className = "task-title";
+        titleEl.textContent = task.title;
+        
+        const hintEl = document.createElement("div");
+        hintEl.className = "task-hint";
+        hintEl.textContent = task.hint;
+        
+        cell.appendChild(titleEl);
+        cell.appendChild(hintEl);
 
         if (todayState.completed[cellId]) {
           cell.classList.add("completed");
@@ -428,6 +665,7 @@
         tasksGrid.appendChild(cell);
       });
 
+      tasksGrid.appendChild(title);
       box.appendChild(tasksGrid);
       return box;
     }
@@ -436,26 +674,42 @@
       const box = document.createElement("div");
       box.className = "center-box";
 
-      const content = document.createElement("div");
-      content.className = "center-goal";
-      content.innerHTML = `
-        <strong>Central Goal</strong><br>
-        Achieve financial independence<br>
-        through creativity + tech
-      `;
-      box.appendChild(content);
+      const tasksGrid = document.createElement("div");
+      tasksGrid.className = "tasks-grid";
 
-      const subGrid = document.createElement("div");
-      subGrid.className = "subpillars-grid";
+      // Define explicit grid placement for each pillar
+      const pillarLayout = [
+        { pillar: pillars[0], row: 1, col: 1 }, // P1: Skill & Craft Mastery
+        { pillar: pillars[1], row: 1, col: 2 }, // P2: Technical Leverage
+        { pillar: pillars[2], row: 1, col: 3 }, // P3: Career Money Systems
+        { pillar: pillars[7], row: 2, col: 1 }, // P8: Identity & Discipline
+        { pillar: pillars[3], row: 2, col: 3 }, // P4: SaaS / Business Systems
+        { pillar: pillars[6], row: 3, col: 1 }, // P7: Health & Energy
+        { pillar: pillars[5], row: 3, col: 2 }, // P6: Brand & Audience
+        { pillar: pillars[4], row: 3, col: 3 }  // P5: Art Business Systems
+      ];
 
-      pillars.forEach((p) => {
-        const sub = document.createElement("div");
-        sub.className = "subpillar-cell";
-        sub.textContent = p.name;
-        subGrid.appendChild(sub);
+      // Create pillar cards with explicit positioning
+      pillarLayout.forEach(({ pillar, row, col }) => {
+        const pillarCard = document.createElement("div");
+        pillarCard.className = "pillar-card";
+        pillarCard.textContent = pillar.name;
+        pillarCard.dataset.pillar = pillar.id;
+        pillarCard.style.gridRow = row;
+        pillarCard.style.gridColumn = col;
+        tasksGrid.appendChild(pillarCard);
       });
 
-      box.appendChild(subGrid);
+      // Create center goal card (row 2, col 2)
+      const centerTitle = document.createElement("div");
+      centerTitle.className = "center-title";
+      centerTitle.innerHTML = `
+        <strong>GOAL</strong>
+        <span>Live From What I Build</span>
+      `;
+      
+      tasksGrid.appendChild(centerTitle);
+      box.appendChild(tasksGrid);
       return box;
     }
 
@@ -534,13 +788,41 @@
         const tdToday = document.createElement("td");
         const tdAll = document.createElement("td");
 
+        // Name cell (plain text)
         tdName.textContent = p.name;
-        tdToday.textContent = pillarTotalsToday[p.id];
-        tdAll.textContent = pillarTotalsAllTime[p.id];
+
+        // Today progress cell (out of 8)
+        const todayCount = pillarTotalsToday[p.id];
+        const todayPercent = Math.min((todayCount / 8) * 100, 100);
+        tdToday.className = "progress-cell";
+        tdToday.innerHTML = `
+          <div class="progress-cell-container">
+            <div class="progress-fill" style="width: ${todayPercent}%; background-color: ${pillarColors[p.id]};"></div>
+            <div class="progress-value">${todayCount}</div>
+          </div>
+        `;
+
+        // All time progress cell (out of 365)
+        const allTimeCount = pillarTotalsAllTime[p.id];
+        const allTimePercent = Math.min((allTimeCount / 365) * 100, 100);
+        tdAll.className = "progress-cell";
+        tdAll.innerHTML = `
+          <div class="progress-cell-container">
+            <div class="progress-fill" style="width: ${allTimePercent}%; background-color: ${pillarColors[p.id]};"></div>
+            <div class="progress-value">${allTimeCount}</div>
+          </div>
+        `;
 
         tr.appendChild(tdName);
         tr.appendChild(tdToday);
         tr.appendChild(tdAll);
+        
+        // Debug: Verify three cells
+        const cellCount = tr.children.length;
+        if (cellCount !== 3) {
+          console.warn(`⚠️ Row for ${p.name} has ${cellCount} cells instead of 3!`);
+        }
+        
         statsBody.appendChild(tr);
       });
 
