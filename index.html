@@ -98,14 +98,24 @@
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03) inset;
     }
 
+    /* Pillar Title Colors */
+    .pillar-title[data-pillar="P1"] { background: var(--pillar-p1); }
+    .pillar-title[data-pillar="P2"] { background: var(--pillar-p2); }
+    .pillar-title[data-pillar="P3"] { background: var(--pillar-p3); }
+    .pillar-title[data-pillar="P4"] { background: var(--pillar-p4); }
+    .pillar-title[data-pillar="P5"] { background: var(--pillar-p5); }
+    .pillar-title[data-pillar="P6"] { background: var(--pillar-p6); }
+    .pillar-title[data-pillar="P7"] { background: var(--pillar-p7); }
+    .pillar-title[data-pillar="P8"] { background: var(--pillar-p8); }
+
     .center-title {
       font-size: 0.7rem;
       font-weight: 700;
       text-align: center;
       padding: 8px;
       border-radius: 8px;
-      background: #e8eaed;
-      border: 2px solid #b8bac0;
+      background: #f3f4f6;
+      border: 1.5px solid #b8bac0;
       color: #1d1d1f;
       grid-column: 2;
       grid-row: 2;
@@ -116,7 +126,7 @@
       gap: 2px;
       line-height: 1.2;
       overflow: hidden;
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+      box-shadow: 0 0 0 2px rgba(184, 186, 192, 0.2), 0 0 8px rgba(0, 0, 0, 0.04);
     }
 
     .center-title strong {
@@ -139,8 +149,9 @@
       text-align: center;
       padding: 6px;
       border-radius: 8px;
-      background: #f1f3f6;
+      background: #f3f4f6;
       border: 1px solid #d2d2d7;
+      border-left: 2px solid #d2d2d7;
       color: #1d1d1f;
       display: flex;
       align-items: center;
@@ -149,17 +160,18 @@
       word-wrap: break-word;
       hyphens: auto;
       overflow: hidden;
+      transition: border-color 0.15s ease;
     }
 
-    /* Pillar Card Colors */
-    .pillar-card[data-pillar="P1"] { background: var(--pillar-p1); }
-    .pillar-card[data-pillar="P2"] { background: var(--pillar-p2); }
-    .pillar-card[data-pillar="P3"] { background: var(--pillar-p3); }
-    .pillar-card[data-pillar="P4"] { background: var(--pillar-p4); }
-    .pillar-card[data-pillar="P5"] { background: var(--pillar-p5); }
-    .pillar-card[data-pillar="P6"] { background: var(--pillar-p6); }
-    .pillar-card[data-pillar="P7"] { background: var(--pillar-p7); }
-    .pillar-card[data-pillar="P8"] { background: var(--pillar-p8); }
+    /* Pillar Card Colors - Left Border Accent */
+    .pillar-card[data-pillar="P1"] { border-left-color: #a8c5ff; }
+    .pillar-card[data-pillar="P2"] { border-left-color: #c5b8ff; }
+    .pillar-card[data-pillar="P3"] { border-left-color: #90d4a8; }
+    .pillar-card[data-pillar="P4"] { border-left-color: #7dd4ca; }
+    .pillar-card[data-pillar="P5"] { border-left-color: #ffb366; }
+    .pillar-card[data-pillar="P6"] { border-left-color: #ffa8b8; }
+    .pillar-card[data-pillar="P7"] { border-left-color: #ffd966; }
+    .pillar-card[data-pillar="P8"] { border-left-color: #b8bac7; }
 
     .tasks-grid {
       display: grid;
@@ -633,12 +645,13 @@
     }
 
     .overweighted-pillar {
-      background: #f0f4ff;
-      border-color: #a8c5ff;
+      background: #f9fafb;
+      border: 1px solid #e5e5ea;
+      border-left-width: 3px;
     }
 
     .overweighted-pillar .insight-value {
-      color: #0066cc;
+      color: #1d1d1f;
     }
 
     .stability-card {
@@ -922,7 +935,18 @@
           <div class="insight-value" id="balanceScore">—</div>
           <div class="insight-description" id="balanceDescription">Loading...</div>
         </div>
-        <div class="insight-card overweighted-pillar">
+        <div class="insight-card">
+          <div class="insight-label">
+            Balance Trend
+            <span class="info-icon">
+              i
+              <span class="info-tooltip">Compares your current balance score to the previous equivalent period. Positive values indicate improvement in distributing focus across pillars.</span>
+            </span>
+          </div>
+          <div class="insight-value" id="balanceTrend">—</div>
+          <div class="insight-description" id="balanceTrendDescription">Loading...</div>
+        </div>
+        <div class="insight-card overweighted-pillar" id="focusPatternCard">
           <div class="insight-label">
             Focus Pattern
             <span class="info-icon">
@@ -968,112 +992,112 @@
         id: "P1",
         name: "Skill & Craft Mastery",
         tasks: [
-          { title: "Sketch Idea", hint: "Head to paper" },
-          { title: "Finish Piece", hint: "Push to done" },
-          { title: "Single Focus", hint: "One element" },
-          { title: "Simplify", hint: "Reduce forms" },
-          { title: "Use Reference", hint: "Apply direct" },
-          { title: "Iterate", hint: "Make variation" },
-          { title: "Polish 10%", hint: "Make cleaner" },
-          { title: "Frame Intent", hint: "Write meaning" }
+          { title: "Sketch", hint: "New Idea" },
+          { title: "Study", hint: "Form" },
+          { title: "Study", hint: "Light" },
+          { title: "Explore", hint: "Composition" },
+          { title: "Gesture", hint: "Figures" },
+          { title: "Control", hint: "Edges" },
+          { title: "Simplify", hint: "Reference" },
+          { title: "Refine", hint: "Piece" }
         ]
       },
       {
         id: "P2",
         name: "Technical Leverage (AI / Code / Data)",
         tasks: [
-          { title: "Code Block", hint: "30 min focus" },
-          { title: "SQL Drill", hint: "Write query" },
-          { title: "Type Module", hint: "Add types" },
-          { title: "Prompt Test", hint: "Improve one" },
-          { title: "Fix Bug", hint: "One issue" },
-          { title: "Read Docs", hint: "Note takeaway" },
-          { title: "Test Scenario", hint: "Real question" },
-          { title: "Sketch Flow", hint: "Data paths" }
+          { title: "Write", hint: "Code" },
+          { title: "Fix", hint: "Bug" },
+          { title: "Refactor", hint: "Code" },
+          { title: "Explore", hint: "Data" },
+          { title: "Test", hint: "App Flow" },
+          { title: "Learn", hint: "One Concept" },
+          { title: "Read", hint: "Blocked Docs" },
+          { title: "Sketch", hint: "Feature Idea" }
         ]
       },
       {
         id: "P3",
-        name: "Career Money Systems",
+        name: "Career / Money Systems",
         tasks: [
-          { title: "Log Impact", hint: "Document win" },
-          { title: "Update Resume", hint: "One bullet" },
-          { title: "Practice STAR", hint: "Out loud" },
-          { title: "Practice Skill", hint: "20 minutes" },
-          { title: "Share Update", hint: "With team" },
-          { title: "Touch Network", hint: "One person" },
-          { title: "Plan Promo", hint: "Next action" },
-          { title: "Track Roles", hint: "Add target" }
+          { title: "Research", hint: "Roles & Paths" },
+          { title: "Learn", hint: "Career Skill" },
+          { title: "Apply", hint: "New Role" },
+          { title: "Build", hint: "Work Leverage" },
+          { title: "Pitch", hint: "Business Idea" },
+          { title: "Reach Out", hint: "New Contact" },
+          { title: "Practice", hint: "Interview Answers" },
+          { title: "Study", hint: "Industry Trends" }
         ]
       },
       {
         id: "P4",
-        name: "SaaS / Business Systems",
+        name: "SaaS / Business Systems (SellerIQ)",
         tasks: [
-          { title: "Build CSV", hint: "Parse data" },
-          { title: "Test Data", hint: "Load + verify" },
-          { title: "Map Metric", hint: "Define KPI" },
-          { title: "Wire Chat", hint: "One part" },
-          { title: "Refine Query", hint: "One type" },
-          { title: "Test User", hint: "Seller Q" },
-          { title: "Write Promise", hint: "Value prop" },
-          { title: "Ping User", hint: "Find tester" }
+          { title: "Build", hint: "Feature" },
+          { title: "Improve", hint: "Chat" },
+          { title: "Explore", hint: "Seller Data" },
+          { title: "Fix", hint: "Flow" },
+          { title: "Clarify", hint: "Idea" },
+          { title: "Write", hint: "Notes" },
+          { title: "Talk To", hint: "User" },
+          { title: "Demo", hint: "App" }
         ]
       },
       {
         id: "P5",
         name: "Art Business Systems",
         tasks: [
-          { title: "Create Art", hint: "20+ minutes" },
-          { title: "Capture Process", hint: "One moment" },
-          { title: "Assemble Content", hint: "Make usable" },
-          { title: "Publish Pixzo", hint: "Post one" },
-          { title: "Add Story", hint: "Add meaning" },
-          { title: "Engage Fans", hint: "3 people" },
-          { title: "Prep Product", hint: "Toward sale" },
-          { title: "Build Series", hint: "Theme work" }
+          { title: "Choose", hint: "Art Idea" },
+          { title: "Make", hint: "Art" },
+          { title: "Capture", hint: "Process" },
+          { title: "Edit", hint: "Media" },
+          { title: "Write", hint: "Caption" },
+          { title: "Publish", hint: "Art" },
+          { title: "Explore", hint: "Product Idea" },
+          { title: "Improve", hint: "Consistency" }
         ]
       },
       {
         id: "P6",
         name: "Brand & Audience",
         tasks: [
-          { title: "Post Signal", hint: "One piece" },
-          { title: "Show Face", hint: "Be human" },
-          { title: "Write Hook", hint: "One headline" },
-          { title: "Comment", hint: "3 thoughtful" },
-          { title: "Share WIP", hint: "Post draft" },
-          { title: "Reshare Old", hint: "Amplify signal" },
-          { title: "Share POV", hint: "State belief" },
-          { title: "Add Context", hint: "Explain work" }
+          { title: "Post", hint: "Something" },
+          { title: "Share", hint: "Process" },
+          { title: "Write", hint: "Content Idea" },
+          { title: "Engage", hint: "People" },
+          { title: "Plan", hint: "Tomorrow" },
+          { title: "Show", hint: "Personality" },
+          { title: "Observe", hint: "Creators" },
+          { title: "Stay", hint: "Visible" }
         ]
       },
       {
         id: "P7",
         name: "Health & Energy",
         tasks: [
-          { title: "Lift", hint: "Full session" },
-          { title: "Eat Protein", hint: "130g target" },
-          { title: "Surplus Meal", hint: "Whole foods" },
-          { title: "Stretch", hint: "10 minutes" },
-          { title: "Hydrate", hint: "16oz + lytes" },
-          { title: "Log Sleep", hint: "7+ hours" },
-          { title: "THC Cutoff", hint: "Respect limit" },
-          { title: "Recover", hint: "Calm nerves" }
+          { title: "Train", hint: "Workout" },
+          { title: "Eat", hint: "Enough" },
+          { title: "Drink", hint: "Water" },
+          { title: "Sleep", hint: "On Time" },
+          { title: "Stretch", hint: "Posture & Hips" },
+          { title: "Take", hint: "Supplements" },
+          { title: "Break", hint: "A Sweat" },
+          { title: "Recover", hint: "Rest Day" }
         ]
       },
       {
         id: "P8",
         name: "Identity & Discipline",
         tasks: [
-          { title: "Start Hard", hint: "5 min task" },
-          { title: "No Phone AM", hint: "First 30 min" },
-          { title: "No Phone PM", hint: "Last 30 min" },
-          { title: "Keep Promise", hint: "One today" },
-          { title: "Coach Self", hint: "Not critic" },
-          { title: "Reset Space", hint: "5 min tidy" },
-          { title: "Be Present", hint: "Undistracted" },
-          { title: "Review Grid", hint: "Pick 3 cells" }
+          { title: "Start", hint: "Hard Thing" },
+          { title: "Delay", hint: "Phone" },
+          { title: "Shut Down", hint: "Evening" },
+          { title: "Regain", hint: "Attention" },
+          { title: "Keep", hint: "Promise" },
+          { title: "Tidy", hint: "One Area" },
+          { title: "Be", hint: "Present" },
+          { title: "Decide", hint: "Today's Focus" }
         ]
       }
     ];
@@ -1295,6 +1319,7 @@
       const title = document.createElement("div");
       title.className = "pillar-title";
       title.textContent = pillar.name;
+      title.dataset.pillar = pillar.id;
 
       pillar.tasks.forEach((task, index) => {
         const cell = document.createElement("div");
@@ -1741,6 +1766,77 @@
         neglectedPillar.id !== activePillar.id ? 
         `${neglectedPillar.name} could use attention.` : 
         'Focus is evenly distributed.';
+      
+      // Set dynamic pillar color border for Focus Pattern card
+      const focusPatternCard = document.getElementById('focusPatternCard');
+      const pillarColorMap = {
+        'P1': '#a8c5ff', 'P2': '#c5b8ff', 'P3': '#90d4a8', 'P4': '#7dd4ca',
+        'P5': '#ffb366', 'P6': '#ffa8b8', 'P7': '#ffd966', 'P8': '#b8bac7'
+      };
+      focusPatternCard.style.borderLeftColor = pillarColorMap[activePillar.id] || '#e5e5ea';
+
+      // Calculate and display balance trend
+      const previousDatesInRange = [];
+      const rangeLength = datesInRange.length;
+      
+      if (selectedTimeRange === "ytd" || selectedTimeRange === "all") {
+        // For YTD and All Time, compare to same period length ending before current range
+        const oldestDate = new Date(Math.min(...datesInRange.map(d => new Date(d))));
+        for (let i = 0; i < rangeLength; i++) {
+          const date = new Date(oldestDate);
+          date.setDate(date.getDate() - rangeLength + i);
+          previousDatesInRange.push(date.toISOString().split('T')[0]);
+        }
+      } else {
+        // For Last N days, compare to previous N days
+        const days = parseInt(selectedTimeRange);
+        const startDate = new Date(today);
+        startDate.setDate(startDate.getDate() - days);
+        for (let i = 0; i < days; i++) {
+          const date = new Date(startDate);
+          date.setDate(date.getDate() - days + i);
+          previousDatesInRange.push(date.toISOString().split('T')[0]);
+        }
+      }
+      
+      // Calculate previous period balance score
+      const previousTotal = previousDatesInRange.reduce((sum, dateStr) => sum + (dailyHistory[dateStr] || 0), 0);
+      
+      if (previousTotal === 0 || previousDatesInRange.length < 3) {
+        document.getElementById('balanceTrend').textContent = '—';
+        document.getElementById('balanceTrendDescription').textContent = 'Not enough prior data to compare.';
+      } else {
+        // Approximate previous pillar distribution
+        const previousPillarTotals = {};
+        pillars.forEach(p => {
+          const pillarRatio = allTimeTotal > 0 ? allTimePillarTotals[p.id] / allTimeTotal : 1/8;
+          previousPillarTotals[p.id] = Math.round(previousTotal * pillarRatio);
+        });
+        
+        const previousValues = pillars.map(p => previousPillarTotals[p.id] || 0);
+        const previousMean = previousTotal / previousValues.length;
+        const previousVariance = previousValues.reduce((sum, v) => sum + Math.pow(v - previousMean, 2), 0) / previousValues.length;
+        const previousStdDev = Math.sqrt(previousVariance);
+        const previousCv = previousMean > 0 ? (previousStdDev / previousMean) : 0;
+        const previousBalanceScore = Math.round(Math.max(0, 100 - (previousCv * 100)));
+        
+        const delta = balanceScore - previousBalanceScore;
+        const absDelta = Math.abs(delta);
+        
+        if (delta > 0) {
+          document.getElementById('balanceTrend').textContent = `+${delta}`;
+          document.getElementById('balanceTrendDescription').textContent = 
+            `More balanced than previous period (+${absDelta}).`;
+        } else if (delta < 0) {
+          document.getElementById('balanceTrend').textContent = `${delta}`;
+          document.getElementById('balanceTrendDescription').textContent = 
+            `Less balanced than previous period (-${absDelta}).`;
+        } else {
+          document.getElementById('balanceTrend').textContent = '0';
+          document.getElementById('balanceTrendDescription').textContent = 
+            'Same balance as previous period.';
+        }
+      }
 
       // Calculate and display focus stability
       const stability = calculateFocusStability(datesInRange);
