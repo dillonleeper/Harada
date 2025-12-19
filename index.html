@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Harada Open Window 64 – Dillon</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -292,14 +294,13 @@
     }
 
     .today-reflection {
+      display: none;
       max-width: 980px;
       width: 100%;
       background: #f9fafb;
       border: 1px solid #e5e5ea;
       border-radius: 8px;
       padding: 14px 18px;
-      display: flex;
-      align-items: center;
       gap: 16px;
     }
 
@@ -352,7 +353,7 @@
       border: 1px solid #d2d2d7;
       padding: 12px 14px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-      display: none;
+      margin-bottom: 24px;
     }
 
     .stats h2 {
@@ -363,7 +364,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
     }
 
     th, td {
@@ -372,26 +373,33 @@
       text-align: left;
     }
 
-    td:first-child {
+    th {
+      background: #f1f3f6;
+      color: #1d1d1f;
+      font-weight: 600;
       padding: 6px 8px;
+    }
+
+    td:first-child {
+      padding: 8px 10px;
     }
 
     .progress-cell {
       position: relative;
-      min-height: 32px;
+      min-height: 28px;
       padding: 0;
     }
 
     .progress-cell-container {
       position: relative;
-      min-height: 32px;
+      min-height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: #f1f3f6;
-      border-radius: 6px;
+      border-radius: 4px;
       overflow: hidden;
-      margin: 6px 8px;
+      margin: 4px 6px;
     }
 
     .progress-fill {
@@ -400,22 +408,16 @@
       top: 0;
       height: 100%;
       transition: width 0.3s ease;
-      border-radius: 6px;
+      border-radius: 4px;
     }
 
     .progress-value {
       position: relative;
       z-index: 1;
       font-weight: 600;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #1d1d1f;
-      padding: 6px 8px;
-    }
-
-    th {
-      background: #f1f3f6;
-      color: #1d1d1f;
-      font-weight: 600;
+      padding: 5px 8px;
     }
 
     tr:nth-child(even) td {
@@ -437,13 +439,133 @@
       color: #1d1d1f;
     }
 
-    .pillar-balance {
+    .achievements-section {
       max-width: 980px;
       width: 100%;
       background: #ffffff;
       border-radius: 12px;
       border: 1px solid #d2d2d7;
+      padding: 12px 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      margin-bottom: 24px;
+    }
+
+    .achievements-section h2 {
+      font-size: 0.9rem;
+      margin: 0 0 10px 0;
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+    }
+
+    .badge-card {
+      background: #f9fafb;
+      border: 1px solid #e5e5ea;
+      border-radius: 6px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .badge-card.unlocked {
+      background: #ffffff;
+      border-color: #007AFF;
+      box-shadow: 0 1px 4px rgba(0, 122, 255, 0.1);
+    }
+
+    .badge-card.locked {
+      opacity: 0.5;
+    }
+
+    .badge-icon {
+      font-size: 1.5rem;
+      text-align: center;
+      filter: grayscale(100%);
+    }
+
+    .badge-card.unlocked .badge-icon {
+      filter: grayscale(0%);
+    }
+
+    .badge-name {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #1d1d1f;
+      text-align: center;
+    }
+
+    .badge-description {
+      font-size: 0.65rem;
+      color: #6e6e73;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .badge-date {
+      font-size: 0.6rem;
+      color: #007AFF;
+      text-align: center;
+      margin-top: 2px;
+    }
+
+    .growth-insights-section {
+      max-width: 980px;
+      width: 100%;
+      background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+      border-radius: 12px;
+      border: 1px solid #d2d2d7;
       padding: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .growth-insights-section h2 {
+      font-size: 1rem;
+      margin: 0 0 12px 0;
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+
+    .growth-insights-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .growth-insight-item {
+      background: #ffffff;
+      border: 1px solid #e5e5ea;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: #1d1d1f;
+    }
+
+    .growth-insight-item strong {
+      color: #007AFF;
+      font-weight: 600;
+    }
+
+    .growth-insight-item em {
+      color: #6e6e73;
+      font-style: italic;
+    }
+
+    .pillar-balance {
+      margin-bottom: 24px;
+      max-width: 980px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #d2d2d7;
+      padding: 14px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
@@ -490,30 +612,146 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     }
 
+    .time-range-count {
+      font-size: 0.65rem;
+      color: #86868b;
+      font-weight: 400;
+      margin-left: 3px;
+    }
+
+    .time-range-btn.active .time-range-count {
+      color: #6e6e73;
+    }
+
+    .activity-timeline {
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border: 1px solid #e5e5ea;
+    }
+
+    .timeline-header {
+      font-size: 0.65rem;
+      color: #6e6e73;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .timeline-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 50px;
+      padding: 2px 0;
+    }
+
+    .timeline-bar {
+      flex: 1;
+      background: #d1d1d6;
+      border-radius: 2px 2px 0 0;
+      min-height: 4px;
+      transition: all 0.2s ease;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .timeline-bar.has-data {
+      background: linear-gradient(180deg, #007AFF 0%, #0051D5 100%);
+    }
+
+    .timeline-bar.is-today {
+      background: linear-gradient(180deg, #34C759 0%, #248A3D 100%);
+      box-shadow: 0 0 0 1px rgba(52, 199, 89, 0.3);
+    }
+
+    .timeline-bar:hover {
+      opacity: 0.8;
+      transform: translateY(-2px);
+    }
+
+    .timeline-bar-tooltip {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-4px);
+      background: rgba(0, 0, 0, 0.85);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      z-index: 100;
+    }
+
+    .timeline-bar:hover .timeline-bar-tooltip {
+      opacity: 1;
+    }
+
+    .timeline-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 3px;
+      font-size: 0.6rem;
+      color: #86868b;
+    }
+
     .balance-content {
       display: grid;
       grid-template-columns: 320px 1fr;
-      gap: 20px;
-      align-items: stretch;
+      gap: 12px;
+      align-items: start;
     }
 
     .radar-section {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
     }
 
     .radar-canvas {
       width: 320px;
       height: 320px;
       display: block;
+      cursor: crosshair;
+    }
+
+    .radar-tooltip {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.85);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      z-index: 1000;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .radar-tooltip.visible {
+      opacity: 1;
+    }
+
+    .radar-tooltip-pillar {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .radar-tooltip-value {
+      color: #94d3ff;
     }
 
     .radar-legend {
       font-size: 0.65rem;
       color: #6e6e73;
-      line-height: 1.6;
-      padding: 8px;
+      line-height: 1.5;
+      padding: 6px 8px;
       background: #f9fafb;
       border-radius: 6px;
       border: 1px solid #e5e5ea;
@@ -533,16 +771,15 @@
     .balance-insights {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      height: 100%;
-      gap: 6px;
+      justify-content: flex-start;
+      gap: 8px;
     }
 
     .insight-card {
       background: #f9fafb;
       border: 1px solid #e5e5ea;
       border-radius: 8px;
-      padding: 10px 14px;
+      padding: 10px 12px;
     }
 
     .insight-label {
@@ -647,7 +884,6 @@
     .overweighted-pillar {
       background: #f9fafb;
       border: 1px solid #e5e5ea;
-      border-left-width: 3px;
     }
 
     .overweighted-pillar .insight-value {
@@ -856,6 +1092,223 @@
         font-size: 0.6rem;
       }
     }
+
+    /* Mobile-optimized pillar view */
+    @media (max-width: 768px) {
+      .grid-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        max-width: 100%;
+        aspect-ratio: auto;
+        height: auto;
+        scroll-snap-type: y mandatory;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .pillar-box {
+        min-height: 100vh;
+        scroll-snap-align: start;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        border-bottom: 3px solid #d2d2d7;
+        aspect-ratio: auto;
+      }
+
+      .pillar-box:last-of-type {
+        border-bottom: none;
+      }
+
+      /* Pillar-specific colored borders for visual distinction */
+      .pillar-box:nth-child(1) { border-left: 4px solid #a8c5ff; }
+      .pillar-box:nth-child(2) { border-left: 4px solid #c5b8ff; }
+      .pillar-box:nth-child(3) { border-left: 4px solid #90d4a8; }
+      .pillar-box:nth-child(4) { border-left: 4px solid #b8bac7; }
+      .pillar-box:nth-child(5) { border-left: 4px solid #7dd4ca; }
+      .pillar-box:nth-child(6) { border-left: 4px solid #ffd966; }
+      .pillar-box:nth-child(7) { border-left: 4px solid #ffa8b8; }
+      .pillar-box:nth-child(8) { border-left: 4px solid #ffb366; }
+
+      .center-box {
+        min-height: 100vh;
+        scroll-snap-align: start;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+        border-bottom: 3px solid #d2d2d7;
+      }
+
+      .tasks-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        height: auto;
+      }
+
+      .task-cell {
+        min-height: 60px;
+        font-size: 0.95rem;
+        padding: 16px;
+        border-width: 2px;
+        aspect-ratio: auto;
+      }
+
+      .task-title {
+        font-size: 0.95rem;
+      }
+
+      .task-hint {
+        font-size: 0.8rem;
+      }
+
+      .pillar-title {
+        font-size: 1.2rem;
+        padding: 16px;
+        margin-bottom: 12px;
+        position: static;
+        grid-column: auto;
+        grid-row: auto;
+        aspect-ratio: auto;
+      }
+
+      .center-title {
+        font-size: 1.1rem;
+        padding: 24px;
+        aspect-ratio: auto;
+        position: static;
+        grid-column: auto;
+        grid-row: auto;
+      }
+
+      .center-title strong {
+        font-size: 0.95rem;
+      }
+
+      .center-title span {
+        font-size: 0.85rem;
+      }
+
+      .pillar-card {
+        font-size: 0.8rem;
+        padding: 12px;
+        min-height: 50px;
+      }
+
+      /* Add swipe hint */
+      .grid-wrapper::after {
+        content: "← Swipe to navigate →";
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        pointer-events: none;
+        z-index: 1000;
+        animation: fadeOut 3s ease-in-out forwards;
+      }
+
+      @keyframes fadeOut {
+        0%, 80% { opacity: 1; }
+        100% { opacity: 0; }
+      }
+
+      /* Hide sections that don't work well on mobile scroll */
+      .growth-insights-section,
+      .stats,
+      .pillar-balance,
+      .achievements-section {
+        scroll-snap-align: start;
+        min-height: auto;
+      }
+
+      .achievements-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
+
+      .time-range-selector {
+        flex-wrap: wrap;
+      }
+
+      .time-range-btn {
+        font-size: 0.65rem;
+        padding: 4px 8px;
+      }
+    }
+
+    /* Extra small phones */
+    @media (max-width: 375px) {
+      .pillar-box {
+        padding: 16px;
+      }
+
+      .task-cell {
+        min-height: 55px;
+        font-size: 0.85rem;
+        padding: 12px;
+      }
+
+      .task-title {
+        font-size: 0.85rem;
+      }
+
+      .task-hint {
+        font-size: 0.72rem;
+      }
+
+      .pillar-title {
+        font-size: 1.1rem;
+        padding: 12px;
+      }
+
+      .achievements-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 6px;
+      }
+
+      .badge-card {
+        padding: 6px;
+      }
+
+      .badge-icon {
+        font-size: 1.2rem;
+      }
+
+      .badge-name {
+        font-size: 0.7rem;
+      }
+
+      .badge-description {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* Tablet landscape */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .grid-wrapper {
+        max-width: 100%;
+      }
+
+      .balance-content {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .radar-canvas {
+        margin: 0 auto;
+      }
+    }
   </style>
 </head>
 <body>
@@ -881,6 +1334,13 @@
       <div class="pillar-dot" data-pillar="P8"></div>
     </div>
     <div class="reflection-insight" id="reflectionInsight">Loading...</div>
+  </div>
+
+  <div class="growth-insights-section">
+    <h2>Your Growth</h2>
+    <div class="growth-insights-content" id="growthInsights">
+      <!-- Insights will be injected here by JavaScript -->
+    </div>
   </div>
 
   <div class="stats">
@@ -909,9 +1369,18 @@
         <button class="time-range-btn" data-range="all">All Time</button>
       </div>
     </div>
+    <div class="activity-timeline" id="activityTimeline">
+      <div class="timeline-header">Daily Activity</div>
+      <div class="timeline-chart" id="timelineChart"></div>
+      <div class="timeline-labels" id="timelineLabels"></div>
+    </div>
     <div class="balance-content">
-      <div class="radar-section">
+      <div class="radar-section" style="position: relative;">
         <canvas id="radarChart" class="radar-canvas" width="320" height="320"></canvas>
+        <div id="radarTooltip" class="radar-tooltip">
+          <div class="radar-tooltip-pillar"></div>
+          <div class="radar-tooltip-value"></div>
+        </div>
         <div class="radar-legend">
           <div class="radar-legend-item"><span class="radar-legend-label">P1</span><span>Skill & Craft Mastery</span></div>
           <div class="radar-legend-item"><span class="radar-legend-label">P2</span><span>Technical Leverage (AI / Code / Data)</span></div>
@@ -971,6 +1440,13 @@
         </div>
         <div class="balance-footer" id="balanceFooter">Loading balance insights...</div>
       </div>
+    </div>
+  </div>
+
+  <div class="achievements-section">
+    <h2>Achievements</h2>
+    <div class="achievements-grid" id="achievementsGrid">
+      <!-- Badges will be injected here by JavaScript -->
     </div>
   </div>
 
@@ -1106,7 +1582,240 @@
     const STORAGE_STATS_KEY = "haradaStatsAllTime";
     const STORAGE_HISTORY_KEY = "haradaHistory";
     const STORAGE_STREAKS_KEY = "haradaStreaks";
+    const STORAGE_BADGES_KEY = "haradaBadges";
     const MIN_TASKS_FOR_STREAK = 1; // Configurable threshold
+
+    // Badge definitions
+    const BADGES = [
+      // First Steps & Milestones
+      {
+        id: 'first-step',
+        name: 'First Step',
+        icon: '🌱',
+        description: 'Complete your first task',
+        check: (data) => data.totalAllTime >= 1
+      },
+      {
+        id: 'getting-started',
+        name: 'Getting Started',
+        icon: '🎯',
+        description: 'Complete 10 total tasks',
+        check: (data) => data.totalAllTime >= 10
+      },
+      {
+        id: 'quarter-century',
+        name: 'Quarter Century',
+        icon: '🎊',
+        description: 'Complete 25 total tasks',
+        check: (data) => data.totalAllTime >= 25
+      },
+      {
+        id: 'half-century',
+        name: 'Half Century',
+        icon: '🎉',
+        description: 'Complete 50 total tasks',
+        check: (data) => data.totalAllTime >= 50
+      },
+      {
+        id: 'century-club',
+        name: 'Century Club',
+        icon: '💯',
+        description: 'Complete 100 total tasks',
+        check: (data) => data.totalAllTime >= 100
+      },
+      {
+        id: 'double-century',
+        name: 'Double Century',
+        icon: '🎖️',
+        description: 'Complete 200 total tasks',
+        check: (data) => data.totalAllTime >= 200
+      },
+      {
+        id: 'five-hundred-club',
+        name: 'Five Hundred Club',
+        icon: '💎',
+        description: 'Complete 500 total tasks',
+        check: (data) => data.totalAllTime >= 500
+      },
+      {
+        id: 'thousand-strong',
+        name: 'Thousand Strong',
+        icon: '🏔️',
+        description: 'Complete 1000 total tasks',
+        check: (data) => data.totalAllTime >= 1000
+      },
+      
+      // Streak Achievements
+      {
+        id: 'starter-streak',
+        name: 'Starter Streak',
+        icon: '🌟',
+        description: 'Maintain a 3-day streak',
+        check: (data) => data.currentStreak >= 3
+      },
+      {
+        id: 'week-warrior',
+        name: 'Week Warrior',
+        icon: '🔥',
+        description: 'Maintain a 7-day streak',
+        check: (data) => data.currentStreak >= 7
+      },
+      {
+        id: 'two-week-titan',
+        name: 'Two Week Titan',
+        icon: '⚔️',
+        description: 'Maintain a 14-day streak',
+        check: (data) => data.currentStreak >= 14
+      },
+      {
+        id: 'month-master',
+        name: 'Month Master',
+        icon: '⚡',
+        description: 'Maintain a 30-day streak',
+        check: (data) => data.currentStreak >= 30
+      },
+      {
+        id: 'century-streak',
+        name: 'Century Streak',
+        icon: '🏛️',
+        description: 'Maintain a 100-day streak',
+        check: (data) => data.currentStreak >= 100
+      },
+      {
+        id: 'unstoppable',
+        name: 'Unstoppable',
+        icon: '🚀',
+        description: 'Maintain a 365-day streak',
+        check: (data) => data.currentStreak >= 365
+      },
+      
+      // Daily Intensity
+      {
+        id: 'power-hour',
+        name: 'Power Hour',
+        icon: '⚡',
+        description: 'Complete 10 tasks in one day',
+        check: (data) => data.totalToday >= 10
+      },
+      {
+        id: 'beast-mode',
+        name: 'Beast Mode',
+        icon: '🦁',
+        description: 'Complete 15 tasks in one day',
+        check: (data) => data.totalToday >= 15
+      },
+      {
+        id: 'legendary-day',
+        name: 'Legendary Day',
+        icon: '👑',
+        description: 'Complete 20+ tasks in one day',
+        check: (data) => data.totalToday >= 20
+      },
+      {
+        id: 'four-corners',
+        name: 'Four Corners',
+        icon: '🎯',
+        description: 'Complete all 8 tasks in 4 different pillars in one day',
+        check: (data) => data.fullPillarsToday >= 4
+      },
+      
+      // Balance & Variety
+      {
+        id: 'perfect-day',
+        name: 'Perfect Day',
+        icon: '✨',
+        description: 'Touch all 8 pillars in one day',
+        check: (data) => data.pillarsToday >= 8
+      },
+      {
+        id: 'balanced-builder',
+        name: 'Balanced Builder',
+        icon: '⚖️',
+        description: 'Achieve 80+ balance score',
+        check: (data) => data.balanceScore >= 80
+      },
+      {
+        id: 'equilibrium',
+        name: 'Equilibrium',
+        icon: '🔷',
+        description: 'Achieve 90+ balance score',
+        check: (data) => data.balanceScore >= 90
+      },
+      {
+        id: 'harmony-master',
+        name: 'Harmony Master',
+        icon: '✨',
+        description: 'Achieve 95+ balance score',
+        check: (data) => data.balanceScore >= 95
+      },
+      {
+        id: 'consistent-breadth',
+        name: 'Consistent Breadth',
+        icon: '🌈',
+        description: 'Touch all 8 pillars 3 days in a row',
+        check: (data) => data.allPillarsThreeDays
+      },
+      
+      // Pillar Mastery
+      {
+        id: 'deep-diver',
+        name: 'Deep Diver',
+        icon: '🎯',
+        description: 'Complete all 8 tasks in a single pillar in one day',
+        check: (data) => data.pillarCompleteToday
+      },
+      {
+        id: 'pillar-apprentice',
+        name: 'Pillar Apprentice',
+        icon: '📚',
+        description: 'Complete 25 total tasks in any single pillar',
+        check: (data) => data.maxPillarTotal >= 25
+      },
+      {
+        id: 'pillar-expert',
+        name: 'Pillar Expert',
+        icon: '🎓',
+        description: 'Complete 50 total tasks in any single pillar',
+        check: (data) => data.maxPillarTotal >= 50
+      },
+      {
+        id: 'pillar-master',
+        name: 'Pillar Master',
+        icon: '🏆',
+        description: 'Complete 100 total tasks in any single pillar',
+        check: (data) => data.maxPillarTotal >= 100
+      },
+      {
+        id: 'renaissance-builder',
+        name: 'Renaissance Builder',
+        icon: '🎨',
+        description: 'Complete 50+ tasks in 3 different pillars',
+        check: (data) => data.pillarsOver50 >= 3
+      },
+      
+      // Special Combinations
+      {
+        id: 'mind-and-body',
+        name: 'Mind & Body',
+        icon: '🧠💪',
+        description: 'Complete Health + Identity on same day, 5 times',
+        check: (data) => data.mindBodyCount >= 5
+      },
+      {
+        id: 'builders-trifecta',
+        name: "Builder's Trifecta",
+        icon: '🛠️',
+        description: 'Complete Tech, Career, and Business pillars on same day',
+        check: (data) => data.buildersTrifectaToday
+      },
+      {
+        id: 'creators-flow',
+        name: "Creator's Flow",
+        icon: '🎨',
+        description: 'Complete Art Skill, Art Business, and Audience on same day',
+        check: (data) => data.creatorsFlowToday
+      }
+    ];
 
     function getTodayString() {
       const d = new Date();
@@ -1130,6 +1839,7 @@
     let statsAllTime = null;
     let dailyHistory = null;
     let streakData = null;
+    let badgesData = null;
     let selectedTimeRange = "30";
 
     function loadState() {
@@ -1145,11 +1855,25 @@
         todayState = null;
       }
       if (!todayState || todayState.date !== today) {
-        // Save yesterday's count before resetting
+        // Save yesterday's count and pillar breakdown before resetting
         if (todayState && todayState.date) {
+          const yesterdayPillarTotals = {};
+          pillars.forEach(p => yesterdayPillarTotals[p.id] = 0);
+          
+          Object.keys(todayState.completed).forEach(cellId => {
+            const pillarId = cellId.split('-')[0];
+            if (yesterdayPillarTotals[pillarId] !== undefined) {
+              yesterdayPillarTotals[pillarId]++;
+            }
+          });
+          
           const yesterdayCount = Object.keys(todayState.completed).length;
+          
           if (dailyHistory) {
-            dailyHistory[todayState.date] = yesterdayCount;
+            dailyHistory[todayState.date] = {
+              total: yesterdayCount,
+              pillars: yesterdayPillarTotals
+            };
             localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify(dailyHistory));
           }
         }
@@ -1172,6 +1896,19 @@
       } catch {
         dailyHistory = {};
       }
+      
+      // Migrate old format to new format
+      Object.keys(dailyHistory).forEach(date => {
+        const entry = dailyHistory[date];
+        // If entry is just a number (old format), convert to new format
+        if (typeof entry === 'number') {
+          dailyHistory[date] = {
+            total: entry,
+            pillars: {} // No pillar breakdown available for old data
+          };
+        }
+      });
+      
       localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify(dailyHistory));
 
       try {
@@ -1183,6 +1920,14 @@
         streakData = { current: 0, best: 0 };
         localStorage.setItem(STORAGE_STREAKS_KEY, JSON.stringify(streakData));
       }
+
+      try {
+        const rawBadges = localStorage.getItem(STORAGE_BADGES_KEY);
+        badgesData = rawBadges ? JSON.parse(rawBadges) : {};
+      } catch {
+        badgesData = {};
+      }
+      localStorage.setItem(STORAGE_BADGES_KEY, JSON.stringify(badgesData));
     }
 
     function saveTodayState() {
@@ -1197,8 +1942,22 @@
       const today = getTodayString();
       const todayCount = Object.keys(todayState.completed).length;
       
-      // Update today in history
-      dailyHistory[today] = todayCount;
+      // Calculate today's pillar breakdown
+      const todayPillarTotals = {};
+      pillars.forEach(p => todayPillarTotals[p.id] = 0);
+      
+      Object.keys(todayState.completed).forEach(cellId => {
+        const pillarId = cellId.split('-')[0];
+        if (todayPillarTotals[pillarId] !== undefined) {
+          todayPillarTotals[pillarId]++;
+        }
+      });
+      
+      // Update today in history with new format
+      dailyHistory[today] = {
+        total: todayCount,
+        pillars: todayPillarTotals
+      };
       localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify(dailyHistory));
 
       // Get all dates sorted descending
@@ -1210,7 +1969,8 @@
       
       while (true) {
         const dateStr = dateIterator.toISOString().split('T')[0];
-        const count = dailyHistory[dateStr] || 0;
+        const entry = dailyHistory[dateStr];
+        const count = entry ? (entry.total || entry) : 0;
         
         if (count >= MIN_TASKS_FOR_STREAK) {
           currentStreak++;
@@ -1231,7 +1991,8 @@
       let previousDate = null;
       
       for (const dateStr of allDates) {
-        const count = dailyHistory[dateStr];
+        const entry = dailyHistory[dateStr];
+        const count = entry ? (entry.total || entry) : 0;
         const currentDate = new Date(dateStr);
         
         if (count >= MIN_TASKS_FOR_STREAK) {
@@ -1269,7 +2030,8 @@
         date.setDate(date.getDate() - i);
         const dateStr = date.toISOString().split('T')[0];
         const dayName = date.toLocaleDateString(undefined, { weekday: 'short' });
-        const count = dailyHistory[dateStr] || 0;
+        const entry = dailyHistory[dateStr];
+        const count = entry ? (entry.total || entry) : 0;
         const isToday = dateStr === getTodayString();
         days.push({ date: dateStr, dayName, count, isToday });
       }
@@ -1280,12 +2042,16 @@
     function updateStreakUI() {
       calculateStreaks();
 
-      document.getElementById('currentStreak').textContent = streakData.current;
-      document.getElementById('bestStreak').textContent = streakData.best;
+      const currentStreakEl = document.getElementById('currentStreak');
+      const bestStreakEl = document.getElementById('bestStreak');
+      
+      if (currentStreakEl) currentStreakEl.textContent = streakData.current;
+      if (bestStreakEl) bestStreakEl.textContent = streakData.best;
       
       // Render mini momentum bars
       const last7 = getLast7Days();
       const chart = document.getElementById('momentumChart');
+      if (!chart) return;
       chart.innerHTML = '';
       
       const maxCount = Math.max(...last7.map(d => d.count), 8);
@@ -1434,7 +2200,342 @@
       saveTodayState();
       saveStats();
       updateTodayReflection();
+      updateStatsUI();
+      updateStreakUI();
       updatePillarBalance();
+      checkAndAwardBadges();
+
+      // Check for pillar completion and trigger confetti
+      if (!isCompleted) {
+        checkPillarCompletion(cell.dataset.pillar);
+      }
+    }
+
+    function checkPillarCompletion(pillarId) {
+      // Count completed tasks for this pillar
+      const pillarTasksCompleted = Object.keys(todayState.completed).filter(
+        taskId => taskId.startsWith(pillarId + '-')
+      ).length;
+
+      // If all 8 tasks completed, trigger confetti
+      if (pillarTasksCompleted === 8) {
+        const pillar = pillars.find(p => p.id === pillarId);
+        triggerPillarConfetti(pillar);
+      }
+    }
+
+    function triggerPillarConfetti(pillar) {
+      // Get pillar color
+      const colorMap = {
+        'P1': ['#a8c5ff', '#E8F0FE'],
+        'P2': ['#c5b8ff', '#F1ECFF'],
+        'P3': ['#90d4a8', '#EAF7EF'],
+        'P4': ['#7dd4ca', '#E6F6F4'],
+        'P5': ['#ffb366', '#FFF1E6'],
+        'P6': ['#ffa8b8', '#FDECEF'],
+        'P7': ['#ffd966', '#FFF8E1'],
+        'P8': ['#b8bac7', '#F2F3F7']
+      };
+      
+      const colors = colorMap[pillar.id] || ['#007AFF', '#E8F0FE'];
+      
+      // Subtle confetti burst
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.6 },
+        colors: colors,
+        ticks: 150,
+        gravity: 0.8,
+        scalar: 0.8
+      });
+    }
+
+    function checkAndAwardBadges() {
+      // Calculate stats for badge checking
+      const pillarTouches = {};
+      pillars.forEach(p => pillarTouches[p.id] = 0);
+      
+      let totalToday = 0;
+      Object.keys(todayState.completed).forEach(taskId => {
+        const pillarId = taskId.split('-')[0];
+        if (pillarTouches[pillarId] !== undefined) {
+          pillarTouches[pillarId]++;
+          totalToday++;
+        }
+      });
+
+      const totalAllTime = Object.values(statsAllTime).reduce((sum, count) => sum + count, 0);
+      const pillarsToday = Object.values(pillarTouches).filter(c => c > 0).length;
+      const pillarCompleteToday = Object.values(pillarTouches).some(c => c >= 8);
+      const fullPillarsToday = Object.values(pillarTouches).filter(c => c >= 8).length;
+      
+      // Get balance score (will be 0 if not yet calculated)
+      const balanceScoreText = document.getElementById('balanceScore')?.textContent;
+      const balanceScore = balanceScoreText && balanceScoreText !== '—' ? parseInt(balanceScoreText) : 0;
+
+      // Calculate pillar totals all time
+      const pillarTotalsAllTime = {};
+      pillars.forEach(p => pillarTotalsAllTime[p.id] = 0);
+      Object.entries(statsAllTime).forEach(([cellId, count]) => {
+        const [pillarId] = cellId.split('-');
+        if (pillarTotalsAllTime[pillarId] !== undefined) {
+          pillarTotalsAllTime[pillarId] += count;
+        }
+      });
+      
+      const maxPillarTotal = Math.max(...Object.values(pillarTotalsAllTime));
+      const pillarsOver50 = Object.values(pillarTotalsAllTime).filter(c => c >= 50).length;
+      
+      // Check for special combinations today
+      const buildersTrifectaToday = pillarTouches['P2'] > 0 && pillarTouches['P3'] > 0 && pillarTouches['P4'] > 0;
+      const creatorsFlowToday = pillarTouches['P1'] > 0 && pillarTouches['P5'] > 0 && pillarTouches['P6'] > 0;
+      
+      // Check for Mind & Body pattern (P7 + P8 on same day)
+      let mindBodyCount = 0;
+      Object.keys(dailyHistory).forEach(dateStr => {
+        const entry = dailyHistory[dateStr];
+        if (entry && entry.pillars) {
+          if ((entry.pillars['P7'] || 0) > 0 && (entry.pillars['P8'] || 0) > 0) {
+            mindBodyCount++;
+          }
+        }
+      });
+      
+      // Check for all 8 pillars 3 days in a row
+      let allPillarsThreeDays = false;
+      const sortedDates = Object.keys(dailyHistory).sort().reverse();
+      for (let i = 0; i <= sortedDates.length - 3; i++) {
+        const date1 = new Date(sortedDates[i]);
+        const date2 = new Date(sortedDates[i + 1]);
+        const date3 = new Date(sortedDates[i + 2]);
+        
+        // Check if consecutive
+        const diff1 = Math.floor((date1 - date2) / (1000 * 60 * 60 * 24));
+        const diff2 = Math.floor((date2 - date3) / (1000 * 60 * 60 * 24));
+        
+        if (diff1 === 1 && diff2 === 1) {
+          const entry1 = dailyHistory[sortedDates[i]];
+          const entry2 = dailyHistory[sortedDates[i + 1]];
+          const entry3 = dailyHistory[sortedDates[i + 2]];
+          
+          if (entry1?.pillars && entry2?.pillars && entry3?.pillars) {
+            const pillars1 = Object.values(entry1.pillars).filter(c => c > 0).length;
+            const pillars2 = Object.values(entry2.pillars).filter(c => c > 0).length;
+            const pillars3 = Object.values(entry3.pillars).filter(c => c > 0).length;
+            
+            if (pillars1 === 8 && pillars2 === 8 && pillars3 === 8) {
+              allPillarsThreeDays = true;
+              break;
+            }
+          }
+        }
+      }
+
+      const badgeCheckData = {
+        totalAllTime,
+        totalToday,
+        pillarsToday,
+        pillarCompleteToday,
+        fullPillarsToday,
+        currentStreak: streakData.current,
+        balanceScore,
+        maxPillarTotal,
+        pillarsOver50,
+        buildersTrifectaToday,
+        creatorsFlowToday,
+        mindBodyCount,
+        allPillarsThreeDays
+      };
+
+      let newBadgesEarned = [];
+
+      // Check each badge
+      BADGES.forEach(badge => {
+        if (!badgesData[badge.id] && badge.check(badgeCheckData)) {
+          badgesData[badge.id] = {
+            earned: true,
+            date: getTodayString()
+          };
+          newBadgesEarned.push(badge);
+        }
+      });
+
+      // Save if new badges earned
+      if (newBadgesEarned.length > 0) {
+        localStorage.setItem(STORAGE_BADGES_KEY, JSON.stringify(badgesData));
+        
+        // Trigger confetti for badge unlocks
+        newBadgesEarned.forEach(badge => {
+          confetti({
+            particleCount: 40,
+            spread: 50,
+            origin: { y: 0.7 },
+            colors: ['#007AFF', '#FFD700', '#FF6B6B'],
+            ticks: 120
+          });
+        });
+        
+        // Update badge UI
+        renderBadges();
+        renderGrowthInsights();
+      }
+    }
+
+    function renderBadges() {
+      const container = document.getElementById('achievementsGrid');
+      if (!container) {
+        console.error('Achievements container not found!');
+        return;
+      }
+      
+      console.log('Rendering badges...', BADGES.length, 'badges defined');
+      container.innerHTML = '';
+
+      // Sort badges: unlocked first, then by defined order
+      const sortedBadges = [...BADGES].sort((a, b) => {
+        const aUnlocked = badgesData[a.id]?.earned || false;
+        const bUnlocked = badgesData[b.id]?.earned || false;
+        if (aUnlocked && !bUnlocked) return -1;
+        if (!aUnlocked && bUnlocked) return 1;
+        return 0;
+      });
+
+      sortedBadges.forEach(badge => {
+        const isUnlocked = badgesData[badge.id]?.earned || false;
+        const earnedDate = badgesData[badge.id]?.date;
+
+        const card = document.createElement('div');
+        card.className = `badge-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+        
+        const icon = document.createElement('div');
+        icon.className = 'badge-icon';
+        icon.textContent = badge.icon;
+        
+        const name = document.createElement('div');
+        name.className = 'badge-name';
+        name.textContent = badge.name;
+        
+        const description = document.createElement('div');
+        description.className = 'badge-description';
+        description.textContent = badge.description;
+        
+        card.appendChild(icon);
+        card.appendChild(name);
+        card.appendChild(description);
+        
+        if (isUnlocked && earnedDate) {
+          const date = document.createElement('div');
+          date.className = 'badge-date';
+          const d = new Date(earnedDate);
+          date.textContent = `Earned ${d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
+          card.appendChild(date);
+        }
+        
+        container.appendChild(card);
+      });
+    }
+
+    function renderGrowthInsights() {
+      const container = document.getElementById('growthInsights');
+      if (!container) {
+        console.error('Growth insights container not found!');
+        return;
+      }
+      
+      console.log('Rendering growth insights...');
+      container.innerHTML = '';
+      
+      const totalAllTime = Object.values(statsAllTime).reduce((sum, count) => sum + count, 0);
+      
+      // Get pillar totals
+      const pillarTotalsAllTime = {};
+      pillars.forEach(p => pillarTotalsAllTime[p.id] = 0);
+      Object.entries(statsAllTime).forEach(([cellId, count]) => {
+        const [pillarId] = cellId.split('-');
+        if (pillarTotalsAllTime[pillarId] !== undefined) {
+          pillarTotalsAllTime[pillarId] += count;
+        }
+      });
+      
+      // Find strongest pillar
+      const maxCount = Math.max(...Object.values(pillarTotalsAllTime));
+      const strongestPillar = pillars.find(p => pillarTotalsAllTime[p.id] === maxCount);
+      
+      // Find most improved (if we have history data)
+      const sortedPillars = [...pillars].sort((a, b) => pillarTotalsAllTime[b.id] - pillarTotalsAllTime[a.id]);
+      
+      // Milestone messages
+      const insights = [];
+      
+      if (totalAllTime === 0) {
+        insights.push({
+          text: "Your journey begins here. Every master was once a beginner."
+        });
+      } else if (totalAllTime === 1) {
+        insights.push({
+          text: "First task complete! <strong>You've started building.</strong>"
+        });
+      } else if (totalAllTime >= 500) {
+        insights.push({
+          text: `<strong>${totalAllTime} total completions</strong>—you're building a legacy of consistent action.`
+        });
+      } else if (totalAllTime >= 100) {
+        insights.push({
+          text: `<strong>${totalAllTime} completions</strong> and counting. Your consistency is your superpower.`
+        });
+      } else if (totalAllTime >= 50) {
+        insights.push({
+          text: `You've completed <strong>${totalAllTime} tasks</strong>. Momentum is building.`
+        });
+      } else if (totalAllTime >= 10) {
+        insights.push({
+          text: `<strong>${totalAllTime} tasks done.</strong> Small actions are adding up.`
+        });
+      }
+      
+      if (strongestPillar && maxCount > 0) {
+        const percentage = ((maxCount / totalAllTime) * 100).toFixed(0);
+        insights.push({
+          text: `<strong>${strongestPillar.name}</strong> is your anchor pillar <em>(${maxCount} completions, ${percentage}% of your total)</em>.`
+        });
+      }
+      
+      if (streakData.current >= 7) {
+        insights.push({
+          text: `<strong>${streakData.current}-day streak active.</strong> You're showing up consistently.`
+        });
+      } else if (streakData.current >= 3) {
+        insights.push({
+          text: `<strong>${streakData.current} days in a row.</strong> Keep the momentum going.`
+        });
+      }
+      
+      // Show top 3 pillars
+      if (totalAllTime >= 20) {
+        const top3 = sortedPillars.slice(0, 3).filter(p => pillarTotalsAllTime[p.id] > 0);
+        if (top3.length === 3) {
+          const names = top3.map(p => p.name).join(', ');
+          insights.push({
+            text: `Your focus areas: <strong>${names}</strong>.`
+          });
+        }
+      }
+      
+      // If no insights yet, show encouragement
+      if (insights.length === 0) {
+        insights.push({
+          text: "Complete a few more tasks to unlock personalized growth insights."
+        });
+      }
+      
+      // Render insights
+      insights.forEach(insight => {
+        const item = document.createElement('div');
+        item.className = 'growth-insight-item';
+        item.innerHTML = insight.text;
+        container.appendChild(item);
+      });
     }
 
     function updateTodayReflection() {
@@ -1470,15 +2571,38 @@
 
       // Update insight with coaching voice
       const insightEl = document.getElementById('reflectionInsight');
+      const totalAllTime = Object.values(statsAllTime).reduce((sum, count) => sum + count, 0);
+      
       if (totalToday === 0) {
-        insightEl.textContent = "Your grid awaits—each task is a step forward.";
+        const messages = [
+          "Your grid awaits—each task is a step forward.",
+          "Ready when you are. Small actions add up.",
+          "Today is a fresh start. Pick any task to begin."
+        ];
+        insightEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+      } else if (pillarsCount === 8) {
+        const messages = [
+          "You touched all 8 pillars—beautifully balanced.",
+          "Perfect harmony across all areas today.",
+          "Full spectrum day—this is what balance looks like."
+        ];
+        insightEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+      } else if (totalToday === 1) {
+        insightEl.textContent = "You've started. Momentum begins with one.";
+      } else if (totalToday >= 16) {
+        insightEl.textContent = `${totalToday} tasks—you're building something real today.`;
+      } else if (totalAllTime % 50 === 0 && totalAllTime > 0) {
+        insightEl.textContent = `${totalAllTime} total completions—milestone reached!`;
       } else if (pillarsCount === 1) {
         const activePillar = pillars.find(p => pillarTouches[p.id] > 0);
-        insightEl.textContent = `Deep focus in ${activePillar.name} today.`;
-      } else if (pillarsCount === 8) {
-        insightEl.textContent = "You touched all 8 pillars—beautifully balanced.";
+        const count = pillarTouches[activePillar.id];
+        if (count >= 4) {
+          insightEl.textContent = `Deep focus in ${activePillar.name} today—${count} steps forward.`;
+        } else {
+          insightEl.textContent = `Focused on ${activePillar.name} today.`;
+        }
       } else if (pillarsCount >= 5) {
-        insightEl.textContent = `Broad engagement across ${pillarsCount} pillars today.`;
+        insightEl.textContent = `Broad engagement across ${pillarsCount} pillars—staying versatile.`;
       } else {
         insightEl.textContent = `Your attention centered on ${pillarsCount} pillars today.`;
       }
@@ -1572,7 +2696,11 @@
 
     function calculateFocusStability(datesInRange) {
       // Filter to days with non-zero completions
-      const nonZeroDays = datesInRange.filter(dateStr => (dailyHistory[dateStr] || 0) > 0);
+      const nonZeroDays = datesInRange.filter(dateStr => {
+        const entry = dailyHistory[dateStr];
+        const total = entry ? (entry.total || entry) : 0;
+        return total > 0;
+      });
       
       if (nonZeroDays.length < 3) {
         return {
@@ -1582,7 +2710,71 @@
         };
       }
 
-      // Get all-time pillar distribution for approximation
+      // Calculate daily pillar shares using actual data
+      const dailyShares = [];
+      
+      nonZeroDays.forEach(dateStr => {
+        const entry = dailyHistory[dateStr];
+        if (!entry || !entry.pillars) return; // Skip if no pillar data
+        
+        const dayTotal = entry.total || 0;
+        if (dayTotal === 0) return;
+        
+        const shares = {};
+        pillars.forEach(p => {
+          shares[p.id] = (entry.pillars[p.id] || 0) / dayTotal;
+        });
+        
+        dailyShares.push(shares);
+      });
+      
+      if (dailyShares.length < 3) {
+        return {
+          score: null,
+          classification: '—',
+          description: 'Need at least 3 days with pillar data to calculate stability.'
+        };
+      }
+      
+      // Calculate variance for each pillar across days
+      const pillarVariances = [];
+      
+      pillars.forEach(pillar => {
+        const pillarShares = dailyShares.map(day => day[pillar.id]);
+        const mean = pillarShares.reduce((sum, val) => sum + val, 0) / pillarShares.length;
+        const variance = pillarShares.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / pillarShares.length;
+        pillarVariances.push(variance);
+      });
+      
+      // Average variance across all pillars (volatility index)
+      const avgVariance = pillarVariances.reduce((sum, v) => sum + v, 0) / pillarVariances.length;
+      
+      // Convert to 0-10 scale (lower variance = higher stability)
+      // Variance ranges roughly 0-0.1 for typical patterns
+      const stabilityScore = Math.max(0, Math.min(10, Math.round(10 - (avgVariance * 100))));
+      
+      let classification, description;
+      
+      if (stabilityScore >= 8) {
+        classification = 'Steady';
+        description = 'Your focus pattern has been consistent.';
+      } else if (stabilityScore >= 5) {
+        classification = 'Moderate';
+        description = 'Your focus shifts moderately between pillars.';
+      } else {
+        classification = 'Dynamic';
+        description = 'Your focus varies significantly day to day.';
+      }
+      
+      return {
+        score: stabilityScore,
+        classification,
+        description
+      };
+    }
+
+    function oldCalculateFocusStability_REMOVED(datesInRange) {
+      // Old approximation-based code removed
       const allTimePillarTotals = {};
       pillars.forEach(p => allTimePillarTotals[p.id] = 0);
       Object.entries(statsAllTime).forEach(([cellId, count]) => {
@@ -1652,6 +2844,66 @@
       };
     }
 
+    function renderActivityTimeline(datesInRange) {
+      const chartContainer = document.getElementById('timelineChart');
+      const labelsContainer = document.getElementById('timelineLabels');
+      
+      if (!chartContainer || !labelsContainer) return;
+      
+      chartContainer.innerHTML = '';
+      labelsContainer.innerHTML = '';
+      
+      const today = getTodayString();
+      const maxBars = 90; // Limit to 90 bars for visual clarity
+      const datesToShow = datesInRange.slice(-maxBars);
+      
+      // Calculate max value for scaling
+      const values = datesToShow.map(date => {
+        const entry = dailyHistory[date];
+        return entry ? (entry.total || entry) : 0;
+      });
+      const maxValue = Math.max(...values, 8);
+      
+      // Create bars
+      datesToShow.forEach((dateStr, index) => {
+        const entry = dailyHistory[dateStr];
+        const count = entry ? (entry.total || entry) : 0;
+        const isToday = dateStr === today;
+        const date = new Date(dateStr);
+        
+        const bar = document.createElement('div');
+        bar.className = 'timeline-bar';
+        if (count > 0) bar.classList.add('has-data');
+        if (isToday) bar.classList.add('is-today');
+        
+        const heightPercent = count > 0 ? (count / maxValue) * 100 : 8;
+        bar.style.height = `${heightPercent}%`;
+        
+        const tooltip = document.createElement('div');
+        tooltip.className = 'timeline-bar-tooltip';
+        const formattedDate = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        tooltip.textContent = `${formattedDate}: ${count} tasks`;
+        bar.appendChild(tooltip);
+        
+        chartContainer.appendChild(bar);
+      });
+      
+      // Add labels (first, middle, last)
+      if (datesToShow.length > 0) {
+        const firstDate = new Date(datesToShow[0]);
+        const lastDate = new Date(datesToShow[datesToShow.length - 1]);
+        
+        const firstLabel = document.createElement('span');
+        firstLabel.textContent = firstDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        
+        const lastLabel = document.createElement('span');
+        lastLabel.textContent = lastDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        
+        labelsContainer.appendChild(firstLabel);
+        labelsContainer.appendChild(lastLabel);
+      }
+    }
+
     function updatePillarBalance() {
       // Calculate pillar totals from dailyHistory for selected time range
       const pillarTotals = {};
@@ -1683,6 +2935,9 @@
         }
       }
       
+      // Render activity timeline
+      renderActivityTimeline(datesInRange);
+      
       // Get today's pillar totals
       const todayPillarTotals = {};
       pillars.forEach(p => todayPillarTotals[p.id] = 0);
@@ -1704,7 +2959,10 @@
       });
       
       // Calculate total completions in the date range
-      const recentDaysTotal = datesInRange.reduce((sum, dateStr) => sum + (dailyHistory[dateStr] || 0), 0);
+      const recentDaysTotal = datesInRange.reduce((sum, dateStr) => {
+        const entry = dailyHistory[dateStr];
+        return sum + (entry ? (entry.total || entry) : 0);
+      }, 0);
       const allTimeTotal = Object.values(allTimePillarTotals).reduce((sum, v) => sum + v, 0);
       
       // Approximate recent pillar distribution using all-time ratios
@@ -1766,14 +3024,6 @@
         neglectedPillar.id !== activePillar.id ? 
         `${neglectedPillar.name} could use attention.` : 
         'Focus is evenly distributed.';
-      
-      // Set dynamic pillar color border for Focus Pattern card
-      const focusPatternCard = document.getElementById('focusPatternCard');
-      const pillarColorMap = {
-        'P1': '#a8c5ff', 'P2': '#c5b8ff', 'P3': '#90d4a8', 'P4': '#7dd4ca',
-        'P5': '#ffb366', 'P6': '#ffa8b8', 'P7': '#ffd966', 'P8': '#b8bac7'
-      };
-      focusPatternCard.style.borderLeftColor = pillarColorMap[activePillar.id] || '#e5e5ea';
 
       // Calculate and display balance trend
       const previousDatesInRange = [];
@@ -1800,7 +3050,10 @@
       }
       
       // Calculate previous period balance score
-      const previousTotal = previousDatesInRange.reduce((sum, dateStr) => sum + (dailyHistory[dateStr] || 0), 0);
+      const previousTotal = previousDatesInRange.reduce((sum, dateStr) => {
+        const entry = dailyHistory[dateStr];
+        return sum + (entry ? (entry.total || entry) : 0);
+      }, 0);
       
       if (previousTotal === 0 || previousDatesInRange.length < 3) {
         document.getElementById('balanceTrend').textContent = '—';
@@ -1851,7 +3104,10 @@
 
       // Update balance footer with contextual message
       const balanceFooter = document.getElementById('balanceFooter');
-      const nonZeroDays = datesInRange.filter(dateStr => (dailyHistory[dateStr] || 0) > 0);
+      const nonZeroDays = datesInRange.filter(dateStr => {
+        const entry = dailyHistory[dateStr];
+        return (entry ? (entry.total || entry) : 0) > 0;
+      });
       
       if (nonZeroDays.length < 3) {
         balanceFooter.textContent = "Build a few more days of data to reveal deeper patterns.";
@@ -1873,7 +3129,21 @@
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       const radius = 120;
-      const maxValue = Math.max(...values, 50); // Minimum scale of 50
+      
+      // Store data point positions for hover detection
+      const dataPoints = [];
+      
+      // Use dynamic scaling: scale based on max value, but ensure data spreads out
+      const maxValue = Math.max(...values);
+      const minValue = Math.min(...values);
+      const range = maxValue - minValue;
+      
+      // If range is very small or zero, use expanded scale for better visibility
+      let scale = maxValue;
+      if (range < maxValue * 0.3 || maxValue === 0) {
+        // Use 150% of max to leave room at edges
+        scale = Math.max(maxValue * 1.5, 8);
+      }
       
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1924,7 +3194,7 @@
       
       values.forEach((value, i) => {
         const angle = (Math.PI * 2 * i) / 8 - Math.PI / 2;
-        const valueRadius = (value / maxValue) * radius;
+        const valueRadius = (value / scale) * radius;
         const x = centerX + Math.cos(angle) * valueRadius;
         const y = centerY + Math.sin(angle) * valueRadius;
         
@@ -1939,17 +3209,124 @@
       ctx.fill();
       ctx.stroke();
       
-      // Draw data points
+      // Draw data points and store positions
       ctx.fillStyle = '#007AFF';
       values.forEach((value, i) => {
         const angle = (Math.PI * 2 * i) / 8 - Math.PI / 2;
-        const valueRadius = (value / maxValue) * radius;
+        const valueRadius = (value / scale) * radius;
         const x = centerX + Math.cos(angle) * valueRadius;
         const y = centerY + Math.sin(angle) * valueRadius;
         
         ctx.beginPath();
         ctx.arc(x, y, 4, 0, Math.PI * 2);
         ctx.fill();
+        
+        // Store point data for hover detection
+        dataPoints.push({
+          x: x,
+          y: y,
+          pillar: pillars[i],
+          value: value
+        });
+      });
+      
+      // Add hover interaction
+      setupRadarHover(canvas, dataPoints);
+    }
+    
+    function setupRadarHover(canvas, dataPoints) {
+      const tooltip = document.getElementById('radarTooltip');
+      const rect = canvas.getBoundingClientRect();
+      
+      canvas.onmousemove = (e) => {
+        const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+        const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+        
+        let hoveredPoint = null;
+        const hoverRadius = 12; // Larger hit area for easier hovering
+        
+        for (const point of dataPoints) {
+          const distance = Math.sqrt(
+            Math.pow(mouseX - point.x, 2) + Math.pow(mouseY - point.y, 2)
+          );
+          
+          if (distance <= hoverRadius) {
+            hoveredPoint = point;
+            break;
+          }
+        }
+        
+        if (hoveredPoint) {
+          const pillarName = hoveredPoint.pillar.name;
+          const taskCount = hoveredPoint.value;
+          const plural = taskCount === 1 ? 'task' : 'tasks';
+          
+          tooltip.querySelector('.radar-tooltip-pillar').textContent = pillarName;
+          tooltip.querySelector('.radar-tooltip-value').textContent = `${taskCount} ${plural} completed`;
+          
+          tooltip.style.left = `${e.clientX - rect.left + 15}px`;
+          tooltip.style.top = `${e.clientY - rect.top - 10}px`;
+          tooltip.classList.add('visible');
+        } else {
+          tooltip.classList.remove('visible');
+        }
+      };
+      
+      canvas.onmouseleave = () => {
+        tooltip.classList.remove('visible');
+      };
+    }
+
+    function updateTimeRangeButtons() {
+      const today = new Date();
+      const ranges = {
+        '7': 7,
+        '30': 30,
+        '90': 90,
+        'ytd': null,
+        'all': null
+      };
+      
+      document.querySelectorAll('.time-range-btn').forEach(btn => {
+        const range = btn.dataset.range;
+        let datesInRange = [];
+        
+        if (range === 'ytd') {
+          const yearStart = new Date(today.getFullYear(), 0, 1);
+          const daysSinceYearStart = Math.floor((today - yearStart) / (1000 * 60 * 60 * 24)) + 1;
+          for (let i = 0; i < daysSinceYearStart; i++) {
+            const date = new Date(yearStart);
+            date.setDate(date.getDate() + i);
+            datesInRange.push(date.toISOString().split('T')[0]);
+          }
+        } else if (range === 'all') {
+          datesInRange = Object.keys(dailyHistory);
+        } else {
+          const days = parseInt(range);
+          for (let i = 0; i < days; i++) {
+            const date = new Date(today);
+            date.setDate(date.getDate() - i);
+            datesInRange.push(date.toISOString().split('T')[0]);
+          }
+        }
+        
+        const totalTasks = datesInRange.reduce((sum, dateStr) => {
+          const entry = dailyHistory[dateStr];
+          return sum + (entry ? (entry.total || entry) : 0);
+        }, 0);
+        
+        // Update button text with count
+        const originalText = btn.textContent.split('(')[0].trim();
+        let countSpan = btn.querySelector('.time-range-count');
+        
+        if (!countSpan) {
+          countSpan = document.createElement('span');
+          countSpan.className = 'time-range-count';
+          btn.appendChild(countSpan);
+        }
+        
+        btn.childNodes[0].textContent = originalText + ' ';
+        countSpan.textContent = `(${totalTasks})`;
       });
     }
 
@@ -1959,19 +3336,24 @@
         formatPrettyDate() + " · Daily progress resets";
       renderGrid();
       updateTodayReflection();
+      updateStatsUI();
+      updateStreakUI();
+      renderBadges();
+      renderGrowthInsights();
+      updateTimeRangeButtons();
       updatePillarBalance();
       
       // Set up time range selector
       document.querySelectorAll('.time-range-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-          const range = e.target.dataset.range;
+          const range = e.currentTarget.dataset.range;
           selectedTimeRange = range;
           
           // Update active state
           document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
-          e.target.classList.add('active');
+          e.currentTarget.classList.add('active');
           
-          // Refresh balance view
+          // Refresh balance view and timeline
           updatePillarBalance();
         });
       });
