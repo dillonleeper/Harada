@@ -2905,90 +2905,72 @@
     }
 
     function updatePillarBalance() {
-      // Calculate pillar totals from dailyHistory for selected time range
-      const pillarTotals = {};
-      pillars.forEach(p => pillarTotals[p.id] = 0);
+      // Get range window and filter completions
+      const rangeWindow = getRangeWindow(selectedTimeRange);
+      const completionEvents = getCompletionsInRange(rangeWindow);
       
-      const today = new Date();
-      let datesInRange = [];
+      // Debug logging
+      console.log('=== Balance Over Time Debug ===');
+      console.log('selectedRangeKey:', selectedTimeRange);
+      console.log('rangeWindow:', rangeWindow);
+      console.log('eventsInRange:', completionEvents.length);
       
-      // Determine which dates to include based on selected range
-      if (selectedTimeRange === "ytd") {
-        // Year to Date: from Jan 1 of current year through today
-        const yearStart = new Date(today.getFullYear(), 0, 1);
-        const daysSinceYearStart = Math.floor((today - yearStart) / (1000 * 60 * 60 * 24)) + 1;
-        for (let i = 0; i < daysSinceYearStart; i++) {
-          const date = new Date(yearStart);
-          date.setDate(date.getDate() + i);
-          datesInRange.push(date.toISOString().split('T')[0]);
+      // Calculate pillar totals from completion events
+      const countsByPillar = {};
+      pillars.forEach(p => countsByPillar[p.id] = 0);
+      
+      completionEvents.forEach(event => {
+        if (countsByPillar[event.pillarId] !== undefined) {
+          countsByPillar[event.pillarId]++;
         }
-      } else if (selectedTimeRange === "all") {
-        // All Time: use all dates in history
-        datesInRange = Object.keys(dailyHistory);
-      } else {
-        // Last N days
-        const days = parseInt(selectedTimeRange);
-        for (let i = 0; i < days; i++) {
-          const date = new Date(today);
-          date.setDate(date.getDate() - i);
-          datesInRange.push(date.toISOString().split('T')[0]);
-        }
+      });
+      
+      console.log('countsByPillar:', countsByPillar);
+      
+      // Get date strings for timeline rendering
+      const datesInRange = [];
+      const currentDate = new Date(rangeWindow.startDate);
+      while (currentDate <= rangeWindow.endDate) {
+        datesInRange.push(currentDate.toISOString().split('T')[0]);
+        currentDate.setDate(currentDate.getDate() + 1);
       }
       
       // Render activity timeline
       renderActivityTimeline(datesInRange);
       
-      // Get today's pillar totals
-      const todayPillarTotals = {};
-      pillars.forEach(p => todayPillarTotals[p.id] = 0);
-      Object.keys(todayState.completed).forEach(cellId => {
-        const [pillarId] = cellId.split('-');
-        if (todayPillarTotals[pillarId] !== undefined) {
-          todayPillarTotals[pillarId]++;
-        }
-      });
+      const totalCompletions = completionEvents.length;
+      const values = pillars.map(p => countsByPillar[p.id] || 0);
       
-      // Get all-time pillar totals
-      const allTimePillarTotals = {};
-      pillars.forEach(p => allTimePillarTotals[p.id] = 0);
-      Object.entries(statsAllTime).forEach(([cellId, count]) => {
-        const [pillarId] = cellId.split('-');
-        if (allTimePillarTotals[pillarId] !== undefined) {
-          allTimePillarTotals[pillarId] += count;
-        }
-      });
-      
-      // Calculate total completions in the date range
-      const recentDaysTotal = datesInRange.reduce((sum, dateStr) => {
-        const entry = dailyHistory[dateStr];
-        return sum + (entry ? (entry.total || entry) : 0);
-      }, 0);
-      const allTimeTotal = Object.values(allTimePillarTotals).reduce((sum, v) => sum + v, 0);
-      
-      // Approximate recent pillar distribution using all-time ratios
-      // Note: This is an approximation since we don't store per-pillar daily data
-      pillars.forEach(p => {
-        const pillarRatio = allTimeTotal > 0 ? allTimePillarTotals[p.id] / allTimeTotal : 1/8;
-        pillarTotals[p.id] = Math.round(recentDaysTotal * pillarRatio);
-      });
-      
-      const values = pillars.map(p => pillarTotals[p.id] || 0);
-      const total = values.reduce((sum, v) => sum + v, 0);
-      
-      if (total === 0) {
-        document.getElementById('balanceScore').textContent = '—';
-        document.getElementById('balanceDescription').textContent = 'Complete tasks to see your balance.';
-        document.getElementById('neglectedPillar').textContent = '—';
-        document.getElementById('neglectedDescription').textContent = 'No data yet.';
-        document.getElementById('overweightedPillar').textContent = '—';
-        document.getElementById('overweightedDescription').textContent = 'No data yet.';
-        document.getElementById('stabilityScore').textContent = '—';
-        document.getElementById('stabilityDescription').textContent = 'No data yet.';
+      // Handle empty state - no completions in this range
+      if (totalCompletions === 0) {
+        const balanceScore = document.getElementById('balanceScore');
+        if (balanceScore) balanceScore.textContent = '—';
+        const balanceDescription = document.getElementById('balanceDescription');
+        if (balanceDescription) balanceDescription.textContent = 'No completions in this range yet.';
+        const focusPatternPrimary = document.getElementById('focusPatternPrimary');
+        if (focusPatternPrimary) focusPatternPrimary.textContent = '—';
+        const focusPatternDescription = document.getElementById('focusPatternDescription');
+        if (focusPatternDescription) focusPatternDescription.textContent = 'No data in selected range.';
+        const focusPatternSecondary = document.getElementById('focusPatternSecondary');
+        if (focusPatternSecondary) focusPatternSecondary.textContent = '';
+        const stabilityScore = document.getElementById('stabilityScore');
+        if (stabilityScore) stabilityScore.textContent = '—';
+        const stabilityDescription = document.getElementById('stabilityDescription');
+        if (stabilityDescription) stabilityDescription.textContent = 'No data in selected range.';
+        const balanceTrend = document.getElementById('balanceTrend');
+        if (balanceTrend) balanceTrend.textContent = '—';
+        const balanceTrendDescription = document.getElementById('balanceTrendDescription');
+        if (balanceTrendDescription) balanceTrendDescription.textContent = 'No data to compare.';
+        const balanceFooter = document.getElementById('balanceFooter');
+        if (balanceFooter) balanceFooter.textContent = 'Complete tasks to see balance insights here.';
+        
+        // Render empty radar chart
+        renderRadarChart(values);
         return;
       }
 
       // Calculate coefficient of variation (lower = more balanced)
-      const mean = total / values.length;
+      const mean = totalCompletions / values.length;
       const variance = values.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / values.length;
       const stdDev = Math.sqrt(variance);
       const cv = mean > 0 ? (stdDev / mean) : 0;
@@ -2996,7 +2978,8 @@
       // Convert to 0-100 scale (invert so 100 = perfectly balanced)
       const balanceScore = Math.round(Math.max(0, 100 - (cv * 100)));
       
-      document.getElementById('balanceScore').textContent = balanceScore;
+      const balanceScoreEl = document.getElementById('balanceScore');
+      if (balanceScoreEl) balanceScoreEl.textContent = balanceScore;
       
       let description = '';
       if (balanceScore >= 80) description = 'Well-distributed across all pillars.';
@@ -3004,7 +2987,8 @@
       else if (balanceScore >= 40) description = 'Some concentration in select areas.';
       else description = 'Focus is heavily concentrated.';
       
-      document.getElementById('balanceDescription').textContent = description;
+      const balanceDescriptionEl = document.getElementById('balanceDescription');
+      if (balanceDescriptionEl) balanceDescriptionEl.textContent = description;
 
       // Find most neglected and most active pillars
       const minValue = Math.min(...values);
@@ -3014,59 +2998,61 @@
       const maxValue = Math.max(...values);
       const maxIndex = values.indexOf(maxValue);
       const activePillar = pillars[maxIndex];
-      const percentage = total > 0 ? Math.round((maxValue / total) * 100) : 0;
+      const percentage = totalCompletions > 0 ? Math.round((maxValue / totalCompletions) * 100) : 0;
       
       // Update Focus Pattern card (merged Most Active + Most Neglected)
-      document.getElementById('focusPatternPrimary').textContent = activePillar.name;
-      document.getElementById('focusPatternDescription').textContent = 
+      const focusPatternPrimary = document.getElementById('focusPatternPrimary');
+      if (focusPatternPrimary) focusPatternPrimary.textContent = activePillar.name;
+      const focusPatternDescription = document.getElementById('focusPatternDescription');
+      if (focusPatternDescription) focusPatternDescription.textContent = 
         `Your current anchor (${percentage}% of activity).`;
-      document.getElementById('focusPatternSecondary').textContent = 
+      const focusPatternSecondary = document.getElementById('focusPatternSecondary');
+      if (focusPatternSecondary) focusPatternSecondary.textContent = 
         neglectedPillar.id !== activePillar.id ? 
         `${neglectedPillar.name} could use attention.` : 
         'Focus is evenly distributed.';
 
       // Calculate and display balance trend
-      const previousDatesInRange = [];
       const rangeLength = datesInRange.length;
       
+      // Calculate previous period window
+      let previousRangeWindow;
       if (selectedTimeRange === "ytd" || selectedTimeRange === "all") {
         // For YTD and All Time, compare to same period length ending before current range
-        const oldestDate = new Date(Math.min(...datesInRange.map(d => new Date(d))));
-        for (let i = 0; i < rangeLength; i++) {
-          const date = new Date(oldestDate);
-          date.setDate(date.getDate() - rangeLength + i);
-          previousDatesInRange.push(date.toISOString().split('T')[0]);
-        }
+        const previousEndDate = new Date(rangeWindow.startDate);
+        previousEndDate.setDate(previousEndDate.getDate() - 1);
+        const previousStartDate = new Date(previousEndDate);
+        previousStartDate.setDate(previousStartDate.getDate() - (rangeLength - 1));
+        previousRangeWindow = { startDate: previousStartDate, endDate: previousEndDate };
       } else {
         // For Last N days, compare to previous N days
         const days = parseInt(selectedTimeRange);
-        const startDate = new Date(today);
-        startDate.setDate(startDate.getDate() - days);
-        for (let i = 0; i < days; i++) {
-          const date = new Date(startDate);
-          date.setDate(date.getDate() - days + i);
-          previousDatesInRange.push(date.toISOString().split('T')[0]);
-        }
+        const previousEndDate = new Date(rangeWindow.startDate);
+        previousEndDate.setDate(previousEndDate.getDate() - 1);
+        const previousStartDate = new Date(previousEndDate);
+        previousStartDate.setDate(previousStartDate.getDate() - (days - 1));
+        previousRangeWindow = { startDate: previousStartDate, endDate: previousEndDate };
       }
       
-      // Calculate previous period balance score
-      const previousTotal = previousDatesInRange.reduce((sum, dateStr) => {
-        const entry = dailyHistory[dateStr];
-        return sum + (entry ? (entry.total || entry) : 0);
-      }, 0);
+      const previousCompletions = getCompletionsInRange(previousRangeWindow);
+      const previousTotal = previousCompletions.length;
       
-      if (previousTotal === 0 || previousDatesInRange.length < 3) {
-        document.getElementById('balanceTrend').textContent = '—';
-        document.getElementById('balanceTrendDescription').textContent = 'Not enough prior data to compare.';
+      if (previousTotal === 0 || rangeLength < 3) {
+        const balanceTrend = document.getElementById('balanceTrend');
+        if (balanceTrend) balanceTrend.textContent = '—';
+        const balanceTrendDescription = document.getElementById('balanceTrendDescription');
+        if (balanceTrendDescription) balanceTrendDescription.textContent = 'Not enough prior data to compare.';
       } else {
-        // Approximate previous pillar distribution
-        const previousPillarTotals = {};
-        pillars.forEach(p => {
-          const pillarRatio = allTimeTotal > 0 ? allTimePillarTotals[p.id] / allTimeTotal : 1/8;
-          previousPillarTotals[p.id] = Math.round(previousTotal * pillarRatio);
+        // Calculate previous pillar distribution
+        const previousCountsByPillar = {};
+        pillars.forEach(p => previousCountsByPillar[p.id] = 0);
+        previousCompletions.forEach(event => {
+          if (previousCountsByPillar[event.pillarId] !== undefined) {
+            previousCountsByPillar[event.pillarId]++;
+          }
         });
         
-        const previousValues = pillars.map(p => previousPillarTotals[p.id] || 0);
+        const previousValues = pillars.map(p => previousCountsByPillar[p.id] || 0);
         const previousMean = previousTotal / previousValues.length;
         const previousVariance = previousValues.reduce((sum, v) => sum + Math.pow(v - previousMean, 2), 0) / previousValues.length;
         const previousStdDev = Math.sqrt(previousVariance);
@@ -3077,16 +3063,22 @@
         const absDelta = Math.abs(delta);
         
         if (delta > 0) {
-          document.getElementById('balanceTrend').textContent = `+${delta}`;
-          document.getElementById('balanceTrendDescription').textContent = 
+          const balanceTrend = document.getElementById('balanceTrend');
+          if (balanceTrend) balanceTrend.textContent = `+${delta}`;
+          const balanceTrendDescription = document.getElementById('balanceTrendDescription');
+          if (balanceTrendDescription) balanceTrendDescription.textContent = 
             `More balanced than previous period (+${absDelta}).`;
         } else if (delta < 0) {
-          document.getElementById('balanceTrend').textContent = `${delta}`;
-          document.getElementById('balanceTrendDescription').textContent = 
+          const balanceTrend = document.getElementById('balanceTrend');
+          if (balanceTrend) balanceTrend.textContent = `${delta}`;
+          const balanceTrendDescription = document.getElementById('balanceTrendDescription');
+          if (balanceTrendDescription) balanceTrendDescription.textContent = 
             `Less balanced than previous period (-${absDelta}).`;
         } else {
-          document.getElementById('balanceTrend').textContent = '0';
-          document.getElementById('balanceTrendDescription').textContent = 
+          const balanceTrend = document.getElementById('balanceTrend');
+          if (balanceTrend) balanceTrend.textContent = '0';
+          const balanceTrendDescription = document.getElementById('balanceTrendDescription');
+          if (balanceTrendDescription) balanceTrendDescription.textContent = 
             'Same balance as previous period.';
         }
       }
@@ -3095,28 +3087,34 @@
       const stability = calculateFocusStability(datesInRange);
       
       if (stability.score === null) {
-        document.getElementById('stabilityScore').textContent = '—';
-        document.getElementById('stabilityDescription').textContent = stability.description;
+        const stabilityScore = document.getElementById('stabilityScore');
+        if (stabilityScore) stabilityScore.textContent = '—';
+        const stabilityDescription = document.getElementById('stabilityDescription');
+        if (stabilityDescription) stabilityDescription.textContent = stability.description;
       } else {
-        document.getElementById('stabilityScore').textContent = `${stability.classification} (${stability.score}/10)`;
-        document.getElementById('stabilityDescription').textContent = stability.description;
+        const stabilityScore = document.getElementById('stabilityScore');
+        if (stabilityScore) stabilityScore.textContent = `${stability.classification} (${stability.score}/10)`;
+        const stabilityDescription = document.getElementById('stabilityDescription');
+        if (stabilityDescription) stabilityDescription.textContent = stability.description;
       }
 
       // Update balance footer with contextual message
       const balanceFooter = document.getElementById('balanceFooter');
-      const nonZeroDays = datesInRange.filter(dateStr => {
-        const entry = dailyHistory[dateStr];
-        return (entry ? (entry.total || entry) : 0) > 0;
-      });
-      
-      if (nonZeroDays.length < 3) {
-        balanceFooter.textContent = "Build a few more days of data to reveal deeper patterns.";
-      } else if (balanceScore >= 75) {
-        balanceFooter.textContent = "Your attention flows naturally across all areas.";
-      } else if (balanceScore >= 50) {
-        balanceFooter.textContent = "There's room to explore pillars beyond your anchors.";
-      } else {
-        balanceFooter.textContent = "Your energy is concentrated—intentional or opportunity?";
+      if (balanceFooter) {
+        const nonZeroDays = datesInRange.filter(dateStr => {
+          const entry = dailyHistory[dateStr];
+          return (entry ? (entry.total || entry) : 0) > 0;
+        });
+        
+        if (nonZeroDays.length < 3) {
+          balanceFooter.textContent = "Build a few more days of data to reveal deeper patterns.";
+        } else if (balanceScore >= 75) {
+          balanceFooter.textContent = "Your attention flows naturally across all areas.";
+        } else if (balanceScore >= 50) {
+          balanceFooter.textContent = "There's room to explore pillars beyond your anchors.";
+        } else {
+          balanceFooter.textContent = "Your energy is concentrated—intentional or opportunity?";
+        }
       }
 
       // Render radar chart
@@ -3277,63 +3275,100 @@
       };
     }
 
+    // Time range configuration
+    const TIME_RANGES = {
+      '7': { key: '7d', label: 'Last 7 days', days: 7 },
+      '30': { key: '30d', label: 'Last 30 days', days: 30 },
+      '90': { key: '90d', label: 'Last 90 days', days: 90 },
+      'ytd': { key: 'ytd', label: 'YTD', days: null },
+      'all': { key: 'all', label: 'All Time', days: null }
+    };
+
+    // Get date range window for a given range key
+    function getRangeWindow(rangeKey, nowDate = new Date()) {
+      const today = new Date(nowDate);
+      today.setHours(0, 0, 0, 0);
+      
+      if (rangeKey === 'ytd') {
+        // Year to Date: Jan 1 of current year -> today
+        const startDate = new Date(today.getFullYear(), 0, 1);
+        return { startDate, endDate: today };
+      } else if (rangeKey === 'all') {
+        // All Time: earliest event date -> today
+        const allDates = Object.keys(dailyHistory);
+        if (allDates.length === 0) {
+          return { startDate: today, endDate: today };
+        }
+        const earliestDate = new Date(Math.min(...allDates.map(d => new Date(d))));
+        return { startDate: earliestDate, endDate: today };
+      } else {
+        // Last N days inclusive
+        const days = parseInt(rangeKey);
+        const startDate = new Date(today);
+        startDate.setDate(startDate.getDate() - (days - 1));
+        return { startDate, endDate: today };
+      }
+    }
+
+    // Get all completions in a date range
+    function getCompletionsInRange(rangeWindow) {
+      const completions = [];
+      const { startDate, endDate } = rangeWindow;
+      
+      // Iterate through all dates in the range
+      const currentDate = new Date(startDate);
+      while (currentDate <= endDate) {
+        const dateStr = currentDate.toISOString().split('T')[0];
+        const entry = dailyHistory[dateStr];
+        
+        if (entry) {
+          const total = entry.total || entry;
+          const pillars = entry.pillars || {};
+          
+          // Create individual completion events
+          for (const pillarId in pillars) {
+            const count = pillars[pillarId];
+            for (let i = 0; i < count; i++) {
+              completions.push({
+                date: dateStr,
+                pillarId: pillarId,
+                timestamp: new Date(dateStr).getTime()
+              });
+            }
+          }
+        }
+        
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+      
+      return completions;
+    }
+
     function updateTimeRangeButtons() {
       const today = new Date();
-      const ranges = {
-        '7': 7,
-        '30': 30,
-        '90': 90,
-        'ytd': null,
-        'all': null
-      };
       
       document.querySelectorAll('.time-range-btn').forEach(btn => {
-        const range = btn.dataset.range;
-        let datesInRange = [];
+        const rangeDataAttr = btn.dataset.range;
+        const rangeConfig = TIME_RANGES[rangeDataAttr];
         
-        if (range === 'ytd') {
-          const yearStart = new Date(today.getFullYear(), 0, 1);
-          const daysSinceYearStart = Math.floor((today - yearStart) / (1000 * 60 * 60 * 24)) + 1;
-          for (let i = 0; i < daysSinceYearStart; i++) {
-            const date = new Date(yearStart);
-            date.setDate(date.getDate() + i);
-            datesInRange.push(date.toISOString().split('T')[0]);
-          }
-        } else if (range === 'all') {
-          datesInRange = Object.keys(dailyHistory);
-        } else {
-          const days = parseInt(range);
-          for (let i = 0; i < days; i++) {
-            const date = new Date(today);
-            date.setDate(date.getDate() - i);
-            datesInRange.push(date.toISOString().split('T')[0]);
-          }
-        }
+        if (!rangeConfig) return;
         
-        const totalTasks = datesInRange.reduce((sum, dateStr) => {
-          const entry = dailyHistory[dateStr];
-          return sum + (entry ? (entry.total || entry) : 0);
-        }, 0);
+        // Get range window
+        const rangeWindow = getRangeWindow(rangeDataAttr, today);
+        const completions = getCompletionsInRange(rangeWindow);
+        const totalTasks = completions.length;
         
-        // Update button text with count
-        const originalText = btn.textContent.split('(')[0].trim();
-        let countSpan = btn.querySelector('.time-range-count');
-        
-        if (!countSpan) {
-          countSpan = document.createElement('span');
-          countSpan.className = 'time-range-count';
-          btn.appendChild(countSpan);
-        }
-        
-        btn.childNodes[0].textContent = originalText + ' ';
-        countSpan.textContent = `(${totalTasks})`;
+        // Set button text properly using string label
+        btn.textContent = `${rangeConfig.label} (${totalTasks})`;
       });
     }
 
     function init() {
       loadState();
-      document.getElementById("dateDisplay").textContent =
-        formatPrettyDate() + " · Daily progress resets";
+      const dateDisplay = document.getElementById("dateDisplay");
+      if (dateDisplay) {
+        dateDisplay.textContent = formatPrettyDate() + " · Daily progress resets";
+      }
       renderGrid();
       updateTodayReflection();
       updateStatsUI();
@@ -3353,7 +3388,8 @@
           document.querySelectorAll('.time-range-btn').forEach(b => b.classList.remove('active'));
           e.currentTarget.classList.add('active');
           
-          // Refresh balance view and timeline
+          // Refresh button counts and balance view
+          updateTimeRangeButtons();
           updatePillarBalance();
         });
       });
