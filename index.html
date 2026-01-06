@@ -16,7 +16,7 @@
       --pillar-p2: #F1ECFF; /* Soft Violet - Technical */
       --pillar-p3: #EAF7EF; /* Soft Green - Career */
       --pillar-p4: #E6F6F4; /* Soft Teal - SaaS */
-      --pillar-p5: #FFF1E6; /* Soft Peach - Art Business */
+      --pillar-p5: #FFF1E6; /* Soft Peach - Learning & Growth */
       --pillar-p6: #FDECEF; /* Soft Pink - Brand */
       --pillar-p7: #FFF8E1; /* Soft Yellow - Health */
       --pillar-p8: #F2F3F7; /* Soft Gray-Lavender - Identity */
@@ -284,6 +284,42 @@
       opacity: 0.5;
     }
 
+    /* Tooltip styling for task cells */
+    .task-tooltip {
+      position: fixed;
+      background: rgba(29, 29, 31, 0.95);
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      line-height: 1.4;
+      max-width: 280px;
+      z-index: 10000;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      word-wrap: break-word;
+    }
+
+    .task-tooltip.visible {
+      opacity: 1;
+    }
+
+    .task-tooltip-title {
+      font-weight: 600;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+      color: #ffffff;
+    }
+
+    .task-tooltip-hint {
+      font-weight: 400;
+      font-size: 0.72rem;
+      color: #e5e5ea;
+      line-height: 1.3;
+    }
+
     .meta {
       font-size: 0.8rem;
       color: #86868b;
@@ -461,6 +497,419 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
       gap: 8px;
+    }
+
+    /* New Analytics Sections */
+    .analytics-section {
+      max-width: 980px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #d2d2d7;
+      padding: 16px 18px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      margin-bottom: 20px;
+    }
+
+    .analytics-section h2 {
+      font-size: 1rem;
+      margin: 0 0 14px 0;
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+
+    .analytics-section h3 {
+      font-size: 0.85rem;
+      margin: 14px 0 8px 0;
+      font-weight: 600;
+      color: #1d1d1f;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Priority Alignment */
+    .priority-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .priority-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border: 1px solid #e5e5ea;
+    }
+
+    .priority-pillar-name {
+      flex: 0 0 180px;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #1d1d1f;
+    }
+
+    .priority-bars {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+    }
+
+    .priority-label {
+      flex: 0 0 65px;
+      color: #6e6e73;
+      font-weight: 500;
+    }
+
+    .priority-bar-container {
+      flex: 1;
+      height: 24px;
+      background: #e5e5ea;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .priority-bar {
+      height: 100%;
+      transition: width 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 6px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    .priority-status {
+      flex: 0 0 140px;
+      text-align: right;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .status-on-track { color: #34c759; }
+    .status-under { color: #ff3b30; }
+    .status-over { color: #ff9500; }
+
+    /* Streaks Section */
+    .streaks-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .streak-card {
+      background: #f9fafb;
+      border: 1px solid #e5e5ea;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .streak-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .streak-icon {
+      font-size: 1.2rem;
+    }
+
+    .streak-pillar-name {
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #1d1d1f;
+      flex: 1;
+    }
+
+    .streak-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ff9500;
+      margin-bottom: 4px;
+    }
+
+    .streak-best {
+      font-size: 0.7rem;
+      color: #6e6e73;
+    }
+
+    .streak-new-record {
+      color: #34c759;
+      font-weight: 600;
+    }
+
+    .at-risk-section {
+      background: #fff5e6;
+      border: 1px solid #ffb366;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+
+    .at-risk-title {
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #ff8800;
+      margin-bottom: 8px;
+    }
+
+    .at-risk-item {
+      font-size: 0.75rem;
+      color: #6e6e73;
+      margin-bottom: 4px;
+    }
+
+    /* Recommendations Section */
+    .recommendations-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .recommendation-item {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #e5e5ea;
+    }
+
+    .recommendation-item.high-priority {
+      background: #f0f9ff;
+      border-color: #007aff;
+    }
+
+    .recommendation-item.dial-back {
+      background: #fff5e6;
+      border-color: #ff9500;
+    }
+
+    .recommendation-item.maintain {
+      background: #f0fff4;
+      border-color: #34c759;
+    }
+
+    .recommendation-title {
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: #1d1d1f;
+      margin-bottom: 4px;
+    }
+
+    .recommendation-why {
+      font-size: 0.72rem;
+      color: #6e6e73;
+      line-height: 1.4;
+    }
+
+    /* Weekly Summary */
+    .summary-section {
+      margin-bottom: 16px;
+    }
+
+    .summary-items {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .summary-item {
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: #1d1d1f;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .summary-item::before {
+      content: attr(data-icon);
+      position: absolute;
+      left: 0;
+      font-size: 0.9rem;
+    }
+
+    /* Goal Metrics */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .metric-card {
+      background: #f9fafb;
+      border: 1px solid #e5e5ea;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .metric-label {
+      font-size: 0.7rem;
+      color: #6e6e73;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      font-weight: 500;
+    }
+
+    .metric-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1d1d1f;
+      margin-bottom: 2px;
+    }
+
+    .metric-change {
+      font-size: 0.7rem;
+      color: #6e6e73;
+    }
+
+    .metric-change.positive {
+      color: #34c759;
+    }
+
+    /* Settings Panel */
+    .settings-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #007aff;
+      color: white;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+      transition: all 0.2s ease;
+      z-index: 9999;
+    }
+
+    .settings-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+    }
+
+    .settings-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .settings-overlay.visible {
+      display: flex;
+    }
+
+    .settings-panel {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .settings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .settings-header h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .settings-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #86868b;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+    }
+
+    .settings-close:hover {
+      background: #f5f5f7;
+      color: #1d1d1f;
+    }
+
+    .settings-group {
+      margin-bottom: 24px;
+    }
+
+    .settings-group h3 {
+      font-size: 0.9rem;
+      margin: 0 0 12px 0;
+      color: #1d1d1f;
+    }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #f5f5f7;
+    }
+
+    .settings-row:last-child {
+      border-bottom: none;
+    }
+
+    .settings-label {
+      font-size: 0.82rem;
+      color: #1d1d1f;
+      flex: 1;
+    }
+
+    .settings-input {
+      width: 80px;
+      padding: 6px 10px;
+      border: 1px solid #d2d2d7;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .settings-save-btn {
+      background: #007aff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    .settings-save-btn:hover {
+      background: #0051d5;
     }
 
     .badge-card {
@@ -1336,7 +1785,7 @@
     <div class="reflection-insight" id="reflectionInsight">Loading...</div>
   </div>
 
-  <div class="growth-insights-section">
+  <div class="growth-insights-section" style="display: none;">
     <h2>Your Growth</h2>
     <div class="growth-insights-content" id="growthInsights">
       <!-- Insights will be injected here by JavaScript -->
@@ -1383,11 +1832,11 @@
         </div>
         <div class="radar-legend">
           <div class="radar-legend-item"><span class="radar-legend-label">P1</span><span>Skill & Craft Mastery</span></div>
-          <div class="radar-legend-item"><span class="radar-legend-label">P2</span><span>Technical Leverage (AI / Code / Data)</span></div>
-          <div class="radar-legend-item"><span class="radar-legend-label">P3</span><span>Career Money Systems</span></div>
-          <div class="radar-legend-item"><span class="radar-legend-label">P4</span><span>SaaS / Business Systems</span></div>
-          <div class="radar-legend-item"><span class="radar-legend-label">P5</span><span>Art Business Systems</span></div>
-          <div class="radar-legend-item"><span class="radar-legend-label">P6</span><span>Brand & Audience</span></div>
+          <div class="radar-legend-item"><span class="radar-legend-label">P2</span><span>Technical Building</span></div>
+          <div class="radar-legend-item"><span class="radar-legend-label">P3</span><span>Career Transition</span></div>
+          <div class="radar-legend-item"><span class="radar-legend-label">P4</span><span>Connection & Presence</span></div>
+          <div class="radar-legend-item"><span class="radar-legend-label">P5</span><span>Learning & Growth</span></div>
+          <div class="radar-legend-item"><span class="radar-legend-label">P6</span><span>Creative Platform</span></div>
           <div class="radar-legend-item"><span class="radar-legend-label">P7</span><span>Health & Energy</span></div>
           <div class="radar-legend-item"><span class="radar-legend-label">P8</span><span>Identity & Discipline</span></div>
         </div>
@@ -1443,7 +1892,139 @@
     </div>
   </div>
 
+  <!-- New Analytics Sections -->
+  <div class="analytics-section" id="priorityAlignmentSection">
+    <h2>🎯 Priority Alignment</h2>
+    <div class="priority-grid" id="priorityGrid">
+      <!-- Priority rows will be injected here -->
+    </div>
+  </div>
+
+  <div class="analytics-section" id="streaksSection" style="display: none;">
+    <h2>🔥 Streaks & Momentum</h2>
+    <div class="streaks-grid" id="streaksGrid">
+      <!-- Streak cards will be injected here -->
+    </div>
+    <div id="atRiskContainer"></div>
+    <div id="momentumSummary" style="margin-top: 12px; padding: 12px; background: #f9fafb; border-radius: 8px; font-size: 0.8rem; color: #1d1d1f;"></div>
+  </div>
+
+  <div class="analytics-section" id="recommendationsSection">
+    <h2>📋 Today's Focus Recommendations</h2>
+    <div class="recommendations-list" id="recommendationsList">
+      <!-- Recommendations will be injected here -->
+    </div>
+  </div>
+
+  <div class="analytics-section" id="weeklySummarySection">
+    <h2>📊 This Week's Summary</h2>
+    <div class="summary-section">
+      <h3>🎉 Wins</h3>
+      <div class="summary-items" id="weeklySummaryWins"></div>
+    </div>
+    <div class="summary-section">
+      <h3>⚠️ Gaps to Address</h3>
+      <div class="summary-items" id="weeklySummaryGaps"></div>
+    </div>
+    <div class="summary-section">
+      <h3>📈 Week Over Week</h3>
+      <div class="summary-items" id="weeklySummaryTrends"></div>
+    </div>
+  </div>
+
+  <div class="analytics-section" id="goalProgressSection" style="display: none;">
+    <h2>🎯 Goal Progress: $150K Role + Launch Art Income</h2>
+    <h3>Career Transition</h3>
+    <div class="metrics-grid" id="careerMetricsGrid"></div>
+    <h3 style="margin-top: 16px;">Creative Platform</h3>
+    <div class="metrics-grid" id="creativeMetricsGrid"></div>
+    <div id="timeToGoal" style="margin-top: 16px; padding: 12px; background: #f0f9ff; border: 1px solid #007aff; border-radius: 8px; font-size: 0.8rem; color: #1d1d1f;"></div>
+  </div>
+
   <div class="achievements-section">
+    <h2 style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none;" id="achievementsToggle">
+      <span>Achievements</span>
+      <span id="achievementsArrow" style="transition: transform 0.2s ease;">▼</span>
+    </h2>
+    <div class="achievements-grid" id="achievementsGrid" style="display: none;">
+      <!-- Badges will be injected here by JavaScript -->
+    </div>
+  </div>
+
+  <!-- Settings Button & Overlay -->
+  <button class="settings-btn" id="settingsBtn" title="Settings">⚙️</button>
+  <div class="settings-overlay" id="settingsOverlay">
+    <div class="settings-panel">
+      <div class="settings-header">
+        <h2>Settings</h2>
+        <button class="settings-close" id="settingsClose">×</button>
+      </div>
+      
+      <div class="settings-group">
+        <h3>Pillar Target Percentages</h3>
+        <p style="font-size: 0.75rem; color: #6e6e73; margin: 0 0 12px 0;">Set your ideal distribution of effort across pillars (must total 100%)</p>
+        <div id="pillarTargetsSettings"></div>
+      </div>
+
+      <div class="settings-group">
+        <h3>Goal Relevance Weights</h3>
+        <p style="font-size: 0.75rem; color: #6e6e73; margin: 0 0 12px 0;">Rate how relevant each pillar is to your main goal (1-10 scale)</p>
+        <div id="goalWeightsSettings"></div>
+      </div>
+
+      <div class="settings-group">
+        <h3>Time Budget</h3>
+        <div class="settings-row">
+          <span class="settings-label">Work Hours Per Week</span>
+          <input type="number" class="settings-input" id="workHoursInput" min="0" max="80" />
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">Available Hours Per Day</span>
+          <input type="number" class="settings-input" id="availableHoursInput" min="0" max="12" step="0.5" />
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <h3>Goal Metrics</h3>
+        <div class="settings-row">
+          <span class="settings-label">Jobs Applied (Total)</span>
+          <input type="number" class="settings-input" id="jobsAppliedInput" min="0" />
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">Interviews Scheduled</span>
+          <input type="number" class="settings-input" id="interviewsInput" min="0" />
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">Networking Conversations</span>
+          <input type="number" class="settings-input" id="networkingInput" min="0" />
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">LinkedIn Connections</span>
+          <input type="number" class="settings-input" id="linkedinInput" min="0" />
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">Instagram Followers</span>
+          <input type="number" class="settings-input" id="instagramInput" min="0" />
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">TikTok Followers</span>
+          <input type="number" class="settings-input" id="tiktokInput" min="0" />
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">Posts This Week</span>
+          <input type="number" class="settings-input" id="postsInput" min="0" />
+        </div>
+        <div class="settings-row">
+          <span class="settings-label">Art Revenue ($)</span>
+          <input type="number" class="settings-input" id="revenueInput" min="0" step="0.01" />
+        </div>
+      </div>
+
+      <button class="settings-save-btn" id="settingsSaveBtn">Save Settings</button>
+    </div>
+  </div>
+
+  <div class="achievements-section" style="display:none;">
     <h2>Achievements</h2>
     <div class="achievements-grid" id="achievementsGrid">
       <!-- Badges will be injected here by JavaScript -->
@@ -1468,112 +2049,112 @@
         id: "P1",
         name: "Skill & Craft Mastery",
         tasks: [
-          { title: "Sketch", hint: "New Idea" },
-          { title: "Study", hint: "Form" },
-          { title: "Study", hint: "Light" },
-          { title: "Explore", hint: "Composition" },
-          { title: "Gesture", hint: "Figures" },
-          { title: "Control", hint: "Edges" },
-          { title: "Simplify", hint: "Reference" },
-          { title: "Refine", hint: "Piece" }
+          { title: "Sketch", hint: "New idea or concept" },
+          { title: "Study", hint: "Form (anatomy/perspective/composition)" },
+          { title: "Study", hint: "Light and shadow principles" },
+          { title: "Practice", hint: "Gesture drawing for 15 min" },
+          { title: "Work", hint: "On current piece/idea" },
+          { title: "Push", hint: "Piece toward completion" },
+          { title: "Observe", hint: "Analyze reference images" },
+          { title: "Control", hint: "Edges in current artwork" }
         ]
       },
       {
         id: "P2",
-        name: "Technical Leverage (AI / Code / Data)",
+        name: "Technical Building",
         tasks: [
-          { title: "Write", hint: "Code" },
-          { title: "Fix", hint: "Bug" },
-          { title: "Refactor", hint: "Code" },
-          { title: "Explore", hint: "Data" },
-          { title: "Test", hint: "App Flow" },
-          { title: "Learn", hint: "One Concept" },
-          { title: "Read", hint: "Blocked Docs" },
-          { title: "Sketch", hint: "Feature Idea" }
+          { title: "Write", hint: "Code for personal project" },
+          { title: "Build", hint: "One new feature" },
+          { title: "Fix", hint: "Bug in current project" },
+          { title: "Refactor", hint: "Existing code" },
+          { title: "Test", hint: "App flow or functionality" },
+          { title: "Build Tool", hint: "That solves a problem" },
+          { title: "Learn by", hint: "Implementing (tutorial/example)" },
+          { title: "Apply", hint: "New technique to project" }
         ]
       },
       {
         id: "P3",
-        name: "Career / Money Systems",
+        name: "Career Transition",
         tasks: [
-          { title: "Research", hint: "Roles & Paths" },
-          { title: "Learn", hint: "Career Skill" },
-          { title: "Apply", hint: "New Role" },
-          { title: "Build", hint: "Work Leverage" },
-          { title: "Pitch", hint: "Business Idea" },
-          { title: "Reach Out", hint: "New Contact" },
-          { title: "Practice", hint: "Interview Answers" },
-          { title: "Study", hint: "Industry Trends" }
+          { title: "Apply", hint: "To 1-2 target roles" },
+          { title: "Research", hint: "Companies/roles for applications" },
+          { title: "Reach Out", hint: "1 person at target company" },
+          { title: "Practice", hint: "Answering interview questions" },
+          { title: "Study", hint: "Industry trends (GTM/ops/growth)" },
+          { title: "Learn", hint: "One career-relevant skill" },
+          { title: "Update", hint: "Portfolio/resume with work" },
+          { title: "Attend", hint: "Or watch webinar in field" }
         ]
       },
       {
         id: "P4",
-        name: "SaaS / Business Systems (SellerIQ)",
+        name: "Connection & Presence",
         tasks: [
-          { title: "Build", hint: "Feature" },
-          { title: "Improve", hint: "Chat" },
-          { title: "Explore", hint: "Seller Data" },
-          { title: "Fix", hint: "Flow" },
-          { title: "Clarify", hint: "Idea" },
-          { title: "Write", hint: "Notes" },
-          { title: "Talk To", hint: "User" },
-          { title: "Demo", hint: "App" }
+          { title: "Reach Out", hint: "To one person (text/DM)" },
+          { title: "Say Yes", hint: "To an invitation" },
+          { title: "Plan", hint: "A hangout or suggest plans" },
+          { title: "Show Up", hint: "To chess meetup or social event" },
+          { title: "Stay After", hint: "Gym/event and chat" },
+          { title: "Engage", hint: "In online community genuinely" },
+          { title: "Follow Up", hint: "With someone you haven't talked to" },
+          { title: "Plan Date", hint: "Or activity with girlfriend" }
         ]
       },
       {
         id: "P5",
-        name: "Art Business Systems",
+        name: "Learning & Growth",
         tasks: [
-          { title: "Choose", hint: "Art Idea" },
-          { title: "Make", hint: "Art" },
-          { title: "Capture", hint: "Process" },
-          { title: "Edit", hint: "Media" },
-          { title: "Write", hint: "Caption" },
-          { title: "Publish", hint: "Art" },
-          { title: "Explore", hint: "Product Idea" },
-          { title: "Improve", hint: "Consistency" }
+          { title: "Read", hint: "About topic you're curious about" },
+          { title: "Watch", hint: "Documentary or educational content" },
+          { title: "Take", hint: "Online course in career-relevant skill" },
+          { title: "Listen", hint: "To podcast in your field" },
+          { title: "Learn From", hint: "Someone you admire" },
+          { title: "Consume", hint: "Content that inspires you" },
+          { title: "Study", hint: "Case study in your industry" },
+          { title: "Explore", hint: "Adjacent skills" }
         ]
       },
       {
         id: "P6",
-        name: "Brand & Audience",
+        name: "Creative Platform",
         tasks: [
-          { title: "Post", hint: "Something" },
-          { title: "Share", hint: "Process" },
-          { title: "Write", hint: "Content Idea" },
-          { title: "Engage", hint: "People" },
-          { title: "Plan", hint: "Tomorrow" },
-          { title: "Show", hint: "Personality" },
-          { title: "Observe", hint: "Creators" },
-          { title: "Stay", hint: "Visible" }
+          { title: "Create", hint: "Art (even 15-20 min)" },
+          { title: "Post", hint: "To Instagram or TikTok" },
+          { title: "Engage", hint: "With 5 accounts in your niche" },
+          { title: "Share", hint: "Work-in-progress or process" },
+          { title: "Write", hint: "Caption or content idea" },
+          { title: "Edit", hint: "Media for posting" },
+          { title: "Plan", hint: "Tomorrow's content" },
+          { title: "Observe", hint: "What's working for creators" }
         ]
       },
       {
         id: "P7",
         name: "Health & Energy",
         tasks: [
-          { title: "Train", hint: "Workout" },
-          { title: "Eat", hint: "Enough" },
-          { title: "Drink", hint: "Water" },
-          { title: "Sleep", hint: "On Time" },
-          { title: "Stretch", hint: "Posture & Hips" },
+          { title: "Train", hint: "Go to gym/workout" },
+          { title: "Eat", hint: "Enough (hit calorie target)" },
+          { title: "Sleep", hint: "On time (in bed by X)" },
+          { title: "Stretch", hint: "Posture & hips" },
+          { title: "Drink", hint: "Water (hit daily target)" },
           { title: "Take", hint: "Supplements" },
-          { title: "Break", hint: "A Sweat" },
-          { title: "Recover", hint: "Rest Day" }
+          { title: "Recover", hint: "Active rest or full rest day" },
+          { title: "Meal Prep", hint: "For tomorrow" }
         ]
       },
       {
         id: "P8",
         name: "Identity & Discipline",
         tasks: [
-          { title: "Start", hint: "Hard Thing" },
-          { title: "Delay", hint: "Phone" },
-          { title: "Shut Down", hint: "Evening" },
-          { title: "Regain", hint: "Attention" },
-          { title: "Keep", hint: "Promise" },
-          { title: "Tidy", hint: "One Area" },
-          { title: "Be", hint: "Present" },
-          { title: "Decide", hint: "Today's Focus" }
+          { title: "Shut Down", hint: "Phone/laptop when arriving home" },
+          { title: "Delay", hint: "Scrolling until after 1 creation" },
+          { title: "Decide", hint: "Today's #1 priority (morning)" },
+          { title: "Start", hint: "Hard thing first (no warm-up)" },
+          { title: "Keep", hint: "Promise to yourself today" },
+          { title: "Regain", hint: "Attention when distracted" },
+          { title: "Be", hint: "Present (no multitasking)" },
+          { title: "Review", hint: "Did I do what I said?" }
         ]
       }
     ];
@@ -1583,7 +2164,36 @@
     const STORAGE_HISTORY_KEY = "haradaHistory";
     const STORAGE_STREAKS_KEY = "haradaStreaks";
     const STORAGE_BADGES_KEY = "haradaBadges";
+    const STORAGE_SETTINGS_KEY = "haradaSettings";
+    const STORAGE_PILLAR_STREAKS_KEY = "haradaPillarStreaks";
+    const STORAGE_GOAL_METRICS_KEY = "haradaGoalMetrics";
     const MIN_TASKS_FOR_STREAK = 1; // Configurable threshold
+
+    // Default settings for new analytics
+    const DEFAULT_SETTINGS = {
+      pillarTargets: {
+        P1: 5,   // Skill & Craft Mastery
+        P2: 10,  // Technical Building
+        P3: 45,  // Career Transition - Primary Goal!
+        P4: 8,   // Connection & Presence
+        P5: 5,   // Learning & Growth
+        P6: 10,  // Creative Platform
+        P7: 12,  // Health & Energy
+        P8: 15   // Identity & Discipline
+      },
+      goalWeights: {
+        P1: 6,   // Skill & Craft Mastery
+        P2: 4,   // Technical Building
+        P3: 10,  // Career Transition - Most relevant!
+        P4: 5,   // Connection & Presence
+        P5: 5,   // Learning & Growth
+        P6: 6,   // Creative Platform
+        P7: 7,   // Health & Energy
+        P8: 8    // Identity & Discipline
+      },
+      availableHoursPerDay: 3,
+      workHoursPerWeek: 45
+    };
 
     // Badge definitions
     const BADGES = [
@@ -1805,14 +2415,14 @@
         id: 'builders-trifecta',
         name: "Builder's Trifecta",
         icon: '🛠️',
-        description: 'Complete Tech, Career, and Business pillars on same day',
+        description: 'Complete Technical Building, Career Transition, and Connection on same day',
         check: (data) => data.buildersTrifectaToday
       },
       {
         id: 'creators-flow',
         name: "Creator's Flow",
         icon: '🎨',
-        description: 'Complete Art Skill, Art Business, and Audience on same day',
+        description: 'Complete Skill & Craft, Creative Platform, and Learning pillars on same day',
         check: (data) => data.creatorsFlowToday
       }
     ];
@@ -1841,6 +2451,9 @@
     let streakData = null;
     let badgesData = null;
     let selectedTimeRange = "30";
+    let userSettings = null;
+    let pillarStreaks = null;
+    let goalMetrics = null;
 
     function loadState() {
       const today = getTodayString();
@@ -1928,6 +2541,55 @@
         badgesData = {};
       }
       localStorage.setItem(STORAGE_BADGES_KEY, JSON.stringify(badgesData));
+
+      // Load user settings
+      try {
+        const rawSettings = localStorage.getItem(STORAGE_SETTINGS_KEY);
+        userSettings = rawSettings ? JSON.parse(rawSettings) : null;
+      } catch {
+        userSettings = null;
+      }
+      if (!userSettings) {
+        userSettings = JSON.parse(JSON.stringify(DEFAULT_SETTINGS)); // Deep clone
+        localStorage.setItem(STORAGE_SETTINGS_KEY, JSON.stringify(userSettings));
+      }
+
+      // Load pillar streaks
+      try {
+        const rawPillarStreaks = localStorage.getItem(STORAGE_PILLAR_STREAKS_KEY);
+        pillarStreaks = rawPillarStreaks ? JSON.parse(rawPillarStreaks) : null;
+      } catch {
+        pillarStreaks = null;
+      }
+      if (!pillarStreaks) {
+        pillarStreaks = {};
+        pillars.forEach(p => {
+          pillarStreaks[p.id] = { current: 0, best: 0, lastActive: null };
+        });
+        localStorage.setItem(STORAGE_PILLAR_STREAKS_KEY, JSON.stringify(pillarStreaks));
+      }
+
+      // Load goal metrics
+      try {
+        const rawGoalMetrics = localStorage.getItem(STORAGE_GOAL_METRICS_KEY);
+        goalMetrics = rawGoalMetrics ? JSON.parse(rawGoalMetrics) : null;
+      } catch {
+        goalMetrics = null;
+      }
+      if (!goalMetrics) {
+        goalMetrics = {
+          jobsApplied: 0,
+          interviewsScheduled: 0,
+          networkingConversations: 0,
+          linkedinConnections: 0,
+          instagramFollowers: 0,
+          tiktokFollowers: 0,
+          postsThisWeek: 0,
+          artRevenue: 0,
+          history: [] // { date, metric, value }
+        };
+        localStorage.setItem(STORAGE_GOAL_METRICS_KEY, JSON.stringify(goalMetrics));
+      }
     }
 
     function saveTodayState() {
@@ -2094,6 +2756,10 @@
         cell.dataset.id = cellId;
         cell.dataset.pillar = pillar.id;
         
+        // Store full task text for tooltip
+        cell.dataset.taskTitle = task.title;
+        cell.dataset.taskHint = task.hint;
+        
         const titleEl = document.createElement("div");
         titleEl.className = "task-title";
         titleEl.textContent = task.title;
@@ -2113,6 +2779,29 @@
           toggleTask(cell);
         });
 
+        // Add tooltip event listeners
+        cell.addEventListener("mouseenter", (e) => showTaskTooltip(e, cell));
+        cell.addEventListener("mouseleave", hideTaskTooltip);
+        cell.addEventListener("mousemove", updateTooltipPosition);
+        
+        // Mobile support: show tooltip on touch (tap and hold)
+        let touchTimer;
+        cell.addEventListener("touchstart", (e) => {
+          touchTimer = setTimeout(() => {
+            showTaskTooltip(e, cell);
+          }, 300); // Show after 300ms hold
+        });
+        
+        cell.addEventListener("touchend", () => {
+          clearTimeout(touchTimer);
+          // Don't hide immediately on touchend to allow reading
+        });
+        
+        cell.addEventListener("touchmove", () => {
+          clearTimeout(touchTimer);
+          hideTaskTooltip();
+        });
+
         tasksGrid.appendChild(cell);
       });
 
@@ -2120,6 +2809,129 @@
       box.appendChild(tasksGrid);
       return box;
     }
+
+    // Tooltip helper functions
+    let tooltipElement = null;
+    let currentTooltipCell = null;
+    let tooltipHideTimer = null;
+
+    function showTaskTooltip(event, cell) {
+      // Clear any pending hide timer
+      if (tooltipHideTimer) {
+        clearTimeout(tooltipHideTimer);
+        tooltipHideTimer = null;
+      }
+
+      // Don't show tooltip if already showing for this cell
+      if (currentTooltipCell === cell && tooltipElement && tooltipElement.classList.contains('visible')) {
+        return;
+      }
+
+      currentTooltipCell = cell;
+      const taskTitle = cell.dataset.taskTitle;
+      const taskHint = cell.dataset.taskHint;
+
+      // Only show tooltip if there's text to display
+      if (!taskTitle && !taskHint) return;
+
+      // Create tooltip element if it doesn't exist
+      if (!tooltipElement) {
+        tooltipElement = document.createElement('div');
+        tooltipElement.className = 'task-tooltip';
+        document.body.appendChild(tooltipElement);
+      }
+
+      // Set tooltip content
+      let tooltipHTML = '';
+      if (taskTitle) {
+        tooltipHTML += `<div class="task-tooltip-title">${taskTitle}</div>`;
+      }
+      if (taskHint) {
+        tooltipHTML += `<div class="task-tooltip-hint">${taskHint}</div>`;
+      }
+      tooltipElement.innerHTML = tooltipHTML;
+
+      // Position and show tooltip
+      positionTooltip(event);
+      
+      // Use requestAnimationFrame to ensure the tooltip is rendered before showing
+      requestAnimationFrame(() => {
+        if (tooltipElement) {
+          tooltipElement.classList.add('visible');
+        }
+      });
+    }
+
+    function hideTaskTooltip() {
+      // Delay hiding to allow for smooth transitions
+      if (tooltipHideTimer) {
+        clearTimeout(tooltipHideTimer);
+      }
+      
+      tooltipHideTimer = setTimeout(() => {
+        if (tooltipElement) {
+          tooltipElement.classList.remove('visible');
+        }
+        currentTooltipCell = null;
+      }, 100);
+    }
+
+    function updateTooltipPosition(event) {
+      if (tooltipElement && tooltipElement.classList.contains('visible')) {
+        positionTooltip(event);
+      }
+    }
+
+    function positionTooltip(event) {
+      if (!tooltipElement) return;
+
+      // Get cursor position
+      const cursorX = event.clientX || (event.touches && event.touches[0] ? event.touches[0].clientX : 0);
+      const cursorY = event.clientY || (event.touches && event.touches[0] ? event.touches[0].clientY : 0);
+
+      // Get tooltip dimensions
+      const tooltipRect = tooltipElement.getBoundingClientRect();
+      const tooltipWidth = tooltipRect.width || 280;
+      const tooltipHeight = tooltipRect.height;
+
+      // Get viewport dimensions
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      // Calculate position with offset from cursor
+      const offsetX = 12;
+      const offsetY = 12;
+      let left = cursorX + offsetX;
+      let top = cursorY + offsetY;
+
+      // Adjust if tooltip goes off right edge
+      if (left + tooltipWidth > viewportWidth - 10) {
+        left = cursorX - tooltipWidth - offsetX;
+      }
+
+      // Adjust if tooltip goes off bottom edge
+      if (top + tooltipHeight > viewportHeight - 10) {
+        top = cursorY - tooltipHeight - offsetY;
+      }
+
+      // Ensure tooltip doesn't go off left edge
+      if (left < 10) {
+        left = 10;
+      }
+
+      // Ensure tooltip doesn't go off top edge
+      if (top < 10) {
+        top = 10;
+      }
+
+      tooltipElement.style.left = `${left}px`;
+      tooltipElement.style.top = `${top}px`;
+    }
+
+    // Hide tooltip when clicking anywhere
+    document.addEventListener('click', () => {
+      hideTaskTooltip();
+    });
 
     function createCenterBox() {
       const box = document.createElement("div");
@@ -2131,13 +2943,13 @@
       // Define explicit grid placement for each pillar
       const pillarLayout = [
         { pillar: pillars[0], row: 1, col: 1 }, // P1: Skill & Craft Mastery
-        { pillar: pillars[1], row: 1, col: 2 }, // P2: Technical Leverage
-        { pillar: pillars[2], row: 1, col: 3 }, // P3: Career Money Systems
+        { pillar: pillars[1], row: 1, col: 2 }, // P2: Technical Building
+        { pillar: pillars[2], row: 1, col: 3 }, // P3: Career Transition
         { pillar: pillars[7], row: 2, col: 1 }, // P8: Identity & Discipline
-        { pillar: pillars[3], row: 2, col: 3 }, // P4: SaaS / Business Systems
+        { pillar: pillars[3], row: 2, col: 3 }, // P4: Connection & Presence
         { pillar: pillars[6], row: 3, col: 1 }, // P7: Health & Energy
-        { pillar: pillars[5], row: 3, col: 2 }, // P6: Brand & Audience
-        { pillar: pillars[4], row: 3, col: 3 }  // P5: Art Business Systems
+        { pillar: pillars[5], row: 3, col: 2 }, // P6: Creative Platform
+        { pillar: pillars[4], row: 3, col: 3 }  // P5: Learning & Growth
       ];
 
       // Create pillar cards with explicit positioning
@@ -2155,8 +2967,8 @@
       const centerTitle = document.createElement("div");
       centerTitle.className = "center-title";
       centerTitle.innerHTML = `
-        <strong>GOAL</strong>
-        <span>Live From What I Build</span>
+        <strong>Goal:</strong>
+        <span>Level Up Career, Scale Creative Business</span>
       `;
       
       tasksGrid.appendChild(centerTitle);
@@ -2204,6 +3016,7 @@
       updateStreakUI();
       updatePillarBalance();
       checkAndAwardBadges();
+      updateNewAnalytics(); // Update new analytics sections
 
       // Check for pillar completion and trigger confetti
       if (!isCompleted) {
@@ -3363,6 +4176,627 @@
       });
     }
 
+    // ===============================================
+    // NEW ANALYTICS FUNCTIONS
+    // ===============================================
+
+    // Calculate pillar streaks
+    function calculatePillarStreaks() {
+      const today = getTodayString();
+      
+      pillars.forEach(pillar => {
+        const pillarId = pillar.id;
+        
+        // Check if pillar was active today
+        const todayActive = Object.keys(todayState.completed).some(cellId => cellId.startsWith(pillarId + '-'));
+        
+        if (todayActive) {
+          pillarStreaks[pillarId].current++;
+          pillarStreaks[pillarId].best = Math.max(pillarStreaks[pillarId].best, pillarStreaks[pillarId].current);
+          pillarStreaks[pillarId].lastActive = today;
+        } else {
+          // Check if streak should reset
+          const lastActive = pillarStreaks[pillarId].lastActive;
+          if (lastActive) {
+            const lastDate = new Date(lastActive);
+            const todayDate = new Date(today);
+            const daysDiff = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+            
+            if (daysDiff > 1) {
+              pillarStreaks[pillarId].current = 0;
+            }
+          }
+        }
+      });
+      
+      localStorage.setItem(STORAGE_PILLAR_STREAKS_KEY, JSON.stringify(pillarStreaks));
+    }
+
+    // Get days since last activity for a pillar
+    function getDaysSinceLastActivity(pillarId) {
+      const lastActive = pillarStreaks[pillarId].lastActive;
+      if (!lastActive) return 999;
+      
+      const today = new Date(getTodayString());
+      const lastDate = new Date(lastActive);
+      return Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+    }
+
+    // Render Priority Alignment
+    function renderPriorityAlignment() {
+      const container = document.getElementById('priorityGrid');
+      if (!container) return;
+
+      // Calculate actual percentages
+      const pillarTotals = {};
+      let totalTasks = 0;
+      
+      pillars.forEach(p => pillarTotals[p.id] = 0);
+      
+      Object.keys(todayState.completed).forEach(cellId => {
+        const pillarId = cellId.split('-')[0];
+        if (pillarTotals[pillarId] !== undefined) {
+          pillarTotals[pillarId]++;
+          totalTasks++;
+        }
+      });
+
+      // Get targets from settings
+      const targets = userSettings.pillarTargets;
+      
+      container.innerHTML = '';
+      
+      pillars.forEach(pillar => {
+        const actual = totalTasks > 0 ? Math.round((pillarTotals[pillar.id] / totalTasks) * 100) : 0;
+        const target = targets[pillar.id] || 12.5;
+        const diff = actual - target;
+        const absDiff = Math.abs(diff);
+        
+        let statusClass, statusText, statusEmoji;
+        if (absDiff <= 5) {
+          statusClass = 'status-on-track';
+          statusText = 'ON TRACK';
+          statusEmoji = '🟢';
+        } else if (diff < 0) {
+          statusClass = 'status-under';
+          statusText = absDiff > 15 ? 'WAY UNDER' : 'UNDER';
+          statusEmoji = '🔴';
+        } else {
+          statusClass = 'status-over';
+          statusText = absDiff > 15 ? 'OVER-INDEXED' : 'OVER';
+          statusEmoji = '🟡';
+        }
+        
+        const row = document.createElement('div');
+        row.className = 'priority-row';
+        row.innerHTML = `
+          <div class="priority-pillar-name">${pillar.name}</div>
+          <div class="priority-bars">
+            <span class="priority-label">Target:</span>
+            <div class="priority-bar-container">
+              <div class="priority-bar" style="width: ${target}%; background: #d1d1d6;">${target}%</div>
+            </div>
+          </div>
+          <div class="priority-bars">
+            <span class="priority-label">Actual:</span>
+            <div class="priority-bar-container">
+              <div class="priority-bar" style="width: ${actual}%; background: ${actual > target + 5 ? '#ff9500' : actual < target - 5 ? '#ff3b30' : '#34c759'};">${actual}%</div>
+            </div>
+          </div>
+          <div class="priority-status ${statusClass}">${statusEmoji} ${statusText}</div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Render Streaks & Momentum
+    function renderStreaks() {
+      const container = document.getElementById('streaksGrid');
+      const atRiskContainer = document.getElementById('atRiskContainer');
+      const summaryContainer = document.getElementById('momentumSummary');
+      
+      if (!container) return;
+
+      calculatePillarStreaks();
+      
+      container.innerHTML = '';
+      const atRiskPillars = [];
+      
+      pillars.forEach(pillar => {
+        const streak = pillarStreaks[pillar.id];
+        const daysSince = getDaysSinceLastActivity(pillar.id);
+        
+        if (daysSince >= 3) {
+          atRiskPillars.push({ pillar, daysSince, previousStreak: streak.best });
+        }
+        
+        if (streak.current > 0 || streak.best > 0) {
+          const card = document.createElement('div');
+          card.className = 'streak-card';
+          
+          const isNewRecord = streak.current > 0 && streak.current === streak.best;
+          
+          card.innerHTML = `
+            <div class="streak-card-header">
+              <span class="streak-icon">🔥</span>
+              <span class="streak-pillar-name">${pillar.name}</span>
+            </div>
+            <div class="streak-value">${streak.current}-day streak</div>
+            <div class="streak-best ${isNewRecord ? 'streak-new-record' : ''}">
+              Longest: ${streak.best} days ${isNewRecord ? '- NEW RECORD!' : ''}
+            </div>
+          `;
+          container.appendChild(card);
+        }
+      });
+
+      // Render at-risk section
+      if (atRiskContainer) {
+        if (atRiskPillars.length > 0) {
+          let html = '<div class="at-risk-section">';
+          html += '<div class="at-risk-title">⚠️ AT RISK:</div>';
+          atRiskPillars.forEach(({ pillar, daysSince, previousStreak }) => {
+            html += `<div class="at-risk-item">${pillar.name}: ${daysSince} days since last activity${previousStreak > 0 ? ` (was on a ${previousStreak}-day streak)` : ''}</div>`;
+          });
+          html += '</div>';
+          atRiskContainer.innerHTML = html;
+        } else {
+          atRiskContainer.innerHTML = '';
+        }
+      }
+
+      // Momentum summary
+      if (summaryContainer) {
+        const activeStreaks = Object.values(pillarStreaks).filter(s => s.current > 0).length;
+        const totalPillars = pillars.length;
+        
+        let momentum;
+        if (activeStreaks >= 6) momentum = '📈 OVERALL MOMENTUM: STRONG';
+        else if (activeStreaks >= 4) momentum = '📈 OVERALL MOMENTUM: GOOD';
+        else if (activeStreaks >= 2) momentum = '📈 OVERALL MOMENTUM: BUILDING';
+        else momentum = '📈 OVERALL MOMENTUM: NEEDS WORK';
+        
+        summaryContainer.innerHTML = `
+          <strong>${momentum}</strong><br>
+          You're maintaining consistency across ${activeStreaks} of ${totalPillars} pillars. ${atRiskPillars.length > 0 ? "Don't let " + atRiskPillars[0].pillar.name + " slip!" : "Keep it up!"}
+        `;
+      }
+    }
+
+    // Render Daily Recommendations
+    function renderRecommendations() {
+      const container = document.getElementById('recommendationsList');
+      if (!container) return;
+
+      container.innerHTML = '';
+      
+      // Calculate current balance
+      const pillarTotals = {};
+      let totalToday = 0;
+      pillars.forEach(p => pillarTotals[p.id] = 0);
+      Object.keys(todayState.completed).forEach(cellId => {
+        const pillarId = cellId.split('-')[0];
+        if (pillarTotals[pillarId] !== undefined) {
+          pillarTotals[pillarId]++;
+          totalToday++;
+        }
+      });
+
+      const targets = userSettings.pillarTargets;
+      const weights = userSettings.goalWeights;
+      
+      // Find neglected high-priority pillars
+      const recommendations = [];
+      
+      pillars.forEach(pillar => {
+        const actual = totalToday > 0 ? (pillarTotals[pillar.id] / totalToday) * 100 : 0;
+        const target = targets[pillar.id];
+        const weight = weights[pillar.id];
+        const daysSince = getDaysSinceLastActivity(pillar.id);
+        
+        const score = weight * (target - actual) + (daysSince * 2);
+        
+        recommendations.push({
+          pillar,
+          score,
+          actual,
+          target,
+          weight,
+          daysSince
+        });
+      });
+
+      // Sort by score (highest first)
+      recommendations.sort((a, b) => b.score - a.score);
+      
+      // High priority (top 2 if significantly under target)
+      const highPriority = recommendations.slice(0, 2).filter(r => r.actual < r.target - 5 || r.daysSince >= 3);
+      
+      if (highPriority.length > 0) {
+        highPriority.forEach(rec => {
+          const taskCount = Math.ceil((rec.target - rec.actual) / 10) || 1;
+          const item = document.createElement('div');
+          item.className = 'recommendation-item high-priority';
+          item.innerHTML = `
+            <div class="recommendation-title">🎯 ${rec.pillar.name} (${taskCount} tasks)</div>
+            <div class="recommendation-why">
+              Why: ${rec.daysSince >= 3 ? `${rec.daysSince} days since last activity, streak at risk` : `Primary goal + only ${Math.round(rec.actual)}% vs ${rec.target}% target`}
+            </div>
+          `;
+          container.appendChild(item);
+        });
+      }
+
+      // Dial back (over-indexed)
+      const overIndexed = recommendations.filter(r => r.actual > r.target + 15);
+      if (overIndexed.length > 0) {
+        const rec = overIndexed[0];
+        const item = document.createElement('div');
+        item.className = 'recommendation-item dial-back';
+        item.innerHTML = `
+          <div class="recommendation-title">⚠️ DIAL BACK: ${rec.pillar.name}</div>
+          <div class="recommendation-why">
+            You're over-indexing here (${Math.round(rec.actual)}% vs ${rec.target}% target). Do 1 task max today, save energy for priority areas.
+          </div>
+        `;
+        container.appendChild(item);
+      }
+
+      // Maintain (on track with streaks)
+      const maintain = recommendations.filter(r => 
+        Math.abs(r.actual - r.target) <= 5 && 
+        pillarStreaks[r.pillar.id].current >= 7
+      );
+      
+      if (maintain.length > 0) {
+        maintain.slice(0, 2).forEach(rec => {
+          const item = document.createElement('div');
+          item.className = 'recommendation-item maintain';
+          item.innerHTML = `
+            <div class="recommendation-title">✅ MAINTAIN: ${rec.pillar.name} (1-2 tasks)</div>
+            <div class="recommendation-why">
+              ${pillarStreaks[rec.pillar.id].current}-day streak, keep momentum!
+            </div>
+          `;
+          container.appendChild(item);
+        });
+      }
+
+      if (container.children.length === 0) {
+        container.innerHTML = '<div style="color: #6e6e73; font-size: 0.8rem;">Complete more tasks to get personalized recommendations.</div>';
+      }
+    }
+
+    // Render Weekly Summary
+    function renderWeeklySummary() {
+      const winsContainer = document.getElementById('weeklySummaryWins');
+      const gapsContainer = document.getElementById('weeklySummaryGaps');
+      const trendsContainer = document.getElementById('weeklySummaryTrends');
+      
+      if (!winsContainer || !gapsContainer || !trendsContainer) return;
+
+      // Get last 7 days
+      const today = new Date();
+      const weekAgo = new Date(today);
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      
+      const thisWeekPillarTotals = {};
+      let thisWeekTotal = 0;
+      pillars.forEach(p => thisWeekPillarTotals[p.id] = 0);
+      
+      // Count this week's completions
+      for (let d = new Date(weekAgo); d <= today; d.setDate(d.getDate() + 1)) {
+        const dateStr = d.toISOString().split('T')[0];
+        const entry = dailyHistory[dateStr];
+        if (entry && entry.pillars) {
+          Object.keys(entry.pillars).forEach(pillarId => {
+            if (thisWeekPillarTotals[pillarId] !== undefined) {
+              thisWeekPillarTotals[pillarId] += entry.pillars[pillarId];
+              thisWeekTotal += entry.pillars[pillarId];
+            }
+          });
+        }
+      }
+
+      // Previous week
+      const twoWeeksAgo = new Date(weekAgo);
+      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 7);
+      
+      const lastWeekPillarTotals = {};
+      pillars.forEach(p => lastWeekPillarTotals[p.id] = 0);
+      
+      for (let d = new Date(twoWeeksAgo); d < weekAgo; d.setDate(d.getDate() + 1)) {
+        const dateStr = d.toISOString().split('T')[0];
+        const entry = dailyHistory[dateStr];
+        if (entry && entry.pillars) {
+          Object.keys(entry.pillars).forEach(pillarId => {
+            if (lastWeekPillarTotals[pillarId] !== undefined) {
+              lastWeekPillarTotals[pillarId] += entry.pillars[pillarId];
+            }
+          });
+        }
+      }
+
+      // Render wins
+      winsContainer.innerHTML = '';
+      const wins = [];
+      
+      pillars.forEach(pillar => {
+        const count = thisWeekPillarTotals[pillar.id];
+        const streak = pillarStreaks[pillar.id];
+        
+        if (streak.current >= 7) {
+          wins.push({ text: `${streak.current}-day streak maintained (${pillar.name})`, icon: '🔥' });
+        }
+        
+        if (count >= 8) {
+          const lastWeek = lastWeekPillarTotals[pillar.id];
+          const growth = lastWeek > 0 ? Math.round(((count - lastWeek) / lastWeek) * 100) : 0;
+          wins.push({ 
+            text: `${count} tasks in ${pillar.name}${growth > 0 ? ` - up ${growth}% from last week!` : ''}`, 
+            icon: '✅' 
+          });
+        }
+      });
+
+      if (wins.length > 0) {
+        wins.forEach(win => {
+          const item = document.createElement('div');
+          item.className = 'summary-item';
+          item.setAttribute('data-icon', win.icon);
+          item.textContent = win.text;
+          winsContainer.appendChild(item);
+        });
+      } else {
+        winsContainer.innerHTML = '<div class="summary-item" data-icon="💭">Build momentum this week to see wins here!</div>';
+      }
+
+      // Render gaps
+      gapsContainer.innerHTML = '';
+      const gaps = [];
+      
+      pillars.forEach(pillar => {
+        const count = thisWeekPillarTotals[pillar.id];
+        const lastWeek = lastWeekPillarTotals[pillar.id];
+        
+        if (count === 0) {
+          gaps.push({ text: `0 activities this week (${pillar.name})`, icon: '❌' });
+        } else if (count <= 2 && lastWeek >= 5) {
+          const drop = Math.round(((lastWeek - count) / lastWeek) * 100);
+          gaps.push({ text: `Only ${count} tasks in ${pillar.name} - down ${drop}% from last week`, icon: '❌' });
+        }
+      });
+
+      if (gaps.length > 0) {
+        gaps.forEach(gap => {
+          const item = document.createElement('div');
+          item.className = 'summary-item';
+          item.setAttribute('data-icon', gap.icon);
+          item.textContent = gap.text;
+          gapsContainer.appendChild(item);
+        });
+      } else {
+        gapsContainer.innerHTML = '<div class="summary-item" data-icon="✨">No major gaps - great balance!</div>';
+      }
+
+      // Render trends
+      trendsContainer.innerHTML = '';
+      
+      pillars.slice(0, 5).forEach(pillar => {
+        const thisWeek = thisWeekPillarTotals[pillar.id];
+        const lastWeek = lastWeekPillarTotals[pillar.id];
+        
+        let trend, icon;
+        if (lastWeek === 0 && thisWeek > 0) {
+          trend = 'NEW activity';
+          icon = '🆕';
+        } else if (lastWeek === 0) {
+          return; // Skip
+        } else {
+          const change = thisWeek - lastWeek;
+          const pct = Math.round((change / lastWeek) * 100);
+          
+          if (pct > 20) {
+            trend = `+${pct}% (${lastWeek} → ${thisWeek})`;
+            icon = '↗️';
+          } else if (pct < -20) {
+            trend = `${pct}% (${lastWeek} → ${thisWeek})`;
+            icon = '↘️';
+          } else {
+            trend = `steady (${thisWeek} tasks)`;
+            icon = '→';
+          }
+        }
+        
+        const item = document.createElement('div');
+        item.className = 'summary-item';
+        item.setAttribute('data-icon', icon);
+        item.textContent = `${pillar.name}: ${trend}`;
+        trendsContainer.appendChild(item);
+      });
+    }
+
+    // Render Goal Progress Metrics
+    function renderGoalProgress() {
+      const careerContainer = document.getElementById('careerMetricsGrid');
+      const creativeContainer = document.getElementById('creativeMetricsGrid');
+      const timeToGoalContainer = document.getElementById('timeToGoal');
+      
+      if (!careerContainer || !creativeContainer) return;
+
+      const metrics = goalMetrics;
+      
+      // Career metrics
+      careerContainer.innerHTML = `
+        <div class="metric-card">
+          <div class="metric-label">Total Applications</div>
+          <div class="metric-value">${metrics.jobsApplied}</div>
+          <div class="metric-change">Track in settings</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Interviews Scheduled</div>
+          <div class="metric-value">${metrics.interviewsScheduled}</div>
+          <div class="metric-change">${metrics.interviewsScheduled > 0 ? metrics.interviewsScheduled + ' active' : 'Keep applying!'}</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Networking Conversations</div>
+          <div class="metric-value">${metrics.networkingConversations}</div>
+          <div class="metric-change">Build relationships</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">LinkedIn Connections</div>
+          <div class="metric-value">${metrics.linkedinConnections}</div>
+          <div class="metric-change">Expand network</div>
+        </div>
+      `;
+
+      // Creative metrics
+      creativeContainer.innerHTML = `
+        <div class="metric-card">
+          <div class="metric-label">Instagram Followers</div>
+          <div class="metric-value">${metrics.instagramFollowers.toLocaleString()}</div>
+          <div class="metric-change">Growing audience</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">TikTok Followers</div>
+          <div class="metric-value">${metrics.tiktokFollowers.toLocaleString()}</div>
+          <div class="metric-change">Video reach</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Posts This Week</div>
+          <div class="metric-value">${metrics.postsThisWeek}</div>
+          <div class="metric-change">Target: 3-5</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Art Revenue</div>
+          <div class="metric-value">$${metrics.artRevenue.toFixed(2)}</div>
+          <div class="metric-change">${metrics.artRevenue === 0 ? 'Not launched yet' : 'Monthly total'}</div>
+        </div>
+      `;
+
+      // Time to goal estimate
+      if (timeToGoalContainer) {
+        const applicationsPerWeek = 3; // Average from data
+        const interviewRate = 0.05; // 5% of applications
+        const targetApplications = 100; // Rough estimate to land role
+        
+        const remaining = Math.max(0, targetApplications - metrics.jobsApplied);
+        const weeksRemaining = Math.ceil(remaining / applicationsPerWeek);
+        const monthsRemaining = Math.ceil(weeksRemaining / 4);
+        
+        timeToGoalContainer.innerHTML = `
+          <strong>⏱️ TIME TO GOAL:</strong> Estimated ${monthsRemaining}-${monthsRemaining + 1} months based on current application rate
+          ${metrics.interviewsScheduled > 0 ? ' (interviews in progress - could be sooner!)' : ''}
+        `;
+      }
+    }
+
+    // Settings functions
+    function openSettings() {
+      const overlay = document.getElementById('settingsOverlay');
+      if (!overlay) return;
+
+      // Populate pillar targets
+      const pillarTargetsContainer = document.getElementById('pillarTargetsSettings');
+      if (pillarTargetsContainer) {
+        pillarTargetsContainer.innerHTML = '';
+        pillars.forEach(pillar => {
+          const row = document.createElement('div');
+          row.className = 'settings-row';
+          row.innerHTML = `
+            <span class="settings-label">${pillar.name}</span>
+            <input type="number" class="settings-input" id="target-${pillar.id}" 
+                   value="${userSettings.pillarTargets[pillar.id]}" min="0" max="100" />
+          `;
+          pillarTargetsContainer.appendChild(row);
+        });
+      }
+
+      // Populate goal weights
+      const goalWeightsContainer = document.getElementById('goalWeightsSettings');
+      if (goalWeightsContainer) {
+        goalWeightsContainer.innerHTML = '';
+        pillars.forEach(pillar => {
+          const row = document.createElement('div');
+          row.className = 'settings-row';
+          row.innerHTML = `
+            <span class="settings-label">${pillar.name}</span>
+            <input type="number" class="settings-input" id="weight-${pillar.id}" 
+                   value="${userSettings.goalWeights[pillar.id]}" min="1" max="10" />
+          `;
+          goalWeightsContainer.appendChild(row);
+        });
+      }
+
+      // Populate other settings
+      document.getElementById('workHoursInput').value = userSettings.workHoursPerWeek;
+      document.getElementById('availableHoursInput').value = userSettings.availableHoursPerDay;
+
+      // Populate goal metrics
+      document.getElementById('jobsAppliedInput').value = goalMetrics.jobsApplied;
+      document.getElementById('interviewsInput').value = goalMetrics.interviewsScheduled;
+      document.getElementById('networkingInput').value = goalMetrics.networkingConversations;
+      document.getElementById('linkedinInput').value = goalMetrics.linkedinConnections;
+      document.getElementById('instagramInput').value = goalMetrics.instagramFollowers;
+      document.getElementById('tiktokInput').value = goalMetrics.tiktokFollowers;
+      document.getElementById('postsInput').value = goalMetrics.postsThisWeek;
+      document.getElementById('revenueInput').value = goalMetrics.artRevenue;
+
+      overlay.classList.add('visible');
+    }
+
+    function closeSettings() {
+      const overlay = document.getElementById('settingsOverlay');
+      if (overlay) overlay.classList.remove('visible');
+    }
+
+    function saveSettings() {
+      // Save pillar targets
+      pillars.forEach(pillar => {
+        const input = document.getElementById(`target-${pillar.id}`);
+        if (input) userSettings.pillarTargets[pillar.id] = parseFloat(input.value) || 0;
+      });
+
+      // Save goal weights
+      pillars.forEach(pillar => {
+        const input = document.getElementById(`weight-${pillar.id}`);
+        if (input) userSettings.goalWeights[pillar.id] = parseInt(input.value) || 1;
+      });
+
+      // Save other settings
+      userSettings.workHoursPerWeek = parseFloat(document.getElementById('workHoursInput').value) || 45;
+      userSettings.availableHoursPerDay = parseFloat(document.getElementById('availableHoursInput').value) || 3;
+
+      // Save goal metrics
+      goalMetrics.jobsApplied = parseInt(document.getElementById('jobsAppliedInput').value) || 0;
+      goalMetrics.interviewsScheduled = parseInt(document.getElementById('interviewsInput').value) || 0;
+      goalMetrics.networkingConversations = parseInt(document.getElementById('networkingInput').value) || 0;
+      goalMetrics.linkedinConnections = parseInt(document.getElementById('linkedinInput').value) || 0;
+      goalMetrics.instagramFollowers = parseInt(document.getElementById('instagramInput').value) || 0;
+      goalMetrics.tiktokFollowers = parseInt(document.getElementById('tiktokInput').value) || 0;
+      goalMetrics.postsThisWeek = parseInt(document.getElementById('postsInput').value) || 0;
+      goalMetrics.artRevenue = parseFloat(document.getElementById('revenueInput').value) || 0;
+
+      localStorage.setItem(STORAGE_SETTINGS_KEY, JSON.stringify(userSettings));
+      localStorage.setItem(STORAGE_GOAL_METRICS_KEY, JSON.stringify(goalMetrics));
+
+      closeSettings();
+      
+      // Refresh all analytics
+      renderPriorityAlignment();
+      renderRecommendations();
+      renderGoalProgress();
+    }
+
+    // Update all new analytics
+    function updateNewAnalytics() {
+      renderPriorityAlignment();
+      renderStreaks();
+      renderRecommendations();
+      renderWeeklySummary();
+      renderGoalProgress();
+    }
+
     function init() {
       loadState();
       const dateDisplay = document.getElementById("dateDisplay");
@@ -3377,6 +4811,44 @@
       renderGrowthInsights();
       updateTimeRangeButtons();
       updatePillarBalance();
+      
+      // Initialize new analytics
+      updateNewAnalytics();
+      
+      // Set up settings button
+      const settingsBtn = document.getElementById('settingsBtn');
+      if (settingsBtn) {
+        settingsBtn.addEventListener('click', openSettings);
+      }
+      
+      const settingsClose = document.getElementById('settingsClose');
+      if (settingsClose) {
+        settingsClose.addEventListener('click', closeSettings);
+      }
+      
+      const settingsOverlay = document.getElementById('settingsOverlay');
+      if (settingsOverlay) {
+        settingsOverlay.addEventListener('click', (e) => {
+          if (e.target === settingsOverlay) closeSettings();
+        });
+      }
+      
+      const settingsSaveBtn = document.getElementById('settingsSaveBtn');
+      if (settingsSaveBtn) {
+        settingsSaveBtn.addEventListener('click', saveSettings);
+      }
+      
+      // Set up achievements toggle
+      const achievementsToggle = document.getElementById('achievementsToggle');
+      const achievementsGrid = document.getElementById('achievementsGrid');
+      const achievementsArrow = document.getElementById('achievementsArrow');
+      if (achievementsToggle && achievementsGrid && achievementsArrow) {
+        achievementsToggle.addEventListener('click', () => {
+          const isHidden = achievementsGrid.style.display === 'none';
+          achievementsGrid.style.display = isHidden ? 'grid' : 'none';
+          achievementsArrow.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+      }
       
       // Set up time range selector
       document.querySelectorAll('.time-range-btn').forEach(btn => {
