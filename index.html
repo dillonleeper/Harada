@@ -1554,14 +1554,15 @@
       }
 
       .pillar-box, .center-box {
-        min-height: 100vh;
         scroll-snap-align: start;
         display: flex;
         flex-direction: column;
-        padding: 24px 16px;
+        justify-content: center;
+        padding: 20px 16px;
         border-bottom: 3px solid #d2d2d7;
         aspect-ratio: auto;
         width: 100%;
+        min-height: auto;
       }
 
       .pillar-box:last-of-type {
@@ -1585,6 +1586,7 @@
         background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
         border-bottom: 3px solid #d2d2d7;
         border-left: none;
+        padding: 40px 16px;
       }
 
       /* Keep tasks in 3x3 grid but make it responsive */
@@ -1592,11 +1594,10 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(3, 1fr);
-        gap: 10px;
+        gap: 8px;
         width: 100%;
-        max-width: 500px;
-        margin: 0 auto;
-        aspect-ratio: 1 / 1;
+        max-width: 100%;
+        margin: 0;
       }
 
       .task-cell {
