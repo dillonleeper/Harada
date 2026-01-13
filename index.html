@@ -224,28 +224,22 @@
 
     .task-title {
       font-weight: 600;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: #1d1d1f;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
       width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.2;
     }
 
     .task-hint {
       font-weight: 400;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       color: #6e6e73;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
       width: 100%;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.2;
     }
 
     .task-cell:hover {
@@ -2051,10 +2045,10 @@
         tasks: [
           { title: "Sketch", hint: "New idea or concept" },
           { title: "Study", hint: "Form (anatomy/perspective/composition)" },
-          { title: "Study", hint: "Light and shadow principles" },
+          { title: "Simplify", hint: "Reference into simple shapes" },
           { title: "Practice", hint: "Gesture drawing for 15 min" },
           { title: "Work", hint: "On current piece/idea" },
-          { title: "Push", hint: "Piece toward completion" },
+          { title: "Capture", hint: "One new idea in notes" },
           { title: "Observe", hint: "Analyze reference images" },
           { title: "Control", hint: "Edges in current artwork" }
         ]
@@ -2075,16 +2069,16 @@
       },
       {
         id: "P3",
-        name: "Career Transition",
+        name: "Finance",
         tasks: [
           { title: "Apply", hint: "To 1-2 target roles" },
           { title: "Research", hint: "Companies/roles for applications" },
           { title: "Reach Out", hint: "1 person at target company" },
           { title: "Practice", hint: "Answering interview questions" },
-          { title: "Study", hint: "Industry trends (GTM/ops/growth)" },
+          { title: "Save", hint: "Money or budget" },
           { title: "Learn", hint: "One career-relevant skill" },
-          { title: "Update", hint: "Portfolio/resume with work" },
-          { title: "Attend", hint: "Or watch webinar in field" }
+          { title: "Invest", hint: "In stocks, funds, or education" },
+          { title: "Bookmark", hint: "One role or opportunity" }
         ]
       },
       {
@@ -2095,7 +2089,7 @@
           { title: "Say Yes", hint: "To an invitation" },
           { title: "Plan", hint: "A hangout or suggest plans" },
           { title: "Show Up", hint: "To chess meetup or social event" },
-          { title: "Stay After", hint: "Gym/event and chat" },
+          { title: "Be", hint: "Mindful (no multitasking)" },
           { title: "Engage", hint: "In online community genuinely" },
           { title: "Follow Up", hint: "With someone you haven't talked to" },
           { title: "Plan Date", hint: "Or activity with girlfriend" }
@@ -2111,7 +2105,7 @@
           { title: "Listen", hint: "To podcast in your field" },
           { title: "Learn From", hint: "Someone you admire" },
           { title: "Consume", hint: "Content that inspires you" },
-          { title: "Study", hint: "Case study in your industry" },
+          { title: "Listen", hint: "To audiobook or lecture" },
           { title: "Explore", hint: "Adjacent skills" }
         ]
       },
@@ -2120,8 +2114,8 @@
         name: "Creative Platform",
         tasks: [
           { title: "Create", hint: "Art (even 15-20 min)" },
-          { title: "Post", hint: "To Instagram or TikTok" },
-          { title: "Engage", hint: "With 5 accounts in your niche" },
+          { title: "Publish", hint: "One piece of content" },
+          { title: "Capture", hint: "Process or idea" },
           { title: "Share", hint: "Work-in-progress or process" },
           { title: "Write", hint: "Caption or content idea" },
           { title: "Edit", hint: "Media for posting" },
@@ -2135,7 +2129,7 @@
         tasks: [
           { title: "Train", hint: "Go to gym/workout" },
           { title: "Eat", hint: "Enough (hit calorie target)" },
-          { title: "Sleep", hint: "On time (in bed by X)" },
+          { title: "Sleep", hint: "8 hours" },
           { title: "Stretch", hint: "Posture & hips" },
           { title: "Drink", hint: "Water (hit daily target)" },
           { title: "Take", hint: "Supplements" },
@@ -2148,13 +2142,13 @@
         name: "Identity & Discipline",
         tasks: [
           { title: "Shut Down", hint: "Phone/laptop when arriving home" },
-          { title: "Delay", hint: "Scrolling until after 1 creation" },
+          { title: "Keep", hint: "Environment clean and organized" },
           { title: "Decide", hint: "Today's #1 priority (morning)" },
           { title: "Start", hint: "Hard thing first (no warm-up)" },
           { title: "Keep", hint: "Promise to yourself today" },
           { title: "Regain", hint: "Attention when distracted" },
           { title: "Be", hint: "Present (no multitasking)" },
-          { title: "Review", hint: "Did I do what I said?" }
+          { title: "Treat Others", hint: "How you want to be treated" }
         ]
       }
     ];
