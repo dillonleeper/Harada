@@ -1558,8 +1558,8 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 20px 16px;
-        border-bottom: 3px solid #d2d2d7;
+        padding: 16px 12px;
+        border-bottom: 2px solid #d2d2d7;
         aspect-ratio: auto;
         width: 100%;
         min-height: auto;
@@ -1570,23 +1570,23 @@
       }
 
       /* Pillar-specific colored borders for visual distinction */
-      .pillar-box:nth-child(1) { border-left: 5px solid #a8c5ff; }
-      .pillar-box:nth-child(2) { border-left: 5px solid #c5b8ff; }
-      .pillar-box:nth-child(3) { border-left: 5px solid #90d4a8; }
-      .pillar-box:nth-child(4) { border-left: 5px solid #b8bac7; }
-      .pillar-box:nth-child(5) { border-left: 5px solid #7dd4ca; }
-      .pillar-box:nth-child(6) { border-left: 5px solid #ffd966; }
-      .pillar-box:nth-child(7) { border-left: 5px solid #ffa8b8; }
-      .pillar-box:nth-child(8) { border-left: 5px solid #ffb366; }
+      .pillar-box:nth-child(1) { border-left: 4px solid #a8c5ff; }
+      .pillar-box:nth-child(2) { border-left: 4px solid #c5b8ff; }
+      .pillar-box:nth-child(3) { border-left: 4px solid #90d4a8; }
+      .pillar-box:nth-child(4) { border-left: 4px solid #b8bac7; }
+      .pillar-box:nth-child(5) { border-left: 4px solid #7dd4ca; }
+      .pillar-box:nth-child(6) { border-left: 4px solid #ffd966; }
+      .pillar-box:nth-child(7) { border-left: 4px solid #ffa8b8; }
+      .pillar-box:nth-child(8) { border-left: 4px solid #ffb366; }
 
       .center-box {
         display: flex;
         align-items: center;
         justify-content: center;
         background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
-        border-bottom: 3px solid #d2d2d7;
+        border-bottom: 2px solid #d2d2d7;
         border-left: none;
-        padding: 40px 16px;
+        padding: 24px 12px;
       }
 
       /* Keep tasks in 3x3 grid but make it responsive */
@@ -1594,7 +1594,7 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(3, 1fr);
-        gap: 8px;
+        gap: 6px;
         width: 100%;
         max-width: 100%;
         margin: 0;
@@ -1603,30 +1603,30 @@
       .task-cell {
         min-height: unset;
         aspect-ratio: 1 / 1;
-        font-size: 0.7rem;
-        padding: 10px 8px;
-        border-width: 1.5px;
+        font-size: 0.65rem;
+        padding: 6px 4px;
+        border-width: 1px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 3px;
+        gap: 2px;
       }
 
       .task-title {
-        font-size: 0.7rem;
-        line-height: 1.15;
+        font-size: 0.65rem;
+        line-height: 1.1;
       }
 
       .task-hint {
-        font-size: 0.6rem;
-        line-height: 1.15;
+        font-size: 0.55rem;
+        line-height: 1.1;
       }
 
       .pillar-title {
-        font-size: 1.3rem;
-        padding: 14px 12px;
-        margin-bottom: 16px;
+        font-size: 1rem;
+        padding: 10px 8px;
+        margin-bottom: 8px;
         position: static;
         grid-column: auto;
         grid-row: auto;
@@ -1635,8 +1635,8 @@
       }
 
       .center-title {
-        font-size: 1.2rem;
-        padding: 28px 20px;
+        font-size: 1rem;
+        padding: 16px 12px;
         aspect-ratio: auto;
         position: static;
         grid-column: auto;
@@ -1646,7 +1646,7 @@
       }
 
       .center-title strong {
-        font-size: 1rem;
+        font-size: 0.9rem;
       }
 
       .center-title span {
