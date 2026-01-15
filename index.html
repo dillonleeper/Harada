@@ -351,57 +351,7 @@
       white-space: nowrap;
     }
 
-    .today-reflection {
-      display: none;
-      max-width: 980px;
-      width: 100%;
-      background: #f9fafb;
-      border: 1px solid #e5e5ea;
-      border-radius: 8px;
-      padding: 14px 18px;
-      gap: 16px;
-    }
 
-    .reflection-count {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #1d1d1f;
-      white-space: nowrap;
-    }
-
-    .pillar-dots {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .pillar-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #e5e5ea;
-      transition: all 0.2s ease;
-    }
-
-    .pillar-dot.active {
-      transform: scale(1.1);
-    }
-
-    .pillar-dot[data-pillar="P1"].active { background: var(--pillar-p1); border: 1.5px solid #a8c5ff; }
-    .pillar-dot[data-pillar="P2"].active { background: var(--pillar-p2); border: 1.5px solid #c5b8ff; }
-    .pillar-dot[data-pillar="P3"].active { background: var(--pillar-p3); border: 1.5px solid #90d4a8; }
-    .pillar-dot[data-pillar="P4"].active { background: var(--pillar-p4); border: 1.5px solid #7dd4ca; }
-    .pillar-dot[data-pillar="P5"].active { background: var(--pillar-p5); border: 1.5px solid #ffb366; }
-    .pillar-dot[data-pillar="P6"].active { background: var(--pillar-p6); border: 1.5px solid #ffa8b8; }
-    .pillar-dot[data-pillar="P7"].active { background: var(--pillar-p7); border: 1.5px solid #ffd966; }
-    .pillar-dot[data-pillar="P8"].active { background: var(--pillar-p8); border: 1.5px solid #b8bac7; }
-
-    .reflection-insight {
-      flex: 1;
-      font-size: 0.8rem;
-      color: #6e6e73;
-      line-height: 1.4;
-    }
 
     .stats {
       max-width: 980px;
@@ -986,48 +936,7 @@
       margin-top: 2px;
     }
 
-    .growth-insights-section {
-      max-width: 980px;
-      width: 100%;
-      background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
-      border-radius: 12px;
-      border: 1px solid #d2d2d7;
-      padding: 16px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
 
-    .growth-insights-section h2 {
-      font-size: 1rem;
-      margin: 0 0 12px 0;
-      font-weight: 600;
-      color: #1d1d1f;
-    }
-
-    .growth-insights-content {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .growth-insight-item {
-      background: #ffffff;
-      border: 1px solid #e5e5ea;
-      border-radius: 8px;
-      padding: 12px 14px;
-      font-size: 0.8rem;
-      line-height: 1.5;
-      color: #1d1d1f;
-    }
-
-    .growth-insight-item strong {
-      color: #007AFF;
-      font-weight: 600;
-    }
-
-    .growth-insight-item em {
-      color: #6e6e73;
-      font-style: italic;
-    }
 
     .pillar-balance {
       margin-bottom: 24px;
@@ -1255,6 +1164,7 @@
       border-radius: 8px;
       padding: 16px;
       height: 100%;
+      width: 100%;
     }
 
     .journal-header {
@@ -1481,9 +1391,7 @@
       font-size: 0.9rem;
     }
 
-    .balance-footer {
-      display: none;
-    }
+
 
     .streak-momentum {
       max-width: 980px;
@@ -1975,27 +1883,7 @@
     <!-- Pillars & center will be injected here by JavaScript -->
   </div>
 
-  <div class="today-reflection">
-    <div class="reflection-count" id="reflectionCount">—</div>
-    <div class="pillar-dots" id="pillarDots">
-      <div class="pillar-dot" data-pillar="P1"></div>
-      <div class="pillar-dot" data-pillar="P2"></div>
-      <div class="pillar-dot" data-pillar="P3"></div>
-      <div class="pillar-dot" data-pillar="P4"></div>
-      <div class="pillar-dot" data-pillar="P5"></div>
-      <div class="pillar-dot" data-pillar="P6"></div>
-      <div class="pillar-dot" data-pillar="P7"></div>
-      <div class="pillar-dot" data-pillar="P8"></div>
-    </div>
-    <div class="reflection-insight" id="reflectionInsight">Loading...</div>
-  </div>
 
-  <div class="growth-insights-section" style="display: none;">
-    <h2>Your Growth</h2>
-    <div class="growth-insights-content" id="growthInsights">
-      <!-- Insights will be injected here by JavaScript -->
-    </div>
-  </div>
 
   <div class="stats">
     <h2>Progress Overview</h2>
@@ -2070,14 +1958,7 @@
     </div>
   </div>
 
-  <!-- New Analytics Sections -->
-  <div class="analytics-section" id="priorityAlignmentSection" style="display: none;">
-    <h2>🎯 Priority Alignment</h2>
-    <div class="priority-grid" id="priorityGrid">
-      <!-- Priority rows will be injected here -->
-    </div>
-  </div>
-
+  <!-- Streaks Section (kept) -->
   <div class="analytics-section" id="streaksSection" style="display: none;">
     <h2>🔥 Streaks & Momentum</h2>
     <div class="streaks-grid" id="streaksGrid">
@@ -2085,13 +1966,6 @@
     </div>
     <div id="atRiskContainer"></div>
     <div id="momentumSummary" style="margin-top: 12px; padding: 12px; background: #f9fafb; border-radius: 8px; font-size: 0.8rem; color: #1d1d1f;"></div>
-  </div>
-
-  <div class="analytics-section" id="recommendationsSection" style="display: none;">
-    <h2>📋 Today's Focus Recommendations</h2>
-    <div class="recommendations-list" id="recommendationsList">
-      <!-- Recommendations will be injected here -->
-    </div>
   </div>
 
   <div class="analytics-section" id="weeklySummarySection" style="display: none;">
@@ -2108,15 +1982,6 @@
       <h3>📈 Week Over Week</h3>
       <div class="summary-items" id="weeklySummaryTrends"></div>
     </div>
-  </div>
-
-  <div class="analytics-section" id="goalProgressSection" style="display: none;">
-    <h2>🎯 Goal Progress: Meaningful Work & Self-Development</h2>
-    <h3>Meaningful Work & Leverage</h3>
-    <div class="metrics-grid" id="careerMetricsGrid"></div>
-    <h3 style="margin-top: 16px;">Competence, Mastery & Self-Respect</h3>
-    <div class="metrics-grid" id="creativeMetricsGrid"></div>
-    <div id="timeToGoal" style="margin-top: 16px; padding: 12px; background: #f0f9ff; border: 1px solid #007aff; border-radius: 8px; font-size: 0.8rem; color: #1d1d1f;"></div>
   </div>
 
   <div class="achievements-section">
