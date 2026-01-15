@@ -4357,6 +4357,11 @@
       const totalCompletions = Object.values(countsByPillar).reduce((sum, val) => sum + val, 0);
       const values = pillars.map(p => countsByPillar[p.id] || 0);
       
+      console.log('=== Radar Chart Data Verification ===');
+      console.log('Pillar order:', pillars.map(p => p.name));
+      console.log('Values for radar chart:', values);
+      console.log('Total completions:', totalCompletions);
+      
       // Handle empty state - no all-time completions
       if (totalCompletions === 0) {
         const balanceScore = document.getElementById('balanceScore');
