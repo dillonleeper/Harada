@@ -1191,8 +1191,8 @@
     }
 
     .radar-canvas {
-      width: 380px;
-      height: 380px;
+      width: 480px;
+      height: 480px;
       display: block;
       cursor: crosshair;
     }
@@ -1248,7 +1248,7 @@
 
     .balance-story {
       display: grid;
-      grid-template-columns: 380px 1fr;
+      grid-template-columns: 480px 1fr;
       gap: 24px;
       align-items: stretch;
     }
@@ -2038,7 +2038,7 @@
     <div class="balance-content">
       <div class="balance-story">
         <div class="radar-section" style="position: relative;">
-          <canvas id="radarChart" class="radar-canvas" width="380" height="380"></canvas>
+          <canvas id="radarChart" class="radar-canvas" width="480" height="480"></canvas>
           <div id="radarTooltip" class="radar-tooltip">
             <div class="radar-tooltip-pillar"></div>
             <div class="radar-tooltip-value"></div>
@@ -4639,7 +4639,7 @@
       const ctx = canvas.getContext('2d');
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const radius = 140;
+      const radius = 130;
       
       // Store data point positions for hover detection
       const dataPoints = [];
@@ -4689,7 +4689,7 @@
       
       pillars.forEach((pillar, i) => {
         const angle = (Math.PI * 2 * i) / 8 - Math.PI / 2;
-        const labelRadius = radius + 24;
+        const labelRadius = radius + 55;
         const x = centerX + Math.cos(angle) * labelRadius;
         const y = centerY + Math.sin(angle) * labelRadius;
         
