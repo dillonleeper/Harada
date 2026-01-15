@@ -3187,6 +3187,20 @@
           }
         }
       });
+      
+      // Listen to journal entries (reflections)
+      userRef.collection('journalEntries').doc('data').onSnapshot((doc) => {
+        if (doc.exists && !doc.metadata.hasPendingWrites) {
+          const cloudData = doc.data();
+          if (JSON.stringify(cloudData) !== JSON.stringify(journalEntries)) {
+            console.log('📥 Syncing journal entries from cloud');
+            journalEntries = cloudData;
+            localStorage.setItem(STORAGE_JOURNAL_KEY, JSON.stringify(journalEntries));
+            loadTodayJournal();
+            updateTodayReflection();
+          }
+        }
+      });
     }
 
     function saveTodayState() {
@@ -4743,6 +4757,12 @@
           const pillarName = hoveredPoint.pillar.name;
           const taskCount = hoveredPoint.value;
           const plural = taskCount === 1 ? 'task' : 'tasks';
+          
+          console.log('Radar tooltip hover:', {
+            pillar: pillarName,
+            value: taskCount,
+            pillarId: hoveredPoint.pillar.id
+          });
           
           tooltip.querySelector('.radar-tooltip-pillar').textContent = pillarName;
           tooltip.querySelector('.radar-tooltip-value').textContent = `${taskCount} ${plural} completed`;
