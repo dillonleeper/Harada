@@ -814,11 +814,18 @@
       box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
       transition: all 0.2s ease;
       z-index: 9999;
+      filter: grayscale(0) brightness(2);
     }
 
     .settings-btn:hover {
       transform: scale(1.05);
       box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .settings-btn {
+        filter: none;
+      }
     }
 
     .settings-overlay {
@@ -2129,7 +2136,7 @@
   </div>
 
   <!-- Account/Auth Button & Overlay -->
-  <button class="settings-btn" id="accountBtn" title="Account" style="bottom: 96px;">👤</button>
+  <button class="settings-btn" id="accountBtn" title="Account" style="bottom: 0; right: 0; border-radius: 12px 0 0 0; background: #007aff; filter: brightness(1.1);">👤</button>
   <div class="settings-overlay" id="authOverlay">
     <div class="settings-panel" style="max-width: 400px;">
       <div class="settings-header">
