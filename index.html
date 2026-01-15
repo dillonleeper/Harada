@@ -5457,6 +5457,20 @@
         googleSignInBtn.addEventListener('click', handleGoogleSignIn);
       }
       
+      // Make sync status clickable on mobile to open auth
+      const syncStatus = document.getElementById('syncStatus');
+      if (syncStatus) {
+        syncStatus.addEventListener('click', () => {
+          if (window.innerWidth <= 768) {
+            openAuth();
+          }
+        });
+        // Add pointer cursor on mobile
+        if (window.innerWidth <= 768) {
+          syncStatus.style.cursor = 'pointer';
+        }
+      }
+      
       const continueAnonymousBtn = document.getElementById('continueAnonymousBtn');
       if (continueAnonymousBtn) {
         continueAnonymousBtn.addEventListener('click', () => {
