@@ -1191,8 +1191,8 @@
     }
 
     .radar-canvas {
-      width: 320px;
-      height: 320px;
+      width: 380px;
+      height: 380px;
       display: block;
       cursor: crosshair;
     }
@@ -1248,7 +1248,7 @@
 
     .balance-story {
       display: grid;
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: 380px 1fr;
       gap: 24px;
       align-items: stretch;
     }
@@ -2038,7 +2038,7 @@
     <div class="balance-content">
       <div class="balance-story">
         <div class="radar-section" style="position: relative;">
-          <canvas id="radarChart" class="radar-canvas" width="320" height="320"></canvas>
+          <canvas id="radarChart" class="radar-canvas" width="380" height="380"></canvas>
           <div id="radarTooltip" class="radar-tooltip">
             <div class="radar-tooltip-pillar"></div>
             <div class="radar-tooltip-value"></div>
@@ -4639,7 +4639,7 @@
       const ctx = canvas.getContext('2d');
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const radius = 120;
+      const radius = 140;
       
       // Store data point positions for hover detection
       const dataPoints = [];
