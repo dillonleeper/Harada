@@ -4238,7 +4238,7 @@
     }
 
     function updatePillarBalance() {
-      // Get range window and filter completions
+      // Get range window for timeline display only
       const rangeWindow = getRangeWindow(selectedTimeRange);
       const completionEvents = getCompletionsInRange(rangeWindow);
       
@@ -4248,14 +4248,11 @@
       console.log('rangeWindow:', rangeWindow);
       console.log('eventsInRange:', completionEvents.length);
       
-      // Calculate pillar totals from completion events
+      // Calculate pillar totals from ALL-TIME stats (not filtered by range)
       const countsByPillar = {};
-      pillars.forEach(p => countsByPillar[p.id] = 0);
-      
-      completionEvents.forEach(event => {
-        if (countsByPillar[event.pillarId] !== undefined) {
-          countsByPillar[event.pillarId]++;
-        }
+      pillars.forEach(p => {
+        const pillarStats = statsAllTime?.[p.id];
+        countsByPillar[p.id] = pillarStats || 0;
       });
       
       console.log('countsByPillar:', countsByPillar);
@@ -4271,29 +4268,29 @@
       // Render activity timeline
       renderActivityTimeline(datesInRange);
       
-      const totalCompletions = completionEvents.length;
+      const totalCompletions = Object.values(countsByPillar).reduce((sum, val) => sum + val, 0);
       const values = pillars.map(p => countsByPillar[p.id] || 0);
       
-      // Handle empty state - no completions in this range
+      // Handle empty state - no all-time completions
       if (totalCompletions === 0) {
         const balanceScore = document.getElementById('balanceScore');
         if (balanceScore) balanceScore.textContent = '—';
         const balanceDescription = document.getElementById('balanceDescription');
-        if (balanceDescription) balanceDescription.textContent = 'No completions in this range yet.';
+        if (balanceDescription) balanceDescription.textContent = 'No completions yet.';
         const focusPatternPrimary = document.getElementById('focusPatternPrimary');
         if (focusPatternPrimary) focusPatternPrimary.textContent = '—';
         const focusPatternDescription = document.getElementById('focusPatternDescription');
-        if (focusPatternDescription) focusPatternDescription.textContent = 'No data in selected range.';
+        if (focusPatternDescription) focusPatternDescription.textContent = 'No data yet.';
         const focusPatternSecondary = document.getElementById('focusPatternSecondary');
         if (focusPatternSecondary) focusPatternSecondary.textContent = '';
         const stabilityScore = document.getElementById('stabilityScore');
         if (stabilityScore) stabilityScore.textContent = '—';
         const stabilityDescription = document.getElementById('stabilityDescription');
-        if (stabilityDescription) stabilityDescription.textContent = 'No data in selected range.';
+        if (stabilityDescription) stabilityDescription.textContent = 'No data yet.';
         const balanceTrend = document.getElementById('balanceTrend');
         if (balanceTrend) balanceTrend.textContent = '—';
         const balanceTrendDescription = document.getElementById('balanceTrendDescription');
-        if (balanceTrendDescription) balanceTrendDescription.textContent = 'No data to compare.';
+        if (balanceTrendDescription) balanceTrendDescription.textContent = 'Not enough data to compare.';
         const balanceFooter = document.getElementById('balanceFooter');
         if (balanceFooter) balanceFooter.textContent = 'Complete tasks to see balance insights here.';
         
@@ -4345,76 +4342,11 @@
         `${neglectedPillar.name} could use attention.` : 
         'Focus is evenly distributed.';
 
-      // Calculate and display balance trend
-      const rangeLength = datesInRange.length;
-      
-      // Calculate previous period window
-      let previousRangeWindow;
-      if (selectedTimeRange === "ytd" || selectedTimeRange === "all") {
-        // For YTD and All Time, compare to same period length ending before current range
-        const previousEndDate = new Date(rangeWindow.startDate);
-        previousEndDate.setDate(previousEndDate.getDate() - 1);
-        const previousStartDate = new Date(previousEndDate);
-        previousStartDate.setDate(previousStartDate.getDate() - (rangeLength - 1));
-        previousRangeWindow = { startDate: previousStartDate, endDate: previousEndDate };
-      } else {
-        // For Last N days, compare to previous N days
-        const days = parseInt(selectedTimeRange);
-        const previousEndDate = new Date(rangeWindow.startDate);
-        previousEndDate.setDate(previousEndDate.getDate() - 1);
-        const previousStartDate = new Date(previousEndDate);
-        previousStartDate.setDate(previousStartDate.getDate() - (days - 1));
-        previousRangeWindow = { startDate: previousStartDate, endDate: previousEndDate };
-      }
-      
-      const previousCompletions = getCompletionsInRange(previousRangeWindow);
-      const previousTotal = previousCompletions.length;
-      
-      if (previousTotal === 0 || rangeLength < 3) {
-        const balanceTrend = document.getElementById('balanceTrend');
-        if (balanceTrend) balanceTrend.textContent = '—';
-        const balanceTrendDescription = document.getElementById('balanceTrendDescription');
-        if (balanceTrendDescription) balanceTrendDescription.textContent = 'Not enough prior data to compare.';
-      } else {
-        // Calculate previous pillar distribution
-        const previousCountsByPillar = {};
-        pillars.forEach(p => previousCountsByPillar[p.id] = 0);
-        previousCompletions.forEach(event => {
-          if (previousCountsByPillar[event.pillarId] !== undefined) {
-            previousCountsByPillar[event.pillarId]++;
-          }
-        });
-        
-        const previousValues = pillars.map(p => previousCountsByPillar[p.id] || 0);
-        const previousMean = previousTotal / previousValues.length;
-        const previousVariance = previousValues.reduce((sum, v) => sum + Math.pow(v - previousMean, 2), 0) / previousValues.length;
-        const previousStdDev = Math.sqrt(previousVariance);
-        const previousCv = previousMean > 0 ? (previousStdDev / previousMean) : 0;
-        const previousBalanceScore = Math.round(Math.max(0, 100 - (previousCv * 100)));
-        
-        const delta = balanceScore - previousBalanceScore;
-        const absDelta = Math.abs(delta);
-        
-        if (delta > 0) {
-          const balanceTrend = document.getElementById('balanceTrend');
-          if (balanceTrend) balanceTrend.textContent = `+${delta}`;
-          const balanceTrendDescription = document.getElementById('balanceTrendDescription');
-          if (balanceTrendDescription) balanceTrendDescription.textContent = 
-            `More balanced than previous period (+${absDelta}).`;
-        } else if (delta < 0) {
-          const balanceTrend = document.getElementById('balanceTrend');
-          if (balanceTrend) balanceTrend.textContent = `${delta}`;
-          const balanceTrendDescription = document.getElementById('balanceTrendDescription');
-          if (balanceTrendDescription) balanceTrendDescription.textContent = 
-            `Less balanced than previous period (-${absDelta}).`;
-        } else {
-          const balanceTrend = document.getElementById('balanceTrend');
-          if (balanceTrend) balanceTrend.textContent = '0';
-          const balanceTrendDescription = document.getElementById('balanceTrendDescription');
-          if (balanceTrendDescription) balanceTrendDescription.textContent = 
-            'Same balance as previous period.';
-        }
-      }
+      // Balance Trend - hide since we're showing all-time data
+      const balanceTrend = document.getElementById('balanceTrend');
+      if (balanceTrend) balanceTrend.textContent = '—';
+      const balanceTrendDescription = document.getElementById('balanceTrendDescription');
+      if (balanceTrendDescription) balanceTrendDescription.textContent = 'Based on all-time data.';
 
       // Calculate and display focus stability
       const stability = calculateFocusStability(datesInRange);
