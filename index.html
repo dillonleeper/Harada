@@ -30,6 +30,9 @@
       background: #ffffff;
       color: #1d1d1f;
       
+      /* App Layout */
+      --app-max-width: 980px;
+      
       /* Pillar Colors - More Saturated Pastels */
       --pillar-p1: #D6E4FF; /* More Saturated Blue - Identity & Self-Understanding */
       --pillar-p2: #E5DBFF; /* More Saturated Violet - Love & Attachment */
@@ -52,9 +55,10 @@
 
     .header-container {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: baseline;
-      max-width: 980px;
+      max-width: min(var(--app-max-width), calc(100vw - 40px));
       width: 100%;
       gap: 16px;
     }
@@ -79,7 +83,7 @@
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
       gap: 8px;
-      max-width: 980px;
+      max-width: min(var(--app-max-width), calc(100vw - 40px));
       width: 100%;
       aspect-ratio: 1 / 1;
       border: 1px solid #d2d2d7;
@@ -349,12 +353,12 @@
       text-align: right;
       font-weight: 400;
       margin: 0;
-      white-space: nowrap;
+      white-space: normal;
     }
 
     .today-reflection {
       display: none;
-      max-width: 980px;
+      max-width: min(var(--app-max-width), calc(100vw - 40px));
       width: 100%;
       background: #f9fafb;
       border: 1px solid #e5e5ea;
@@ -405,7 +409,7 @@
     }
 
     .stats {
-      max-width: 980px;
+      max-width: min(var(--app-max-width), calc(100vw - 40px));
       width: 100%;
       background: #ffffff;
       border-radius: 12px;
@@ -500,7 +504,7 @@
 
     .achievements-section {
       display: none;
-      max-width: 980px;
+      max-width: min(var(--app-max-width), calc(100vw - 40px));
       width: 100%;
       background: #ffffff;
       border-radius: 12px;
@@ -525,7 +529,7 @@
 
     /* New Analytics Sections */
     .analytics-section {
-      max-width: 980px;
+      max-width: min(var(--app-max-width), calc(100vw - 40px));
       width: 100%;
       background: #ffffff;
       border-radius: 12px;
@@ -691,6 +695,149 @@
       font-size: 0.75rem;
       color: #6e6e73;
       margin-bottom: 4px;
+    }
+
+    /* Gamification & XP Toast */
+    .xp-toast {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #1d1d1f;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 10000;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .xp-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .game-hud {
+      max-width: min(var(--app-max-width), calc(100vw - 40px));
+      width: 100%;
+      background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+      border: 1px solid #d2d2d7;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.75rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .game-stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .game-stat-label {
+      color: #6e6e73;
+      font-weight: 500;
+    }
+
+    .game-stat-value {
+      color: #1d1d1f;
+      font-weight: 700;
+    }
+
+    .xp-bar-container {
+      flex: 1;
+      background: #e5e5ea;
+      border-radius: 8px;
+      height: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .xp-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #FFD700, #FFA500);
+      border-radius: 8px;
+      transition: width 0.5s ease;
+    }
+
+    /* Today's Quest Card */
+    .quest-card {
+      max-width: min(var(--app-max-width), calc(100vw - 40px));
+      width: 100%;
+      background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
+      border: 2px solid #FFD700;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.15);
+    }
+
+    .quest-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .quest-icon {
+      font-size: 1.5rem;
+    }
+
+    .quest-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+
+    .quest-description {
+      font-size: 0.85rem;
+      color: #6e6e73;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .quest-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .quest-progress-bar {
+      flex: 1;
+      background: #e5e5ea;
+      border-radius: 8px;
+      height: 12px;
+      overflow: hidden;
+    }
+
+    .quest-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #34c759, #30d158);
+      border-radius: 8px;
+      transition: width 0.5s ease;
+    }
+
+    .quest-progress-text {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #1d1d1f;
+      white-space: nowrap;
+    }
+
+    .quest-reward {
+      font-size: 0.75rem;
+      color: #ff9500;
+      font-weight: 600;
+      text-align: center;
     }
 
     /* Recommendations Section */
@@ -996,7 +1143,7 @@
     }
 
     .growth-insights-section {
-      max-width: 980px;
+      max-width: min(var(--app-max-width), calc(100vw - 40px));
       width: 100%;
       background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
       border-radius: 12px;
@@ -1040,7 +1187,7 @@
 
     .pillar-balance {
       margin-bottom: 24px;
-      max-width: 980px;
+      max-width: min(var(--app-max-width), calc(100vw - 40px));
       width: 100%;
       background: #ffffff;
       border-radius: 12px;
@@ -1493,7 +1640,7 @@
     }
 
     .streak-momentum {
-      max-width: 980px;
+      max-width: min(var(--app-max-width), calc(100vw - 40px));
       width: 100%;
       background: #fafbfc;
       border: 1px solid #e5e5ea;
@@ -1976,6 +2123,46 @@
   <div id="syncStatus" style="position: fixed; top: 12px; right: 12px; padding: 6px 12px; background: rgba(0, 122, 255, 0.1); border: 1px solid rgba(0, 122, 255, 0.3); border-radius: 20px; font-size: 0.7rem; color: #007AFF; display: none; align-items: center; gap: 6px; z-index: 9998;">
     <span id="syncIcon">☁️</span>
     <span id="syncText">Syncing...</span>
+  </div>
+
+  <!-- XP Toast -->
+  <div class="xp-toast" id="xpToast">+5 XP</div>
+
+  <!-- Game HUD -->
+  <div class="game-hud" id="gameHud">
+    <div class="game-stat">
+      <span class="game-stat-label">Level</span>
+      <span class="game-stat-value" id="gameLevel">1</span>
+    </div>
+    <div class="game-stat">
+      <span class="game-stat-label">XP</span>
+      <span class="game-stat-value" id="gameXP">0</span>
+    </div>
+    <div class="xp-bar-container">
+      <div class="xp-bar-fill" id="xpBarFill" style="width: 0%;"></div>
+    </div>
+    <div class="game-stat">
+      <span class="game-stat-label">🔥 Freezes</span>
+      <span class="game-stat-value" id="gameFreezes">0</span>
+    </div>
+  </div>
+
+  <!-- Today's Quest Card -->
+  <div class="quest-card" id="questCard" style="display: none;">
+    <div class="quest-header">
+      <span class="quest-icon">🎯</span>
+      <span class="quest-title">Today's Quest</span>
+    </div>
+    <div class="quest-description" id="questDescription">
+      Complete tasks to unlock your quest!
+    </div>
+    <div class="quest-progress">
+      <div class="quest-progress-bar">
+        <div class="quest-progress-fill" id="questProgressFill" style="width: 0%;"></div>
+      </div>
+      <div class="quest-progress-text" id="questProgressText">0/8</div>
+    </div>
+    <div class="quest-reward" id="questReward">Reward: +10 XP Bonus</div>
   </div>
 
   <div class="grid-wrapper" id="gridWrapper">
@@ -2831,6 +3018,16 @@
     let userSettings = null;
     let pillarStreaks = null;
     let goalMetrics = null;
+    
+    // Gamification State
+    let gameState = {
+      xp: 0,
+      level: 1,
+      xpToday: 0,
+      freezes: 0
+    };
+    let dailyQuest = null;
+    let achievementsUnlocked = [];
 
     function loadState() {
       const today = getTodayString();
@@ -2967,6 +3164,401 @@
         };
         localStorage.setItem(STORAGE_GOAL_METRICS_KEY, JSON.stringify(goalMetrics));
       }
+      
+      // Load game state from localStorage or Firebase
+      loadGameState();
+      
+      // Load daily quest
+      loadDailyQuest();
+      
+      // Load unlocked achievements/milestones
+      loadUnlockedAchievements();
+    }
+    
+    // ===== GAMIFICATION FUNCTIONS =====
+    
+    function loadGameState() {
+      try {
+        const rawGame = localStorage.getItem('harada_gameState');
+        if (rawGame) {
+          gameState = JSON.parse(rawGame);
+        }
+      } catch {
+        gameState = { xp: 0, level: 1, xpToday: 0, freezes: 0 };
+      }
+      updateGameHUD();
+    }
+    
+    function saveGameState() {
+      localStorage.setItem('harada_gameState', JSON.stringify(gameState));
+      if (db && currentUser) {
+        db.collection('users').doc(currentUser.uid).collection('profile')
+          .doc('game').set(gameState, { merge: true })
+          .catch(err => console.warn('Failed to save game state to Firestore:', err));
+      }
+    }
+    
+    function calculateLevel(xp) {
+      // Level formula: level increases every 100 XP
+      return Math.floor(xp / 100) + 1;
+    }
+    
+    function calculateXPForNextLevel(level) {
+      return level * 100;
+    }
+    
+    function addXP(amount) {
+      const oldLevel = gameState.level;
+      gameState.xp += amount;
+      gameState.xpToday += amount;
+      gameState.level = calculateLevel(gameState.xp);
+      
+      saveGameState();
+      updateGameHUD();
+      
+      // Show XP toast
+      showXPToast(amount);
+      
+      // Check for level up
+      if (gameState.level > oldLevel) {
+        showLevelUpToast(gameState.level);
+      }
+    }
+    
+    function showXPToast(amount) {
+      const toast = document.getElementById('xpToast');
+      if (!toast) return;
+      
+      toast.textContent = `+${amount} XP`;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+    
+    function showLevelUpToast(level) {
+      const toast = document.getElementById('xpToast');
+      if (!toast) return;
+      
+      toast.textContent = `🎉 Level ${level}!`;
+      toast.style.background = 'linear-gradient(135deg, #34c759, #30d158)';
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+        toast.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+      }, 3000);
+    }
+    
+    function updateGameHUD() {
+      const levelEl = document.getElementById('gameLevel');
+      const xpEl = document.getElementById('gameXP');
+      const freezesEl = document.getElementById('gameFreezes');
+      const xpBarFill = document.getElementById('xpBarFill');
+      
+      if (levelEl) levelEl.textContent = gameState.level;
+      if (xpEl) xpEl.textContent = gameState.xp;
+      if (freezesEl) freezesEl.textContent = gameState.freezes;
+      
+      if (xpBarFill) {
+        const xpForNextLevel = calculateXPForNextLevel(gameState.level);
+        const xpInCurrentLevel = gameState.xp - ((gameState.level - 1) * 100);
+        const percent = (xpInCurrentLevel / 100) * 100;
+        xpBarFill.style.width = `${Math.min(percent, 100)}%`;
+      }
+    }
+    
+    function awardFreezeForStreak() {
+      // Award freeze for every 7-day streak
+      if (streakData && streakData.current > 0 && streakData.current % 7 === 0) {
+        const streakMilestone = Math.floor(streakData.current / 7);
+        const lastAwardedStreak = gameState.lastFreezeAwardStreak || 0;
+        
+        if (streakMilestone > lastAwardedStreak) {
+          gameState.freezes++;
+          gameState.lastFreezeAwardStreak = streakMilestone;
+          saveGameState();
+          updateGameHUD();
+          
+          // Show notification
+          const toast = document.getElementById('xpToast');
+          if (toast) {
+            toast.textContent = '🔥 +1 Freeze Token!';
+            toast.style.background = 'linear-gradient(135deg, #ff9500, #ff3b30)';
+            toast.classList.add('show');
+            setTimeout(() => {
+              toast.classList.remove('show');
+              toast.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+            }, 3000);
+          }
+        }
+      }
+    }
+    
+    function checkAndConsumeFreeze() {
+      // Check if today is a missed day and if we have freezes
+      const today = getTodayString();
+      const yesterday = getDateString(new Date(Date.now() - 86400000));
+      
+      const todayEntry = dailyHistory[today];
+      const yesterdayEntry = dailyHistory[yesterday];
+      
+      const todayTotal = todayEntry ? (todayEntry.total || todayEntry) : 0;
+      const yesterdayTotal = yesterdayEntry ? (yesterdayEntry.total || yesterdayEntry) : 0;
+      
+      // If today has no completions and yesterday had some, and we have freezes
+      if (todayTotal === 0 && yesterdayTotal === 0 && gameState.freezes > 0) {
+        // Check if we need to consume a freeze
+        const twoDaysAgo = getDateString(new Date(Date.now() - 172800000));
+        const twoDaysAgoEntry = dailyHistory[twoDaysAgo];
+        const twoDaysAgoTotal = twoDaysAgoEntry ? (twoDaysAgoEntry.total || twoDaysAgoEntry) : 0;
+        
+        if (twoDaysAgoTotal > 0) {
+          // We're at risk of breaking the streak, consume a freeze
+          gameState.freezes--;
+          saveGameState();
+          updateGameHUD();
+          
+          const toast = document.getElementById('xpToast');
+          if (toast) {
+            toast.textContent = '❄️ Freeze consumed - streak saved!';
+            toast.style.background = 'linear-gradient(135deg, #007aff, #5ac8fa)';
+            toast.classList.add('show');
+            setTimeout(() => {
+              toast.classList.remove('show');
+              toast.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+            }, 3000);
+          }
+        }
+      }
+    }
+    
+    // ===== DAILY QUEST FUNCTIONS =====
+    
+    function loadDailyQuest() {
+      const today = getTodayString();
+      const questKey = `harada_dailyQuest_${today}`;
+      
+      try {
+        const rawQuest = localStorage.getItem(questKey);
+        if (rawQuest) {
+          dailyQuest = JSON.parse(rawQuest);
+        } else {
+          generateDailyQuest();
+        }
+      } catch {
+        generateDailyQuest();
+      }
+      
+      updateQuestUI();
+    }
+    
+    function generateDailyQuest() {
+      const today = getTodayString();
+      
+      // Find at-risk pillars (3+ days since last activity)
+      const atRiskPillars = pillars.filter(p => {
+        const daysSinceLastActivity = getDaysSinceLastActivity(p.id);
+        return daysSinceLastActivity >= 3;
+      });
+      
+      // Choose a random at-risk pillar, or random pillar if none at risk
+      let targetPillar;
+      if (atRiskPillars.length > 0) {
+        targetPillar = atRiskPillars[Math.floor(Math.random() * atRiskPillars.length)];
+      } else {
+        targetPillar = pillars[Math.floor(Math.random() * pillars.length)];
+      }
+      
+      dailyQuest = {
+        date: today,
+        pillarId: targetPillar.id,
+        pillarName: targetPillar.name,
+        target: 8,
+        progress: 0,
+        completed: false
+      };
+      
+      const questKey = `harada_dailyQuest_${today}`;
+      localStorage.setItem(questKey, JSON.stringify(dailyQuest));
+      
+      // Save to Firestore
+      if (db && currentUser) {
+        db.collection('users').doc(currentUser.uid).collection('dailyQuest')
+          .doc(today).set(dailyQuest, { merge: true })
+          .catch(err => console.warn('Failed to save quest to Firestore:', err));
+      }
+    }
+    
+    function getDaysSinceLastActivity(pillarId) {
+      const sortedDates = Object.keys(dailyHistory).sort().reverse();
+      
+      for (let i = 0; i < sortedDates.length; i++) {
+        const dateStr = sortedDates[i];
+        const entry = dailyHistory[dateStr];
+        
+        if (entry && entry.pillars && entry.pillars[pillarId] > 0) {
+          const date = new Date(dateStr);
+          const today = new Date();
+          const diffTime = Math.abs(today - date);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          return diffDays;
+        }
+      }
+      
+      return 999; // Never touched
+    }
+    
+    function updateQuestProgress() {
+      if (!dailyQuest || dailyQuest.completed) return;
+      
+      // Count today's completions for the quest pillar
+      const pillarCompletions = Object.keys(todayState.completed).filter(
+        taskId => taskId.startsWith(dailyQuest.pillarId + '-')
+      ).length;
+      
+      dailyQuest.progress = pillarCompletions;
+      
+      // Check if quest completed
+      if (pillarCompletions >= dailyQuest.target && !dailyQuest.completed) {
+        dailyQuest.completed = true;
+        addXP(10); // Bonus XP for completing quest
+        
+        const toast = document.getElementById('xpToast');
+        if (toast) {
+          toast.textContent = '🎯 Quest Complete! +10 XP';
+          toast.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+          toast.classList.add('show');
+          setTimeout(() => {
+            toast.classList.remove('show');
+          }, 3000);
+        }
+      }
+      
+      const today = getTodayString();
+      const questKey = `harada_dailyQuest_${today}`;
+      localStorage.setItem(questKey, JSON.stringify(dailyQuest));
+      
+      // Save to Firestore
+      if (db && currentUser) {
+        db.collection('users').doc(currentUser.uid).collection('dailyQuest')
+          .doc(today).set(dailyQuest, { merge: true })
+          .catch(err => console.warn('Failed to update quest in Firestore:', err));
+      }
+      
+      updateQuestUI();
+    }
+    
+    function updateQuestUI() {
+      const questCard = document.getElementById('questCard');
+      const questDescription = document.getElementById('questDescription');
+      const questProgressFill = document.getElementById('questProgressFill');
+      const questProgressText = document.getElementById('questProgressText');
+      
+      if (!dailyQuest) {
+        if (questCard) questCard.style.display = 'none';
+        return;
+      }
+      
+      if (questCard) questCard.style.display = 'block';
+      
+      if (questDescription) {
+        if (dailyQuest.completed) {
+          questDescription.textContent = `✅ Quest Complete! You mastered ${dailyQuest.pillarName} today.`;
+        } else {
+          questDescription.textContent = `Complete all 8 tasks in ${dailyQuest.pillarName} to earn bonus XP!`;
+        }
+      }
+      
+      if (questProgressFill) {
+        const percent = (dailyQuest.progress / dailyQuest.target) * 100;
+        questProgressFill.style.width = `${Math.min(percent, 100)}%`;
+      }
+      
+      if (questProgressText) {
+        questProgressText.textContent = `${dailyQuest.progress}/${dailyQuest.target}`;
+      }
+    }
+    
+    // ===== MILESTONE SYSTEM =====
+    
+    function loadUnlockedAchievements() {
+      try {
+        const raw = localStorage.getItem('harada_unlockedAchievements');
+        if (raw) {
+          achievementsUnlocked = JSON.parse(raw);
+        }
+      } catch {
+        achievementsUnlocked = [];
+      }
+    }
+    
+    function saveUnlockedAchievements() {
+      localStorage.setItem('harada_unlockedAchievements', JSON.stringify(achievementsUnlocked));
+      if (db && currentUser) {
+        db.collection('users').doc(currentUser.uid).collection('achievements')
+          .doc('unlocked').set({ list: achievementsUnlocked }, { merge: true })
+          .catch(err => console.warn('Failed to save achievements to Firestore:', err));
+      }
+    }
+    
+    function checkMilestones() {
+      // Milestone 1: Weekly completions hit 25
+      const last7Days = getLast7DaysCompletions();
+      if (last7Days >= 25 && !achievementsUnlocked.includes('weekly-25')) {
+        achievementsUnlocked.push('weekly-25');
+        saveUnlockedAchievements();
+        showMilestoneToast('Weekly Champion', '25 completions this week!');
+      }
+      
+      // Milestone 2: Any pillar hits 10 all-time completions
+      const pillarTotalsAllTime = {};
+      pillars.forEach(p => pillarTotalsAllTime[p.id] = 0);
+      Object.entries(statsAllTime).forEach(([cellId, count]) => {
+        const [pillarId] = cellId.split('-');
+        if (pillarTotalsAllTime[pillarId] !== undefined) {
+          pillarTotalsAllTime[pillarId] += count;
+        }
+      });
+      
+      pillars.forEach(p => {
+        const milestoneId = `pillar-10-${p.id}`;
+        if (pillarTotalsAllTime[p.id] >= 10 && !achievementsUnlocked.includes(milestoneId)) {
+          achievementsUnlocked.push(milestoneId);
+          saveUnlockedAchievements();
+          showMilestoneToast('Pillar Milestone', `10 completions in ${p.name}!`);
+        }
+      });
+    }
+    
+    function getLast7DaysCompletions() {
+      const today = new Date();
+      let total = 0;
+      
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateStr = getDateString(date);
+        const entry = dailyHistory[dateStr];
+        total += entry ? (entry.total || entry) : 0;
+      }
+      
+      return total;
+    }
+    
+    function showMilestoneToast(title, message) {
+      const toast = document.getElementById('xpToast');
+      if (!toast) return;
+      
+      toast.textContent = `🏆 ${title}: ${message}`;
+      toast.style.background = 'linear-gradient(135deg, #af52de, #5e5ce6)';
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+        toast.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+      }, 4000);
     }
 
     // Firebase Sync Functions
@@ -3208,6 +3800,46 @@
             localStorage.setItem(STORAGE_JOURNAL_KEY, JSON.stringify(journalEntries));
             loadTodayJournal();
             updateTodayReflection();
+          }
+        }
+      });
+      
+      // Listen to game state
+      userRef.collection('profile').doc('game').onSnapshot((doc) => {
+        if (doc.exists && !doc.metadata.hasPendingWrites) {
+          const cloudData = doc.data();
+          if (JSON.stringify(cloudData) !== JSON.stringify(gameState)) {
+            console.log('📥 Syncing game state from cloud');
+            gameState = cloudData;
+            localStorage.setItem('harada_gameState', JSON.stringify(gameState));
+            updateGameHUD();
+          }
+        }
+      });
+      
+      // Listen to daily quest (today)
+      const today = getTodayString();
+      userRef.collection('dailyQuest').doc(today).onSnapshot((doc) => {
+        if (doc.exists && !doc.metadata.hasPendingWrites) {
+          const cloudData = doc.data();
+          if (JSON.stringify(cloudData) !== JSON.stringify(dailyQuest)) {
+            console.log('📥 Syncing daily quest from cloud');
+            dailyQuest = cloudData;
+            const questKey = `harada_dailyQuest_${today}`;
+            localStorage.setItem(questKey, JSON.stringify(dailyQuest));
+            updateQuestUI();
+          }
+        }
+      });
+      
+      // Listen to unlocked achievements
+      userRef.collection('achievements').doc('unlocked').onSnapshot((doc) => {
+        if (doc.exists && !doc.metadata.hasPendingWrites) {
+          const cloudData = doc.data();
+          if (cloudData.list && JSON.stringify(cloudData.list) !== JSON.stringify(achievementsUnlocked)) {
+            console.log('📥 Syncing achievements from cloud');
+            achievementsUnlocked = cloudData.list;
+            localStorage.setItem('harada_unlockedAchievements', JSON.stringify(achievementsUnlocked));
           }
         }
       });
@@ -3628,10 +4260,22 @@
         if (statsAllTime[cellId] && statsAllTime[cellId] > 0) {
           statsAllTime[cellId] -= 1;
         }
+        
+        // Deduct XP when uncompleting
+        if (gameState.xpToday >= 5) {
+          gameState.xp = Math.max(0, gameState.xp - 5);
+          gameState.xpToday = Math.max(0, gameState.xpToday - 5);
+          gameState.level = calculateLevel(gameState.xp);
+          saveGameState();
+          updateGameHUD();
+        }
       } else {
         todayState.completed[cellId] = true;
         cell.classList.add("completed");
         statsAllTime[cellId] = (statsAllTime[cellId] || 0) + 1;
+        
+        // Award +5 XP for task completion
+        addXP(5);
       }
 
       saveTodayState();
@@ -3642,6 +4286,15 @@
       updatePillarBalance();
       checkAndAwardBadges();
       updateNewAnalytics(); // Update new analytics sections
+      
+      // Update quest progress
+      updateQuestProgress();
+      
+      // Check milestones
+      checkMilestones();
+      
+      // Check for freeze award
+      awardFreezeForStreak();
 
       // Check for pillar completion and trigger confetti
       if (!isCompleted) {
@@ -5674,6 +6327,11 @@
       
       // Initialize new analytics
       updateNewAnalytics();
+      
+      // Initialize gamification UI
+      updateGameHUD();
+      updateQuestUI();
+      checkAndConsumeFreeze();
       
       // Set up account/auth button
       const accountBtn = document.getElementById('accountBtn');
