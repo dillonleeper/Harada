@@ -3024,6 +3024,14 @@
       return `${year}-${month}-${day}`;
     }
 
+    function getDateString(date) {
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
     function formatPrettyDate() {
       const d = new Date();
       return d.toLocaleDateString(undefined, {
@@ -6398,11 +6406,17 @@
 
     // Auth functions (UI)
     function openAuth() {
+      console.log('openAuth called');
       const overlay = document.getElementById('authOverlay');
-      if (!overlay) return;
+      console.log('Auth overlay element:', overlay);
+      if (!overlay) {
+        console.error('Auth overlay not found!');
+        return;
+      }
       
       updateAuthUI();
       overlay.classList.add('visible');
+      console.log('Auth overlay should now be visible');
     }
     
     function closeAuth() {
@@ -6643,8 +6657,15 @@
       
       // Set up account/auth button
       const accountBtn = document.getElementById('accountBtn');
+      console.log('Account button element:', accountBtn);
       if (accountBtn) {
-        accountBtn.addEventListener('click', openAuth);
+        console.log('Adding click listener to account button');
+        accountBtn.addEventListener('click', () => {
+          console.log('Account button clicked!');
+          openAuth();
+        });
+      } else {
+        console.error('Account button not found!');
       }
       
       const authClose = document.getElementById('authClose');
