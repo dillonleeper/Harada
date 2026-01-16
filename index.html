@@ -3079,6 +3079,7 @@
         todayState = null;
       }
       if (!todayState || todayState.date !== today) {
+        console.log('🔄 New day detected! Resetting daily state from', todayState?.date, 'to', today);
         // Save yesterday's count and pillar breakdown before resetting
         if (todayState && todayState.date) {
           const yesterdayPillarTotals = {};
@@ -3103,6 +3104,12 @@
         }
         todayState = { date: today, completed: {} };
         localStorage.setItem(STORAGE_TODAY_KEY, JSON.stringify(todayState));
+        
+        // Immediately sync the reset to Firebase if user is signed in
+        if (currentUser && db) {
+          console.log('☁️ Syncing daily reset to Firebase');
+          saveToFirebase('todayState', todayState);
+        }
       }
 
       try {
