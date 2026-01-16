@@ -2502,6 +2502,7 @@
     let db = null;
     let currentUser = null;
     let isOnline = navigator.onLine;
+    let justResetForNewDay = false; // Track if we just did a daily reset
     
     try {
       firebase.initializeApp(firebaseConfig);
@@ -3080,6 +3081,8 @@
       }
       if (!todayState || todayState.date !== today) {
         console.log('🔄 New day detected! Resetting daily state from', todayState?.date, 'to', today);
+        justResetForNewDay = true; // Mark that we just reset
+        
         // Save yesterday's count and pillar breakdown before resetting
         if (todayState && todayState.date) {
           const yesterdayPillarTotals = {};
@@ -3824,11 +3827,21 @@
           console.log('💾 Local today data:', todayState);
           console.log('📅 Cloud date:', cloudDate, '| Local date:', localDate, '| Today:', getTodayString());
           
+          // If we just reset for a new day, ignore cloud data and push our empty state instead
+          if (justResetForNewDay && cloudDate === getTodayString()) {
+            console.log('🔄 Just reset for new day - ignoring stale cloud data and pushing fresh state');
+            justResetForNewDay = false; // Clear the flag
+            saveToFirebase('todayState', todayState);
+            renderGrid(); // Re-render to show empty grid
+            return;
+          }
+          
           // Only update if cloud has newer data for today
           if (cloudDate === getTodayString() && JSON.stringify(cloudData) !== JSON.stringify(todayState)) {
             console.log('🔄 Updating local data from cloud');
             todayState = cloudData;
             localStorage.setItem(STORAGE_TODAY_KEY, JSON.stringify(todayState));
+            renderGrid(); // Re-render grid with synced data
             updateTodayReflection();
             updateStatsUI();
           } else if (JSON.stringify(cloudData) === JSON.stringify(todayState)) {
