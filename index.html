@@ -3108,6 +3108,9 @@
         todayState = { date: today, completed: {} };
         localStorage.setItem(STORAGE_TODAY_KEY, JSON.stringify(todayState));
         
+        // Recalculate all node states after daily reset
+        recalculateAllNodeStates();
+        
         // Immediately sync the reset to Firebase if user is signed in
         if (currentUser && db) {
           console.log('☁️ Syncing daily reset to Firebase');
@@ -3619,6 +3622,28 @@
     /**
      * Apply visual states to all nodes on page load.
      */
+    /**
+     * Recalculate visual states for all nodes based on current weights.
+     * Call this after daily decay or when node weights change significantly.
+     */
+    function recalculateAllNodeStates() {
+      Object.keys(nodeWeights).forEach(cellId => {
+        const node = nodeWeights[cellId];
+        if (node) {
+          const newState = deriveState(node.weight);
+          node.state = newState;
+        }
+      });
+      
+      // Save updated states
+      localStorage.setItem(STORAGE_NODE_WEIGHTS_KEY, JSON.stringify(nodeWeights));
+      
+      // Apply visual updates immediately if grid is rendered
+      if (document.querySelector('.task-cell')) {
+        applyAllNodeStates();
+      }
+    }
+    
     function applyAllNodeStates() {
       Object.keys(nodeWeights).forEach(cellId => {
         const node = nodeWeights[cellId];
@@ -3999,7 +4024,9 @@
             console.log('📥 Syncing node weights from cloud');
             nodeWeights = cloudData;
             localStorage.setItem(STORAGE_NODE_WEIGHTS_KEY, JSON.stringify(nodeWeights));
-            applyAllNodeStates();
+            
+            // Recalculate states after loading from cloud to ensure they match current weights
+            recalculateAllNodeStates();
           }
         }
       });
