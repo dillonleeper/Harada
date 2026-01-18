@@ -4579,7 +4579,7 @@
       Object.keys(dailyHistory).forEach(dateStr => {
         const entry = dailyHistory[dateStr];
         if (entry && entry.pillars) {
-          if ((entry.lifePillars['P7'] || 0) > 0 && (entry.lifePillars['P8'] || 0) > 0) {
+          if ((entry.pillars['P7'] || 0) > 0 && (entry.pillars['P8'] || 0) > 0) {
             mindBodyCount++;
           }
         }
@@ -5177,7 +5177,7 @@
         
         const shares = {};
         lifePillars.forEach(p => {
-          shares[p.id] = (entry.lifePillars[p.id] || 0) / dayTotal;
+          shares[p.id] = (entry.pillars[p.id] || 0) / dayTotal;
         });
         
         dailyShares.push(shares);
@@ -6255,8 +6255,8 @@
         if (entry && entry.pillars) {
           Object.keys(entry.pillars).forEach(pillarId => {
             if (thisWeekPillarTotals[pillarId] !== undefined) {
-              thisWeekPillarTotals[pillarId] += entry.lifePillars[pillarId];
-              thisWeekTotal += entry.lifePillars[pillarId];
+              thisWeekPillarTotals[pillarId] += entry.pillars[pillarId];
+              thisWeekTotal += entry.pillars[pillarId];
             }
           });
         }
@@ -6275,7 +6275,7 @@
         if (entry && entry.pillars) {
           Object.keys(entry.pillars).forEach(pillarId => {
             if (lastWeekPillarTotals[pillarId] !== undefined) {
-              lastWeekPillarTotals[pillarId] += entry.lifePillars[pillarId];
+              lastWeekPillarTotals[pillarId] += entry.pillars[pillarId];
             }
           });
         }
