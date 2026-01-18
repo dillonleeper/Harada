@@ -4579,7 +4579,7 @@
       Object.keys(dailyHistory).forEach(dateStr => {
         const entry = dailyHistory[dateStr];
         if (entry && entry.pillars) {
-          if ((entry.pillars['P7'] || 0) > 0 && (entry.pillars['P8'] || 0) > 0) {
+          if ((entry.lifePillars['P7'] || 0) > 0 && (entry.lifePillars['P8'] || 0) > 0) {
             mindBodyCount++;
           }
         }
@@ -4734,7 +4734,7 @@
       
       // Get pillar totals
       const pillarTotalsAllTime = {};
-      pillars.forEach(p => pillarTotalsAllTime[p.id] = 0);
+      lifePillars.forEach(p => pillarTotalsAllTime[p.id] = 0);
       Object.entries(statsAllTime).forEach(([cellId, count]) => {
         const [pillarId] = cellId.split('-');
         if (pillarTotalsAllTime[pillarId] !== undefined) {
@@ -4744,7 +4744,7 @@
       
       // Find strongest pillar
       const maxCount = Math.max(...Object.values(pillarTotalsAllTime));
-      const strongestPillar = pillars.find(p => pillarTotalsAllTime[p.id] === maxCount);
+      const strongestPillar = lifePillars.find(p => pillarTotalsAllTime[p.id] === maxCount);
       
       // Find most improved (if we have history data)
       const sortedPillars = [...pillars].sort((a, b) => pillarTotalsAllTime[b.id] - pillarTotalsAllTime[a.id]);
@@ -4891,7 +4891,7 @@
       
       // Group nodes by pillar
       const pillarStates = {};
-      pillars.forEach(p => {
+      lifePillars.forEach(p => {
         pillarStates[p.id] = {
           name: p.name,
           dormant: 0,
@@ -4998,7 +4998,7 @@
     function updateTodayReflection() {
       // Count tasks completed today per pillar
       const pillarTouches = {};
-      pillars.forEach(p => pillarTouches[p.id] = 0);
+      lifePillars.forEach(p => pillarTouches[p.id] = 0);
       
       let totalToday = 0;
       Object.keys(todayState.completed).forEach(taskId => {
@@ -5051,7 +5051,7 @@
       } else if (totalAllTime % 50 === 0 && totalAllTime > 0) {
         insightEl.textContent = `${totalAllTime} total completions—milestone reached!`;
       } else if ( pillarsCount === 1) {
-        const activePillar = pillars.find(p => pillarTouches[p.id] > 0);
+        const activePillar = lifePillars.find(p => pillarTouches[p.id] > 0);
         const count = pillarTouches[activePillar.id];
         if (count >= 4) {
           insightEl.textContent = `Deep focus in ${activePillar.name} today—${count} steps forward.`;
@@ -5078,7 +5078,7 @@
       let totalToday = 0;
       let totalAllTime = 0;
 
-      pillars.forEach((p) => {
+      lifePillars.forEach((p) => {
         pillarTotalsToday[p.id] = 0;
         pillarTotalsAllTime[p.id] = 0;
       });
@@ -5099,7 +5099,7 @@
         }
       });
 
-      pillars.forEach((p) => {
+      lifePillars.forEach((p) => {
         const tr = document.createElement("tr");
         const tdName = document.createElement("td");
         const tdToday = document.createElement("td");
@@ -5176,8 +5176,8 @@
         if (dayTotal === 0) return;
         
         const shares = {};
-        pillars.forEach(p => {
-          shares[p.id] = (entry.pillars[p.id] || 0) / dayTotal;
+        lifePillars.forEach(p => {
+          shares[p.id] = (entry.lifePillars[p.id] || 0) / dayTotal;
         });
         
         dailyShares.push(shares);
@@ -5194,7 +5194,7 @@
       // Calculate variance for each pillar across days
       const pillarVariances = [];
       
-      pillars.forEach(pillar => {
+      lifePillars.forEach(pillar => {
         const pillarShares = dailyShares.map(day => day[pillar.id]);
         const mean = pillarShares.reduce((sum, val) => sum + val, 0) / pillarShares.length;
         const variance = pillarShares.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / pillarShares.length;
@@ -5231,7 +5231,7 @@
     function oldCalculateFocusStability_REMOVED(datesInRange) {
       // Old approximation-based code removed
       const allTimePillarTotals = {};
-      pillars.forEach(p => allTimePillarTotals[p.id] = 0);
+      lifePillars.forEach(p => allTimePillarTotals[p.id] = 0);
       Object.entries(statsAllTime).forEach(([cellId, count]) => {
         const [pillarId] = cellId.split('-');
         if (allTimePillarTotals[pillarId] !== undefined) {
@@ -5242,12 +5242,12 @@
       
       // For each day, approximate pillar shares using all-time distribution
       const dailyShares = {}; // pillarId -> array of daily shares
-      pillars.forEach(p => dailyShares[p.id] = []);
+      lifePillars.forEach(p => dailyShares[p.id] = []);
       
       nonZeroDays.forEach(dateStr => {
         const dayTotal = dailyHistory[dateStr];
         if (dayTotal > 0) {
-          pillars.forEach(p => {
+          lifePillars.forEach(p => {
             // Approximate pillar count for this day using all-time ratio
             const pillarRatio = allTimeTotal > 0 ? allTimePillarTotals[p.id] / allTimeTotal : 1/8;
             const estimatedPillarCount = dayTotal * pillarRatio;
@@ -5259,7 +5259,7 @@
       
       // Calculate standard deviation for each pillar's daily shares
       const pillarStdDevs = [];
-      pillars.forEach(p => {
+      lifePillars.forEach(p => {
         const shares = dailyShares[p.id];
         if (shares.length > 0) {
           const mean = shares.reduce((sum, s) => sum + s, 0) / shares.length;
@@ -5372,7 +5372,7 @@
       
       // Calculate pillar totals from ALL-TIME stats (not filtered by range)
       const countsByPillar = {};
-      pillars.forEach(p => countsByPillar[p.id] = 0);
+      lifePillars.forEach(p => countsByPillar[p.id] = 0);
       Object.entries(statsAllTime).forEach(([cellId, count]) => {
         const [pillarId] = cellId.split('-');
         if (countsByPillar[pillarId] !== undefined) {
@@ -5382,7 +5382,7 @@
       
       // Calculate today's counts per pillar for data integrity check
       const todayPillarCounts = {};
-      pillars.forEach(p => todayPillarCounts[p.id] = 0);
+      lifePillars.forEach(p => todayPillarCounts[p.id] = 0);
       Object.keys(todayState.completed).forEach((cellId) => {
         const [pillarId] = cellId.split("-");
         if (todayPillarCounts[pillarId] !== undefined) {
@@ -5391,7 +5391,7 @@
       });
       
       // Apply safety check: ensure all-time is at least as high as today's count
-      pillars.forEach(p => {
+      lifePillars.forEach(p => {
         countsByPillar[p.id] = Math.max(countsByPillar[p.id], todayPillarCounts[p.id]);
       });
       
@@ -5409,10 +5409,10 @@
       renderActivityTimeline(datesInRange);
       
       const totalCompletions = Object.values(countsByPillar).reduce((sum, val) => sum + val, 0);
-      const values = pillars.map(p => countsByPillar[p.id] || 0);
+      const values = lifePillars.map(p => countsByPillar[p.id] || 0);
       
       console.log('=== Radar Chart Data Verification ===');
-      console.log('Pillar order:', pillars.map(p => p.name));
+      console.log('Pillar order:', lifePillars.map(p => p.name));
       console.log('Values for radar chart:', values);
       console.log('Total completions:', totalCompletions);
       
@@ -5468,11 +5468,11 @@
       // Find most neglected and most active pillars
       const minValue = Math.min(...values);
       const minIndex = values.indexOf(minValue);
-      const neglectedPillar = pillars[minIndex];
+      const neglectedPillar = lifePillars[minIndex];
       
       const maxValue = Math.max(...values);
       const maxIndex = values.indexOf(maxValue);
-      const activePillar = pillars[maxIndex];
+      const activePillar = lifePillars[maxIndex];
       const percentage = totalCompletions > 0 ? Math.round((maxValue / totalCompletions) * 100) : 0;
       
       // Update Focus Pattern card (merged Most Active + Most Neglected)
@@ -5689,7 +5689,7 @@
       // Draw axes
       ctx.strokeStyle = '#d2d2d7';
       ctx.lineWidth = 1;
-      pillars.forEach((pillar, i) => {
+      lifePillars.forEach((pillar, i) => {
         const angle = (Math.PI * 2 * i) / 8 - Math.PI / 2;
         const x = centerX + Math.cos(angle) * radius;
         const y = centerY + Math.sin(angle) * radius;
@@ -5705,7 +5705,7 @@
       ctx.font = '9px -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif';
       ctx.textBaseline = 'middle';
       
-      pillars.forEach((pillar, i) => {
+      lifePillars.forEach((pillar, i) => {
         const angle = (Math.PI * 2 * i) / 8 - Math.PI / 2;
         const labelRadius = radius + 30;
         const x = centerX + Math.cos(angle) * labelRadius;
@@ -5793,7 +5793,7 @@
         dataPoints.push({
           x: x,
           y: y,
-          pillar: pillars[i],
+          pillar: lifePillars[i],
           value: value
         });
       });
@@ -5903,7 +5903,7 @@
           
           // Create individual completion events
           for (const pillarId in pillars) {
-            const count = pillars[pillarId];
+            const count = lifePillars[pillarId];
             for (let i = 0; i < count; i++) {
               completions.push({
                 date: dateStr,
@@ -5947,7 +5947,7 @@
     function calculatePillarStreaks() {
       const today = getTodayString();
       
-      pillars.forEach(pillar => {
+      lifePillars.forEach(pillar => {
         const pillarId = pillar.id;
         
         // Check if pillar was active today
@@ -5995,7 +5995,7 @@
       const pillarTotals = {};
       let totalTasks = 0;
       
-      pillars.forEach(p => pillarTotals[p.id] = 0);
+      lifePillars.forEach(p => pillarTotals[p.id] = 0);
       
       Object.keys(todayState.completed).forEach(cellId => {
         const pillarId = cellId.split('-')[0];
@@ -6010,7 +6010,7 @@
       
       container.innerHTML = '';
       
-      pillars.forEach(pillar => {
+      lifePillars.forEach(pillar => {
         const actual = totalTasks > 0 ? Math.round((pillarTotals[pillar.id] / totalTasks) * 100) : 0;
         const target = targets[pillar.id] || 12.5;
         const diff = actual - target;
@@ -6066,7 +6066,7 @@
       container.innerHTML = '';
       const atRiskPillars = [];
       
-      pillars.forEach(pillar => {
+      lifePillars.forEach(pillar => {
         const streak = pillarStreaks[pillar.id];
         const daysSince = getDaysSinceLastActivity(pillar.id);
         
@@ -6137,7 +6137,7 @@
       // Calculate current balance
       const pillarTotals = {};
       let totalToday = 0;
-      pillars.forEach(p => pillarTotals[p.id] = 0);
+      lifePillars.forEach(p => pillarTotals[p.id] = 0);
       Object.keys(todayState.completed).forEach(cellId => {
         const pillarId = cellId.split('-')[0];
         if (pillarTotals[pillarId] !== undefined) {
@@ -6152,7 +6152,7 @@
       // Find neglected high-priority pillars
       const recommendations = [];
       
-      pillars.forEach(pillar => {
+      lifePillars.forEach(pillar => {
         const actual = totalToday > 0 ? Math.round((pillarTotals[pillar.id] / totalToday) * 100) : 0;
         const target = targets[pillar.id];
         const weight = weights[pillar.id];
@@ -6246,7 +6246,7 @@
       
       const thisWeekPillarTotals = {};
       let thisWeekTotal = 0;
-      pillars.forEach(p => thisWeekPillarTotals[p.id] = 0);
+      lifePillars.forEach(p => thisWeekPillarTotals[p.id] = 0);
       
       // Count this week's completions
       for (let d = new Date(weekAgo); d <= today; d.setDate(d.getDate() + 1)) {
@@ -6255,8 +6255,8 @@
         if (entry && entry.pillars) {
           Object.keys(entry.pillars).forEach(pillarId => {
             if (thisWeekPillarTotals[pillarId] !== undefined) {
-              thisWeekPillarTotals[pillarId] += entry.pillars[pillarId];
-              thisWeekTotal += entry.pillars[pillarId];
+              thisWeekPillarTotals[pillarId] += entry.lifePillars[pillarId];
+              thisWeekTotal += entry.lifePillars[pillarId];
             }
           });
         }
@@ -6267,7 +6267,7 @@
       twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 7);
       
       const lastWeekPillarTotals = {};
-      pillars.forEach(p => lastWeekPillarTotals[p.id] = 0);
+      lifePillars.forEach(p => lastWeekPillarTotals[p.id] = 0);
       
       for (let d = new Date(twoWeeksAgo); d < weekAgo; d.setDate(d.getDate() + 1)) {
         const dateStr = d.toISOString().split('T')[0];
@@ -6275,7 +6275,7 @@
         if (entry && entry.pillars) {
           Object.keys(entry.pillars).forEach(pillarId => {
             if (lastWeekPillarTotals[pillarId] !== undefined) {
-              lastWeekPillarTotals[pillarId] += entry.pillars[pillarId];
+              lastWeekPillarTotals[pillarId] += entry.lifePillars[pillarId];
             }
           });
         }
@@ -6285,7 +6285,7 @@
       winsContainer.innerHTML = '';
       const wins = [];
       
-      pillars.forEach(pillar => {
+      lifePillars.forEach(pillar => {
         const count = thisWeekPillarTotals[pillar.id];
         const streak = pillarStreaks[pillar.id];
         
@@ -6319,7 +6319,7 @@
       gapsContainer.innerHTML = '';
       const gaps = [];
       
-      pillars.forEach(pillar => {
+      lifePillars.forEach(pillar => {
         const count = thisWeekPillarTotals[pillar.id];
         const lastWeek = lastWeekPillarTotals[pillar.id];
         
@@ -6346,7 +6346,7 @@
       // Render trends
       trendsContainer.innerHTML = '';
       
-      pillars.slice(0, 5).forEach(pillar => {
+      lifePillars.slice(0, 5).forEach(pillar => {
         const thisWeek = thisWeekPillarTotals[pillar.id];
         const lastWeek = lastWeekPillarTotals[pillar.id];
         
@@ -6582,7 +6582,7 @@
       const pillarTargetsContainer = document.getElementById('pillarTargetsSettings');
       if (pillarTargetsContainer) {
         pillarTargetsContainer.innerHTML = '';
-        pillars.forEach(pillar => {
+        lifePillars.forEach(pillar => {
           const row = document.createElement('div');
           row.className = 'settings-row';
           row.innerHTML = `
@@ -6598,7 +6598,7 @@
       const goalWeightsContainer = document.getElementById('goalWeightsSettings');
       if (goalWeightsContainer) {
         goalWeightsContainer.innerHTML = '';
-        pillars.forEach(pillar => {
+        lifePillars.forEach(pillar => {
           const row = document.createElement('div');
           row.className = 'settings-row';
           row.innerHTML = `
@@ -6634,13 +6634,13 @@
 
     function saveSettings() {
       // Save pillar targets
-      pillars.forEach(pillar => {
+      lifePillars.forEach(pillar => {
         const input = document.getElementById(`target-${pillar.id}`);
         if (input) userSettings.pillarTargets[pillar.id] = parseFloat(input.value) || 0;
       });
 
       // Save goal weights
-      pillars.forEach(pillar => {
+      lifePillars.forEach(pillar => {
         const input = document.getElementById(`weight-${pillar.id}`);
         if (input) userSettings.goalWeights[pillar.id] = parseInt(input.value) || 1;
       });
