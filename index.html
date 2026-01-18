@@ -2386,11 +2386,11 @@
   </div>
 
   <!-- Journal History Overlay -->
-  <div class="journal-history-overlay" id="journalHistoryOverlay">
+  <div class="journal-history-overlay" id="journalHistoryOverlay" onclick="if(event.target === this) closeJournalHistory()">
     <div class="journal-history-panel">
       <div class="journal-history-header">
         <h2>Reflection History</h2>
-        <button class="journal-history-close" id="journalHistoryClose">×</button>
+        <button class="journal-history-close" id="journalHistoryClose" onclick="closeJournalHistory()">×</button>
       </div>
       <div class="journal-history-list" id="journalHistoryList">
         <!-- History entries will be injected here -->
@@ -2459,11 +2459,11 @@
 
   <!-- Account/Auth Button & Overlay -->
   <button class="settings-btn" id="accountBtn" title="Account" onclick="openAuth()" style="bottom: 0; right: 0; border-radius: 12px 0 0 0; background: #007aff; filter: brightness(1.1);">👤</button>
-  <div class="settings-overlay" id="authOverlay">
+  <div class="settings-overlay" id="authOverlay" onclick="if(event.target === this) closeAuth()">
     <div class="settings-panel" style="max-width: 400px;">
       <div class="settings-header">
         <h2 id="authTitle">Sign In</h2>
-        <button class="settings-close" id="authClose">×</button>
+        <button class="settings-close" id="authClose" onclick="closeAuth()">×</button>
       </div>
       
       <div id="authContent">
@@ -5773,13 +5773,20 @@
     }
 
     function openJournalHistory() {
+      console.log('openJournalHistory called');
       const overlay = document.getElementById('journalHistoryOverlay');
       const listContainer = document.getElementById('journalHistoryList');
       
-      if (!overlay || !listContainer) return;
+      console.log('overlay:', overlay, 'listContainer:', listContainer);
+      
+      if (!overlay || !listContainer) {
+        console.error('Missing elements - overlay:', overlay, 'listContainer:', listContainer);
+        return;
+      }
       
       renderJournalHistory(listContainer);
       overlay.classList.add('visible');
+      console.log('Journal history overlay should be visible now');
     }
 
     function renderJournalHistory(container) {
@@ -5917,9 +5924,13 @@
     }
 
     function closeJournalHistory() {
+      console.log('closeJournalHistory called');
       const overlay = document.getElementById('journalHistoryOverlay');
       if (overlay) {
         overlay.classList.remove('visible');
+        console.log('Journal history overlay closed');
+      } else {
+        console.error('journalHistoryOverlay element not found');
       }
     }
 
@@ -6770,8 +6781,14 @@
     }
     
     function closeAuth() {
+      console.log('closeAuth called');
       const overlay = document.getElementById('authOverlay');
-      if (overlay) overlay.classList.remove('visible');
+      if (overlay) {
+        overlay.classList.remove('visible');
+        console.log('Auth overlay closed');
+      } else {
+        console.error('authOverlay element not found');
+      }
       
       // Clear error
       const errorEl = document.getElementById('authError');
@@ -7161,6 +7178,24 @@
       }
       
       // Removed auto-save - user will manually save reflections
+      
+      // Add ESC key support for closing overlays
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+          // Check which overlay is open and close it
+          const authOverlay = document.getElementById('authOverlay');
+          const journalHistoryOverlay = document.getElementById('journalHistoryOverlay');
+          const settingsOverlay = document.getElementById('settingsOverlay');
+          
+          if (authOverlay && authOverlay.classList.contains('visible')) {
+            closeAuth();
+          } else if (journalHistoryOverlay && journalHistoryOverlay.classList.contains('visible')) {
+            closeJournalHistory();
+          } else if (settingsOverlay && settingsOverlay.classList.contains('visible')) {
+            closeSettings();
+          }
+        }
+      });
     }
 
     init();
