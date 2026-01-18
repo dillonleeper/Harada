@@ -1779,6 +1779,170 @@
       font-size: 0.9rem;
     }
 
+    /* Edit Mode Styles */
+    .edit-mode-btn {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid #d2d2d7;
+      background: #ffffff;
+      color: #1d1d1f;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .edit-mode-btn:hover {
+      background: #f9fafb;
+      border-color: #007AFF;
+    }
+
+    .edit-mode-btn.active {
+      background: #007AFF;
+      color: #ffffff;
+      border-color: #007AFF;
+    }
+
+    .edit-mode-btn.save {
+      background: #34c759;
+      color: #ffffff;
+      border-color: #34c759;
+    }
+
+    .edit-mode-btn.save:hover {
+      background: #248A3D;
+    }
+
+    .task-cell.edit-mode {
+      cursor: text;
+      border-color: #007AFF;
+      position: relative;
+    }
+
+    .task-cell.edit-mode::before {
+      content: "✏️";
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      font-size: 0.7rem;
+      opacity: 0.6;
+    }
+
+    .task-edit-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 20px;
+      pointer-events: none;
+    }
+
+    .task-edit-overlay.visible {
+      display: flex;
+      pointer-events: auto;
+    }
+
+    .task-edit-panel {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .task-edit-header {
+      margin-bottom: 20px;
+    }
+
+    .task-edit-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+      color: #1d1d1f;
+    }
+
+    .task-edit-pillar {
+      font-size: 0.8rem;
+      color: #6e6e73;
+    }
+
+    .task-edit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .task-edit-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 6px;
+    }
+
+    .task-edit-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d2d2d7;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      transition: border-color 0.2s ease;
+    }
+
+    .task-edit-input:focus {
+      outline: none;
+      border-color: #007AFF;
+    }
+
+    .task-edit-textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .task-edit-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .task-edit-save-btn,
+    .task-edit-cancel-btn {
+      flex: 1;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .task-edit-save-btn {
+      background: #007AFF;
+      color: #ffffff;
+    }
+
+    .task-edit-save-btn:hover {
+      background: #0051D5;
+    }
+
+    .task-edit-cancel-btn {
+      background: #e5e5ea;
+      color: #1d1d1f;
+    }
+
+    .task-edit-cancel-btn:hover {
+      background: #d2d2d7;
+    }
+
     .balance-footer {
       display: none;
     }
@@ -2260,6 +2424,7 @@
 <body>
   <div class="header-container">
     <h1>Harada Open Window 64</h1>
+    <button class="edit-mode-btn" id="editModeBtn">Edit Mode</button>
     <div class="meta" id="dateDisplay"></div>
   </div>
   
@@ -2454,6 +2619,30 @@
     </h2>
     <div class="achievements-grid" id="achievementsGrid" style="display: none;">
       <!-- Badges will be injected here by JavaScript -->
+    </div>
+  </div>
+
+  <!-- Task Edit Overlay -->
+  <div class="task-edit-overlay" id="taskEditOverlay" onclick="if(event.target === this) closeTaskEdit()">
+    <div class="task-edit-panel">
+      <div class="task-edit-header">
+        <h3>Edit Task</h3>
+        <div class="task-edit-pillar" id="taskEditPillar"></div>
+      </div>
+      <div class="task-edit-form">
+        <div>
+          <div class="task-edit-label">Task Title</div>
+          <input type="text" class="task-edit-input" id="taskEditTitle" placeholder="e.g., Journal feelings" />
+        </div>
+        <div>
+          <div class="task-edit-label">Task Hint</div>
+          <textarea class="task-edit-input task-edit-textarea" id="taskEditHint" placeholder="e.g., Write honestly"></textarea>
+        </div>
+      </div>
+      <div class="task-edit-actions">
+        <button class="task-edit-cancel-btn" onclick="closeTaskEdit()">Cancel</button>
+        <button class="task-edit-save-btn" onclick="saveTaskEdit()">Save Changes</button>
+      </div>
     </div>
   </div>
 
@@ -4323,17 +4512,20 @@
         cell.dataset.id = cellId;
         cell.dataset.pillar = pillar.id;
         
+        // Get task text (custom or original)
+        const taskText = getTaskText(cellId);
+        
         // Store full task text for tooltip
-        cell.dataset.taskTitle = task.title;
-        cell.dataset.taskHint = task.hint;
+        cell.dataset.taskTitle = taskText.title;
+        cell.dataset.taskHint = taskText.hint;
         
         const titleEl = document.createElement("div");
         titleEl.className = "task-title";
-        titleEl.textContent = task.title;
+        titleEl.textContent = taskText.title;
         
         const hintEl = document.createElement("div");
         hintEl.className = "task-hint";
-        hintEl.textContent = task.hint;
+        hintEl.textContent = taskText.hint;
         
         cell.appendChild(titleEl);
         cell.appendChild(hintEl);
@@ -4341,9 +4533,18 @@
         if (todayState.completed[cellId]) {
           cell.classList.add("completed");
         }
+        
+        // Add edit mode class if in edit mode
+        if (isEditMode) {
+          cell.classList.add("edit-mode");
+        }
 
         cell.addEventListener("click", () => {
-          toggleTask(cell);
+          if (isEditMode) {
+            openTaskEdit(cellId);
+          } else {
+            toggleTask(cell);
+          }
         });
 
         // Add tooltip event listeners
@@ -5989,6 +6190,189 @@
       console.error('❌ Error making functions global:', err);
     }
 
+    // Edit Mode State
+    let isEditMode = false;
+    let currentEditingCellId = null;
+    const STORAGE_CUSTOM_TASKS_KEY = "haradaCustomTasks";
+    let customTasks = {}; // { cellId: { title, hint } }
+
+    function loadCustomTasks() {
+      try {
+        const raw = localStorage.getItem(STORAGE_CUSTOM_TASKS_KEY);
+        customTasks = raw ? JSON.parse(raw) : {};
+      } catch {
+        customTasks = {};
+      }
+    }
+
+    function saveCustomTasks() {
+      localStorage.setItem(STORAGE_CUSTOM_TASKS_KEY, JSON.stringify(customTasks));
+      
+      // Sync to Firebase
+      if (db && currentUser) {
+        saveToFirebase('customTasks', customTasks);
+      }
+    }
+
+    function toggleEditMode() {
+      isEditMode = !isEditMode;
+      const btn = document.getElementById('editModeBtn');
+      
+      if (isEditMode) {
+        btn.textContent = 'Save Changes';
+        btn.classList.add('active', 'save');
+        
+        // Add edit mode class to all task cells
+        document.querySelectorAll('.task-cell').forEach(cell => {
+          cell.classList.add('edit-mode');
+        });
+        
+        // Show toast
+        showEditModeToast('Edit mode enabled - click any task to customize');
+      } else {
+        btn.textContent = 'Edit Mode';
+        btn.classList.remove('active', 'save');
+        
+        // Remove edit mode class
+        document.querySelectorAll('.task-cell').forEach(cell => {
+          cell.classList.remove('edit-mode');
+        });
+        
+        // Save all changes
+        saveCustomTasks();
+        
+        // Show success toast
+        showEditModeToast('Changes saved successfully!');
+        
+        // Refresh grid to show updated text
+        renderGrid();
+        updateTodayReflection();
+        updateStatsUI();
+      }
+    }
+
+    function showEditModeToast(message) {
+      const toast = document.getElementById('xpToast');
+      if (!toast) return;
+      
+      toast.textContent = message;
+      toast.style.background = 'linear-gradient(135deg, #007AFF, #5AC8FA)';
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+        toast.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+      }, 2500);
+    }
+
+    function openTaskEdit(cellId) {
+      if (!isEditMode) return;
+      
+      currentEditingCellId = cellId;
+      const overlay = document.getElementById('taskEditOverlay');
+      const titleInput = document.getElementById('taskEditTitle');
+      const hintInput = document.getElementById('taskEditHint');
+      const pillarLabel = document.getElementById('taskEditPillar');
+      
+      // Get task data (custom or original)
+      const [pillarId, taskId] = cellId.split('-');
+      const taskIndex = parseInt(taskId.substring(1)) - 1;
+      const pillar = lifePillars.find(p => p.id === pillarId);
+      const originalTask = pillar.tasks[taskIndex];
+      
+      // Check for custom override
+      const customTask = customTasks[cellId];
+      
+      // Populate form
+      pillarLabel.textContent = pillar.name;
+      titleInput.value = customTask ? customTask.title : originalTask.title;
+      hintInput.value = customTask ? customTask.hint : originalTask.hint;
+      
+      // Show overlay
+      overlay.classList.add('visible');
+      titleInput.focus();
+    }
+
+    function closeTaskEdit() {
+      const overlay = document.getElementById('taskEditOverlay');
+      overlay.classList.remove('visible');
+      currentEditingCellId = null;
+    }
+
+    function saveTaskEdit() {
+      if (!currentEditingCellId) return;
+      
+      const titleInput = document.getElementById('taskEditTitle');
+      const hintInput = document.getElementById('taskEditHint');
+      
+      const title = titleInput.value.trim();
+      const hint = hintInput.value.trim();
+      
+      if (!title) {
+        alert('Task title cannot be empty');
+        return;
+      }
+      
+      // Save custom task
+      customTasks[currentEditingCellId] = {
+        title: title,
+        hint: hint
+      };
+      
+      // Update the cell immediately in the DOM
+      const cell = document.querySelector(`[data-id="${currentEditingCellId}"]`);
+      if (cell) {
+        const titleEl = cell.querySelector('.task-title');
+        const hintEl = cell.querySelector('.task-hint');
+        
+        if (titleEl) titleEl.textContent = title;
+        if (hintEl) hintEl.textContent = hint;
+        
+        // Update tooltip data
+        cell.dataset.taskTitle = title;
+        cell.dataset.taskHint = hint;
+      }
+      
+      closeTaskEdit();
+      
+      // Show mini confirmation
+      const toast = document.getElementById('xpToast');
+      if (toast) {
+        toast.textContent = '✓ Task updated';
+        toast.style.background = 'linear-gradient(135deg, #34c759, #30d158)';
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+          toast.style.background = 'linear-gradient(135deg, #FFD700, #FFA500)';
+        }, 1500);
+      }
+    }
+
+    function getTaskText(cellId) {
+      // Check for custom task first
+      if (customTasks[cellId]) {
+        return customTasks[cellId];
+      }
+      
+      // Return original task
+      const [pillarId, taskId] = cellId.split('-');
+      const taskIndex = parseInt(taskId.substring(1)) - 1;
+      const pillar = lifePillars.find(p => p.id === pillarId);
+      
+      if (pillar && pillar.tasks[taskIndex]) {
+        return {
+          title: pillar.tasks[taskIndex].title,
+          hint: pillar.tasks[taskIndex].hint
+        };
+      }
+      
+      return { title: '', hint: '' };
+    }
+
+    // Make edit functions globally available
+    window.closeTaskEdit = closeTaskEdit;
+    window.saveTaskEdit = saveTaskEdit;
+
     function renderRadarChart(values) {
       const canvas = document.getElementById('radarChart');
       const ctx = canvas.getContext('2d');
@@ -7026,6 +7410,7 @@
 
     function init() {
       loadState();
+      loadCustomTasks(); // Load custom task text
       const dateDisplay = document.getElementById("dateDisplay");
       if (dateDisplay) {
         dateDisplay.textContent = formatPrettyDate() + " · Daily progress resets";
@@ -7206,15 +7591,24 @@
       
       // Removed auto-save - user will manually save reflections
       
+      // Set up edit mode button
+      const editModeBtn = document.getElementById('editModeBtn');
+      if (editModeBtn) {
+        editModeBtn.addEventListener('click', toggleEditMode);
+      }
+      
       // Add ESC key support for closing overlays
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' || e.key === 'Esc') {
           // Check which overlay is open and close it
+          const taskEditOverlay = document.getElementById('taskEditOverlay');
           const authOverlay = document.getElementById('authOverlay');
           const journalHistoryOverlay = document.getElementById('journalHistoryOverlay');
           const settingsOverlay = document.getElementById('settingsOverlay');
           
-          if (authOverlay && authOverlay.classList.contains('visible')) {
+          if (taskEditOverlay && taskEditOverlay.classList.contains('visible')) {
+            closeTaskEdit();
+          } else if (authOverlay && authOverlay.classList.contains('visible')) {
             closeAuth();
           } else if (journalHistoryOverlay && journalHistoryOverlay.classList.contains('visible')) {
             closeJournalHistory();
