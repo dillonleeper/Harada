@@ -1423,24 +1423,26 @@
     .daily-reflection-journal {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      background: #f9fafb;
-      border: 1px solid #e5e5ea;
-      border-radius: 8px;
-      padding: 16px;
+      gap: 0;
+      background: #ffffff;
+      border: 1px solid #d2d2d7;
+      border-radius: 12px;
+      padding: 0;
       height: 100%;
+      overflow: hidden;
     }
 
     .journal-header {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 1px solid #e5e5ea;
-      padding-bottom: 8px;
+      align-items: center;
+      padding: 16px 16px 12px 16px;
+      background: #ffffff;
+      border-bottom: none;
     }
 
     .journal-header h3 {
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 600;
       color: #1d1d1f;
       margin: 0;
@@ -1448,44 +1450,47 @@
 
     .journal-date {
       font-size: 0.75rem;
-      color: #6e6e73;
-      font-weight: 500;
+      color: #8e8e93;
+      font-weight: 400;
     }
 
     .journal-textarea {
       flex: 1;
       min-height: 200px;
-      padding: 12px;
-      border: 1px solid #d2d2d7;
-      border-radius: 8px;
+      padding: 0 16px 16px 16px;
+      border: none;
+      border-radius: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-      font-size: 0.85rem;
-      line-height: 1.6;
+      font-size: 1rem;
+      line-height: 1.5;
       color: #1d1d1f;
-      resize: vertical;
+      resize: none;
       background: #ffffff;
-      transition: border-color 0.2s ease;
+      transition: none;
     }
 
     .journal-textarea:focus {
       outline: none;
-      border-color: #007AFF;
-      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+      border: none;
+      box-shadow: none;
     }
 
     .journal-textarea::placeholder {
-      color: #86868b;
+      color: #c7c7cc;
     }
 
     .journal-actions {
       display: flex;
       gap: 8px;
+      padding: 12px 16px;
+      background: #f9fafb;
+      border-top: 1px solid #e5e5ea;
     }
 
     .journal-save-btn, .journal-history-btn {
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 0.8rem;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -1500,18 +1505,26 @@
 
     .journal-save-btn:hover {
       background: #0051D5;
-      transform: translateY(-1px);
+      transform: scale(0.98);
+    }
+
+    .journal-save-btn:active {
+      transform: scale(0.96);
     }
 
     .journal-history-btn {
-      background: #ffffff;
-      color: #007AFF;
-      border: 1px solid #007AFF;
+      background: #e5e5ea;
+      color: #1d1d1f;
+      border: none;
       flex: 0 0 auto;
     }
 
     .journal-history-btn:hover {
-      background: #f0f9ff;
+      background: #d2d2d7;
+    }
+
+    .journal-history-btn:active {
+      transform: scale(0.96);
     }
 
     .journal-status {
@@ -1519,6 +1532,7 @@
       color: #34c759;
       min-height: 18px;
       text-align: center;
+      padding: 0 16px 8px 16px;
     }
 
     .journal-status.error {
@@ -5584,13 +5598,8 @@
       
       saveJournalEntries();
       
-      // Clear the textarea after saving
-      if (text) {
-        journalTextarea.value = '';
-      }
-      
       if (journalStatus) {
-        journalStatus.textContent = text ? 'Reflection saved ✓' : 'Reflection cleared';
+        journalStatus.textContent = text ? 'Saved ✓' : 'Cleared';
         journalStatus.className = 'journal-status';
         setTimeout(() => {
           journalStatus.textContent = '';
@@ -6853,15 +6862,7 @@
         });
       }
       
-      // Auto-save journal on change (debounced)
-      const journalTextarea = document.getElementById('journalTextarea');
-      let journalSaveTimeout;
-      if (journalTextarea) {
-        journalTextarea.addEventListener('input', () => {
-          clearTimeout(journalSaveTimeout);
-          journalSaveTimeout = setTimeout(saveJournalEntry, 1000);
-        });
-      }
+      // Removed auto-save - user will manually save reflections
     }
 
     init();
