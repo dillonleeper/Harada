@@ -5184,14 +5184,17 @@
       
       nonZeroDays.forEach(dateStr => {
         const entry = dailyHistory[dateStr];
-        if (!entry || !entry.pillars) return; // Skip if no pillar data
+        if (!entry) return; // Skip if no entry
+        
+        // Handle both old (pillars) and new (lifePillars) format
+        const pillarData = entry.lifePillars || entry.pillars || {};
         
         const dayTotal = entry.total || 0;
         if (dayTotal === 0) return;
         
         const shares = {};
         lifePillars.forEach(p => {
-          shares[p.id] = (entry.lifePillars[p.id] || 0) / dayTotal;
+          shares[p.id] = (pillarData[p.id] || 0) / dayTotal;
         });
         
         dailyShares.push(shares);
@@ -6121,7 +6124,7 @@
       // Momentum summary
       if (summaryContainer) {
         const activeStreaks = Object.values(pillarStreaks).filter(s => s.current > 0).length;
-        const totalPillars = pillars.length;
+        const totalPillars = lifePillars.length;
         
         let momentum;
         if (activeStreaks >= 6) momentum = '📈 OVERALL MOMENTUM: STRONG';
