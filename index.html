@@ -284,18 +284,20 @@
     
     /* Phase 2: Node State Visual Language (Subtle & Ambient) */
     
-    /* Dormant: Muted, low contrast - resting state */
+    /* Dormant: Subtle, NOT disabled - resting state with minimal styling */
     .task-cell.node-dormant {
-      opacity: 0.6;
+      opacity: 0.95;
       border-color: #d2d2d7;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.02);
     }
     
     .task-cell.node-dormant .task-title {
-      color: #86868b;
+      color: #1d1d1f;
+      font-weight: 500;
     }
     
     .task-cell.node-dormant .task-hint {
-      color: #c4c4c7;
+      color: #86868b;
     }
     
     /* Active: Normal emphasis - engaged state */
@@ -3398,11 +3400,14 @@
         const rawWeights = localStorage.getItem(STORAGE_NODE_WEIGHTS_KEY);
         if (rawWeights) {
           nodeWeights = JSON.parse(rawWeights);
+          console.log('📊 Loaded nodeWeights from localStorage:', Object.keys(nodeWeights).length, 'nodes');
         } else {
           // Initialize from existing completion data
+          console.log('🔄 No nodeWeights found, initializing...');
           nodeWeights = migrateToWeightSystem();
         }
-      } catch {
+      } catch (e) {
+        console.error('❌ Error loading nodeWeights:', e);
         nodeWeights = {};
       }
       
@@ -3426,38 +3431,37 @@
     function migrateToWeightSystem() {
       const weights = {};
       
-      // Get all task cells from pillars
+      // Get all task cells from pillars (updated structure)
       pillars.forEach(pillar => {
-        pillar.subpillars.forEach((subpillar, subIndex) => {
-          subpillar.tasks.forEach((task, taskIndex) => {
-            const cellId = `${pillar.id}-${subIndex}-${taskIndex}`;
-            const allTimeCount = statsAllTime[cellId] || 0;
-            
-            // Infer weight from all-time completions
-            // Higher completion count suggests more integrated state
-            let inferredWeight = 0;
-            if (allTimeCount >= 20) {
-              inferredWeight = 75; // Integrated
-            } else if (allTimeCount >= 10) {
-              inferredWeight = 50; // Active
-            } else if (allTimeCount >= 3) {
-              inferredWeight = 25; // Early Active
-            } else if (allTimeCount > 0) {
-              inferredWeight = 10; // Emerging from Dormant
-            }
-            
-            // Check if completed today
-            const completedToday = todayState && todayState.completed && todayState.completed[cellId];
-            
-            weights[cellId] = {
-              weight: inferredWeight,
-              lastActivity: completedToday ? getTodayString() : null,
-              state: deriveState(inferredWeight)
-            };
-          });
+        pillar.tasks.forEach((task, taskIndex) => {
+          const cellId = `${pillar.id}-T${taskIndex + 1}`;
+          const allTimeCount = statsAllTime[cellId] || 0;
+          
+          // Use neutral baseline (30) or infer from history
+          // Start at 30 (Active state) to avoid fresh installs looking dim
+          let inferredWeight = 30;
+          if (allTimeCount >= 20) {
+            inferredWeight = 75; // Integrated
+          } else if (allTimeCount >= 10) {
+            inferredWeight = 50; // Active
+          } else if (allTimeCount >= 3) {
+            inferredWeight = 35; // Early Active
+          } else if (allTimeCount > 0) {
+            inferredWeight = 25; // Emerging from Dormant
+          }
+          
+          // Check if completed today
+          const completedToday = todayState && todayState.completed && todayState.completed[cellId];
+          
+          weights[cellId] = {
+            weight: inferredWeight,
+            lastActivity: completedToday ? getTodayString() : null,
+            state: deriveState(inferredWeight)
+          };
         });
       });
       
+      console.log('✨ Initialized', Object.keys(weights).length, 'node weights with neutral baseline');
       localStorage.setItem(STORAGE_NODE_WEIGHTS_KEY, JSON.stringify(weights));
       return weights;
     }
@@ -3647,12 +3651,31 @@
     }
     
     function applyAllNodeStates() {
+      // Guard: Only apply node states if nodeWeights are properly initialized
+      const totalNodes = pillars.reduce((sum, p) => sum + p.tasks.length, 0);
+      const weightCount = Object.keys(nodeWeights).length;
+      
+      console.log('🎨 Applying node states:', weightCount, 'weights for', totalNodes, 'total nodes');
+      
+      // If weights are missing/incomplete, don't apply any node states
+      // This prevents fresh days from looking dim due to missing data
+      if (weightCount === 0 || weightCount < totalNodes * 0.5) {
+        console.warn('⚠️ Node weights incomplete or missing, skipping node state styling');
+        return;
+      }
+      
+      // Count states being applied
+      const stateCounts = { dormant: 0, active: 0, integrated: 0 };
+      
       Object.keys(nodeWeights).forEach(cellId => {
         const node = nodeWeights[cellId];
         if (node && node.state) {
           updateNodeVisualState(cellId, node.state);
+          stateCounts[node.state] = (stateCounts[node.state] || 0) + 1;
         }
       });
+      
+      console.log('📊 Node states applied:', stateCounts);
     }
     
     // ===== MILESTONE SYSTEM =====
@@ -4021,15 +4044,29 @@
       // Phase 2: Listen to node weights
       userRef.collection('nodeWeights').doc('data').onSnapshot((doc) => {
         if (doc.exists && !doc.metadata.hasPendingWrites) {
-          const cloudData = doc.data();
-          if (JSON.stringify(cloudData) !== JSON.stringify(nodeWeights)) {
+          const receivedWeights = doc.data();
+          const weightCount = Object.keys(receivedWeights || {}).length;
+          console.log('📥 Received nodeWeights from Firebase:', weightCount, 'nodes');
+          
+          // If Firebase has incomplete/missing weights, initialize properly
+          const totalNodes = pillars.reduce((sum, p) => sum + p.tasks.length, 0);
+          if (weightCount < totalNodes * 0.5) {
+            console.log('🔄 Firebase weights incomplete, initializing locally...');
+            nodeWeights = migrateToWeightSystem();
+            // Save back to Firebase
+            saveToFirebase('nodeWeights', nodeWeights);
+          } else if (JSON.stringify(receivedWeights) !== JSON.stringify(nodeWeights)) {
             console.log('📥 Syncing node weights from cloud');
-            nodeWeights = cloudData;
+            nodeWeights = receivedWeights;
             localStorage.setItem(STORAGE_NODE_WEIGHTS_KEY, JSON.stringify(nodeWeights));
-            
-            // Recalculate states after loading from cloud to ensure they match current weights
-            recalculateAllNodeStates();
           }
+          
+          // Recalculate states after loading from cloud to ensure they match current weights
+          recalculateAllNodeStates();
+        } else if (!doc.exists) {
+          console.log('🆕 No nodeWeights in Firebase, initializing...');
+          nodeWeights = migrateToWeightSystem();
+          saveToFirebase('nodeWeights', nodeWeights);
         }
       });
     }
