@@ -2928,120 +2928,124 @@
       'P8': '#FFD4C8'  // Soft Coral - Selective Connection - Selective Connection
     };
 
+    // Center goal
+    const centerGoal = "Live steadily, keep expanding";
+
+    // Updated pillars
     const lifePillars = [
-  {
-    id: "P1",
-    name: "Self-Knowledge",
-    tasks: [
-      { title: "Journal feelings", hint: "Write honestly" },
-      { title: "Observe without judging", hint: "Notice thoughts and emotions" },
-      { title: "Spot a pattern", hint: "Identify recurring behavior" },
-      { title: "Honor your values", hint: "Choose what matters" },
-      { title: "Act with integrity", hint: "Behave as your best self" },
-      { title: "Practice reciprocity", hint: "Give what you want to receive" },
-      { title: "Pause before reacting", hint: "Choose your response" },
-      { title: "Be fully present", hint: "Inhabit one moment completely" }
-    ]
-  },
-  {
-    id: "P2",
-    name: "Connection",
-    tasks: [
-      { title: "Express a need", hint: "Communicate clearly" },
-      { title: "Drop the mask", hint: "Allow genuine closeness" },
-      { title: "Sit with uncertainty", hint: "Don't rush to resolve" },
-      { title: "Show your real self", hint: "Skip the performance" },
-      { title: "Reach out first", hint: "Initiate connection" },
-      { title: "Keep a promise", hint: "Build trust through action" },
-      { title: "Respond honestly", hint: "Truth over tactics" },
-      { title: "Leave it better", hint: "Add value to relationships" }
-    ]
-  },
-  {
-    id: "P3",
-    name: "Impact",
-    tasks: [
-      { title: "Build something lasting", hint: "Create compound value" },
-      { title: "Work on what matters", hint: "Think beyond today" },
-      { title: "Practice high-leverage skills", hint: "Multiply your impact" },
-      { title: "Code something personal", hint: "Build for yourself" },
-      { title: "Eliminate friction", hint: "Fix one pain point" },
-      { title: "Apply to target roles", hint: "1-2 strategic applications" },
-      { title: "Research opportunities", hint: "Bookmark what interests you" },
-      { title: "Review finances", hint: "Check spending and goals" }
-    ]
-  },
-  {
-    id: "P4",
-    name: "Freedom",
-    tasks: [
-      { title: "Decline one thing", hint: "Protect your time" },
-      { title: "Schedule white space", hint: "Leave room to think" },
-      { title: "Invest in your future", hint: "Stocks, education, growth" },
-      { title: "Reduce tomorrow's friction", hint: "Plan strategically" },
-      { title: "Reject guilt-driven yes", hint: "Set clear boundaries" },
-      { title: "Design your day", hint: "Lead, don't react" },
-      { title: "Choose delayed reward", hint: "Long-term over comfort" },
-      { title: "Help future you", hint: "One choice they'll thank you for" }
-    ]
-  },
-  {
-    id: "P5",
-    name: "Regulation",
-    tasks: [
-      { title: "Ground your body", hint: "Breathe, move, reset" },
-      { title: "Treat yourself well", hint: "You deserve care" },
-      { title: "Move", hint: "Walk, lift, stretch, train" },
-      { title: "Sleep 8 hours", hint: "Prioritize rest" },
-      { title: "Drink water", hint: "Stay hydrated" },
-      { title: "Take supplements", hint: "Support your body" },
-      { title: "Breathe with purpose", hint: "5 minutes controlled breathing" },
-      { title: "Sit in stillness", hint: "Meditate, observe your mind" }
-    ]
-  },
-  {
-    id: "P6",
-    name: "Presence",
-    tasks: [
-      { title: "Stand tall", hint: "Shoulders back, head up" },
-      { title: "Reset one space", hint: "Clean, organize, clear" },
-      { title: "Guard your inputs", hint: "Skip draining content" },
-      { title: "Notice three good things", hint: "Practice gratitude" },
-      { title: "Choose words carefully", hint: "Speak with intention" },
-      { title: "Appreciate beauty", hint: "See what's around you" },
-      { title: "Move with grace", hint: "Carry yourself well" },
-      { title: "Capture thoughts", hint: "Clear your mental space" }
-    ]
-  },
-  {
-    id: "P7",
-    name: "Mastery",
-    tasks: [
-      { title: "Practice with focus", hint: "Develop one skill" },
-      { title: "Finish properly", hint: "Complete without rushing" },
-      { title: "Hold your standard", hint: "Quality when no one's watching" },
-      { title: "Make art", hint: "Create for 15-20 minutes" },
-      { title: "Sketch an idea", hint: "Visualize something new" },
-      { title: "Advance a project", hint: "Progress creative work" },
-      { title: "Capture inspiration", hint: "Note one new idea" },
-      { title: "Complete something", hint: "Finish what you started" }
-    ]
-  },
-  {
-    id: "P8",
-    name: "Community",
-    tasks: [
-      { title: "Connect deeply", hint: "One genuine conversation" },
-      { title: "Choose solitude", hint: "Be alone intentionally" },
-      { title: "Make plans", hint: "Suggest something specific" },
-      { title: "Show up for your group", hint: "Engage in community" },
-      { title: "Give full attention", hint: "Be completely present" },
-      { title: "Put phone away", hint: "Unplug to connect" },
-      { title: "Follow up", hint: "Build relationships intentionally" },
-      { title: "Connect for real", hint: "Only when it nourishes you" }
-    ]
-  }
-];
+      {
+        id: "P1",
+        name: "Mind",
+        tasks: [
+          { title: "Name the emotion", hint: "What's the dominant feeling today?" },
+          { title: "Separate facts", hint: "Story vs reality" },
+          { title: "Notice overthinking", hint: "Thinking or feeling?" },
+          { title: "Compare wisely", hint: "Past me is the reference" },
+          { title: "Anchor to values", hint: "Not outcomes" },
+          { title: "Treat myself fairly", hint: "Same grace I give others" },
+          { title: "Avoid mental clutter", hint: "Not everything deserves attention" },
+          { title: "Direction check", hint: "Did today move me forward?" }
+        ]
+      },
+      {
+        id: "P2",
+        name: "Relational Stability",
+        tasks: [
+          { title: "Communicate clearly", hint: "Say it cleanly, no games" },
+          { title: "Surface thoughts sooner", hint: "Before they stack up" },
+          { title: "Name it lightly", hint: "Flag it without escalating" },
+          { title: "Choose consistency", hint: "Reliable over intense" },
+          { title: "Trust acceptance", hint: "I don’t need to curate" },
+          { title: "Repair quickly", hint: "Don’t let distance linger" },
+          { title: "Maintain connection", hint: "Text, plan, follow up" },
+          { title: "Connection check", hint: "Did this feel steady?" }
+        ]
+      },
+      {
+        id: "P3",
+        name: "Work, Money & Momentum",
+        tasks: [
+          { title: "Save", hint: "Toward the future" },
+          { title: "Apply", hint: "1-2 target roles" },
+          { title: "Pay yourself first", hint: "Reinforces good behavior" },
+          { title: "Be responsive", hint: "Momentum likes speed" },
+          { title: "Engage in deep work", hint: "Undistracted focus block" },
+          { title: "Make a smart money choice", hint: "Cost, return, or efficiency" },
+          { title: "Review numbers briefly", hint: "Be aware of all finances" },
+          { title: "Keep things moving", hint: "Decrease stagnation" }
+        ]
+      },
+      {
+        id: "P4",
+        name: "Personality",
+        tasks: [
+          { title: "Be easy to be around", hint: "No edge, no pressure" },
+          { title: "Regulate outwardly", hint: "Feel internally, act calmly" },
+          { title: "Be considerate", hint: "Think of others" },
+          { title: "Mind my impact", hint: "How this lands" },
+          { title: "Be fully present", hint: "No half-attending" },
+          { title: "Be reliable", hint: "No disappearing" },
+          { title: "Follow through socially", hint: "Confirm, don't fade" },
+          { title: "Keep showing up", hint: "Even when it’s boring" }
+        ]
+      },
+      {
+        id: "P5",
+        name: "Body",
+        tasks: [
+          { title: "Go to the gym", hint: "Strength or conditioning" },
+          { title: "Hydrate fully", hint: "Drink lots of water" },
+          { title: "Posture reset", hint: "Stand tall, breathe" },
+          { title: "Eat for fuel", hint: "Support training and energy" },
+          { title: "Stretch tight areas", hint: "Hips, back, shoulders" },
+          { title: "Sleep intentionally", hint: "Protect recovery" },
+          { title: "Avoid physical drains", hint: "Substances or habits" },
+          { title: "Full effort", hint: "Lock. In." }
+        ]
+      },
+      {
+        id: "P6",
+        name: "Nervous System",
+        tasks: [
+          { title: "Breathe and reset", hint: "Long exhale" },
+          { title: "Release tension", hint: "Jaw, shoulders, hands" },
+          { title: "Limit stimulation", hint: "One less input" },
+          { title: "Change environments", hint: "Step into a new space" },
+          { title: "Create stillness", hint: "Reduce fidgeting" },
+          { title: "Ground in senses", hint: "See, hear, feel" },
+          { title: "Do yoga", hint: "Release tension" },
+          { title: "Speak reassurance", hint: "Quiet, internal" }
+        ]
+      },
+      {
+        id: "P7",
+        name: "Leverage & Trajectory",
+        tasks: [
+          { title: "Build leverage", hint: "Work on things that pay off later" },
+          { title: "Make progress", hint: "Even small counts" },
+          { title: "Improve positioning", hint: "Be in places that promote growth" },
+          { title: "Ship ideas", hint: "Don't worry about failure" },
+          { title: "Be bold", hint: "Trust in your abilities" },
+          { title: "Invest intentionally", hint: "Time or capital" },
+          { title: "Think long-term", hint: "Zoom out before committing" },
+          { title: "Take calculated risks", hint: "Small losses, big potential" }
+        ]
+      },
+      {
+        id: "P8",
+        name: "Ease & Upkeep",
+        tasks: [
+          { title: "Close one chore", hint: "Finish, don’t defer" },
+          { title: "Restock essentials", hint: "Avoid last-minute stress" },
+          { title: "Maintain my space", hint: "Clean, calm, intentional" },
+          { title: "Cook once", hint: "per week" },
+          { title: "Reset one surface", hint: "Desk, counter, table" },
+          { title: "Pick up trash", hint: "Home, work, anywhere" },
+          { title: "Reduce possessions", hint: "Sell, donate, or discard" },
+          { title: "Clear dishes", hint: "No pileups" }
+        ]
+      }
+    ];
 
     const STORAGE_TODAY_KEY = "haradaTodayState";
     const STORAGE_STATS_KEY = "haradaStatsAllTime";
@@ -4740,8 +4744,8 @@
       const centerTitle = document.createElement("div");
       centerTitle.className = "center-title";
       centerTitle.innerHTML = `
-        <strong>Live with Intention</strong>
-        <span>Integrity Over Optics</span>
+        <strong>Live Steadily</strong>
+        <span>Keep Expanding</span>
       `;
       
       tasksGrid.appendChild(centerTitle);
