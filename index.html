@@ -2937,15 +2937,52 @@
       });
       
       // Check for existing auth state
-      firebase.auth().onAuthStateChanged((user) => {
+
+      firebase.auth().onAuthStateChanged(async (user) => {
         if (user) {
           currentUser = user;
           console.log('✅ Signed in as:', user.email || 'Anonymous', '(', user.uid, ')');
           showSyncStatus('Connected ✓', false);
-          
+
+          // Load or create chart doc
+          let chartDoc = null;
+          try {
+            const chartsQuery = await db.collection('charts')
+              .where('userId', '==', user.uid)
+              .orderBy('updatedAt', 'desc')
+              .limit(1)
+              .get();
+            if (!chartsQuery.empty) {
+              chartDoc = chartsQuery.docs[0];
+              const chartData = chartDoc.data();
+              // Hydrate UI state from Firestore chart
+              window.centerGoal = chartData.centerGoal;
+              window.lifePillars = chartData.pillars;
+              window.activeChartId = chartDoc.id;
+              console.log('Loaded chart from Firestore:', chartDoc.id);
+            } else {
+              // No chart found, create blank chart
+              const newChart = {
+                userId: user.uid,
+                centerGoal: '',
+                pillars: [],
+                isPublic: false,
+                shareSlug: '',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+              };
+              const docRef = await db.collection('charts').add(newChart);
+              window.centerGoal = '';
+              window.lifePillars = [];
+              window.activeChartId = docRef.id;
+              console.log('Created new blank chart in Firestore:', docRef.id);
+            }
+          } catch (err) {
+            console.error('Error loading/creating chart doc:', err);
+          }
+
           // Update UI
           updateAuthUI();
-          
           // Set up real-time listeners after sign in
           setupFirebaseListeners();
         } else {
@@ -4543,12 +4580,40 @@
 
     function saveTodayState() {
       localStorage.setItem(STORAGE_TODAY_KEY, JSON.stringify(todayState));
-      saveToFirebase('todayState', todayState);
+      // Save to Firestore chart document (charts/{uid})
+      if (db && currentUser) {
+        const chartDocRef = db.collection('charts').doc(currentUser.uid);
+        chartDocRef.set({
+          todayState: todayState,
+          updatedAt: new Date().toISOString()
+        }, { merge: true })
+        .then(() => {
+          console.log('✅ todayState saved to Firestore (charts/{uid})');
+        })
+        .catch((error) => {
+          console.error('❌ Error saving todayState to Firestore chart doc:', error);
+        });
+      }
+      saveToFirebase('todayState', todayState); // (optional: keep for legacy/backup)
     }
 
     function saveStats() {
       localStorage.setItem(STORAGE_STATS_KEY, JSON.stringify(statsAllTime));
-      saveToFirebase('statsAllTime', statsAllTime);
+      // Save to Firestore chart document (charts/{uid})
+      if (db && currentUser) {
+        const chartDocRef = db.collection('charts').doc(currentUser.uid);
+        chartDocRef.set({
+          statsAllTime: statsAllTime,
+          updatedAt: new Date().toISOString()
+        }, { merge: true })
+        .then(() => {
+          console.log('✅ statsAllTime saved to Firestore (charts/{uid})');
+        })
+        .catch((error) => {
+          console.error('❌ Error saving statsAllTime to Firestore chart doc:', error);
+        });
+      }
+      saveToFirebase('statsAllTime', statsAllTime); // (optional: keep for legacy/backup)
     }
 
     function calculateStreaks() {
@@ -4572,7 +4637,21 @@
         pillars: todayPillarTotals
       };
       localStorage.setItem(STORAGE_HISTORY_KEY, JSON.stringify(dailyHistory));
-      saveToFirebase('dailyHistory', dailyHistory);
+      // Save to Firestore chart document (charts/{uid})
+      if (db && currentUser) {
+        const chartDocRef = db.collection('charts').doc(currentUser.uid);
+        chartDocRef.set({
+          dailyHistory: dailyHistory,
+          updatedAt: new Date().toISOString()
+        }, { merge: true })
+        .then(() => {
+          console.log('✅ dailyHistory saved to Firestore (charts/{uid})');
+        })
+        .catch((error) => {
+          console.error('❌ Error saving dailyHistory to Firestore chart doc:', error);
+        });
+      }
+      saveToFirebase('dailyHistory', dailyHistory); // (optional: keep for legacy/backup)
 
       // Get all dates sorted descending
       const allDates = Object.keys(dailyHistory).sort().reverse();
@@ -6089,10 +6168,19 @@
 
     function saveJournalEntries() {
       localStorage.setItem(STORAGE_JOURNAL_KEY, JSON.stringify(journalEntries));
-      
-      // Also sync to Firebase if available
+      // Sync to Firestore chart document (charts/{uid})
       if (db && currentUser) {
-        saveToFirebase('journalEntries', journalEntries);
+        const chartDocRef = db.collection('charts').doc(currentUser.uid);
+        chartDocRef.set({
+          journalEntries: journalEntries,
+          updatedAt: new Date().toISOString()
+        }, { merge: true })
+        .then(() => {
+          console.log('✅ journalEntries saved to Firestore (charts/{uid})');
+        })
+        .catch((error) => {
+          console.error('❌ Error saving journalEntries to Firestore chart doc:', error);
+        });
       }
     }
 
@@ -6405,9 +6493,19 @@
     function saveCustomTasks() {
       localStorage.setItem(STORAGE_CUSTOM_TASKS_KEY, JSON.stringify(customTasks));
       
-      // Sync to Firebase
+      // Sync to Firestore chart document (charts/{uid})
       if (db && currentUser) {
-        saveToFirebase('customTasks', customTasks);
+        const chartDocRef = db.collection('charts').doc(currentUser.uid);
+        chartDocRef.set({
+          customTasks: customTasks,
+          updatedAt: new Date().toISOString()
+        }, { merge: true })
+        .then(() => {
+          console.log('✅ Chart customTasks saved to Firestore (charts/{uid})');
+        })
+        .catch((error) => {
+          console.error('❌ Error saving customTasks to Firestore chart doc:', error);
+        });
       }
     }
 
