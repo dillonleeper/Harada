@@ -2500,6 +2500,7 @@
       <div class="drive-recovery-controls" style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 500; color: #1d1d1f;">
         <label for="driveRecoveryRange">Time Window:</label>
         <select id="driveRecoveryRange" style="font-size: 0.85rem; padding: 4px 8px; border-radius: 6px; border: 1px solid #d2d2d7; background: #fff; color: #1d1d1f;">
+          <option value="today">Today</option>
           <option value="7">Last 7 days</option>
           <option value="30" selected>Last 30 days</option>
           <option value="90">Last 90 days</option>
@@ -2845,7 +2846,9 @@
     function updateDriveRecoveryWidget() {
       const range = document.getElementById('driveRecoveryRange').value;
       let startDate, endDate = getTodayString();
-      if (range === 'all') {
+      if (range === 'today') {
+        startDate = endDate = getTodayString();
+      } else if (range === 'all') {
         // Find earliest date in dailyHistory
         const allDates = Object.keys(dailyHistory || {});
         startDate = allDates.length ? allDates.sort()[0] : getTodayString();
@@ -3123,7 +3126,7 @@
           { title: "Ship ideas", hint: "Don't worry about failure" },
           { title: "Be bold", hint: "Trust in your abilities" },
           { title: "Invest intentionally", hint: "Time or capital" },
-          { title: "Think long-term", hint: "Zoom out before committing" },
+          { title: "Create", hint: "Draw for 30 minutes" },
           { title: "Take calculated risks", hint: "Small losses, big potential" }
         ]
       },
