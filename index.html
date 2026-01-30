@@ -3123,7 +3123,7 @@
           { title: "Ship ideas", hint: "Don't worry about failure" },
           { title: "Be bold", hint: "Trust in your abilities" },
           { title: "Invest intentionally", hint: "Time or capital" },
-          { title: "Think long-term", hint: "Zoom out before committing" },
+          { title: "Create", hint: "Draw for 30 minutes" },
           { title: "Take calculated risks", hint: "Small losses, big potential" }
         ]
       },
@@ -7604,6 +7604,7 @@
     }
 
     function init() {
+      console.log('[init] function called');
       loadState();
       loadCustomTasks(); // Load custom task text
       const dateDisplay = document.getElementById("dateDisplay");
@@ -7655,23 +7656,51 @@
       }
       
       const signInBtn = document.getElementById('signInBtn');
+      console.log('signInBtn:', signInBtn);
       if (signInBtn) {
-        signInBtn.addEventListener('click', handleSignIn);
+        console.log('Adding click listener to signInBtn');
+        signInBtn.addEventListener('click', function() {
+          console.log('[signInBtn] click handler running');
+          handleSignIn();
+        });
+      } else {
+        console.error('signInBtn not found!');
       }
-      
+
       const signUpBtn = document.getElementById('signUpBtn');
+      console.log('signUpBtn:', signUpBtn);
       if (signUpBtn) {
-        signUpBtn.addEventListener('click', handleSignUp);
+        console.log('Adding click listener to signUpBtn');
+        signUpBtn.addEventListener('click', function() {
+          console.log('[signUpBtn] click handler running');
+          handleSignUp();
+        });
+      } else {
+        console.error('signUpBtn not found!');
       }
-      
+
       const signOutBtn = document.getElementById('signOutBtn');
+      console.log('signOutBtn:', signOutBtn);
       if (signOutBtn) {
-        signOutBtn.addEventListener('click', handleSignOut);
+        console.log('Adding click listener to signOutBtn');
+        signOutBtn.addEventListener('click', function() {
+          console.log('[signOutBtn] click handler running');
+          handleSignOut();
+        });
+      } else {
+        console.error('signOutBtn not found!');
       }
-      
+
       const googleSignInBtn = document.getElementById('googleSignInBtn');
+      console.log('googleSignInBtn:', googleSignInBtn);
       if (googleSignInBtn) {
-        googleSignInBtn.addEventListener('click', handleGoogleSignIn);
+        console.log('Adding click listener to googleSignInBtn');
+        googleSignInBtn.addEventListener('click', function() {
+          console.log('[googleSignInBtn] click handler running');
+          handleGoogleSignIn();
+        });
+      } else {
+        console.error('googleSignInBtn not found!');
       }
       
       // Make sync status clickable on mobile to open auth
@@ -7814,7 +7843,16 @@
       });
     }
 
-    init();
+    // Ensure init runs after DOM is fully loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('[DOMContentLoaded] calling init()');
+        init();
+      });
+    } else {
+      console.log('[not loading] calling init() immediately');
+      init();
+    }
   </script>
 </body>
 </html>
