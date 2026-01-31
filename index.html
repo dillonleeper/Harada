@@ -2667,7 +2667,7 @@
 
   <!-- Account/Auth Button & Overlay -->
   <button class="settings-btn" id="accountBtn" title="Account" onclick="openAuth()" style="bottom: 0; right: 0; border-radius: 12px 0 0 0; background: #007aff; filter: brightness(1.1);">👤</button>
-  <div class="settings-overlay" id="authOverlay" onclick="if(event.target === this) closeAuth()">
+  <div class="settings-overlay" id="authOverlay">
     <div class="settings-panel" style="max-width: 400px;">
       <div class="settings-header">
         <h2 id="authTitle">Sign In</h2>
@@ -7646,7 +7646,8 @@
       console.log('signInBtn:', signInBtn);
       if (signInBtn) {
         console.log('Adding click listener to signInBtn');
-        signInBtn.addEventListener('click', function() {
+        signInBtn.addEventListener('click', function(event) {
+          event.stopPropagation();
           console.log('[signInBtn] click handler running');
           handleSignIn();
         });
@@ -7658,7 +7659,8 @@
       console.log('signUpBtn:', signUpBtn);
       if (signUpBtn) {
         console.log('Adding click listener to signUpBtn');
-        signUpBtn.addEventListener('click', function() {
+        signUpBtn.addEventListener('click', function(event) {
+          event.stopPropagation();
           console.log('[signUpBtn] click handler running');
           handleSignUp();
         });
@@ -7682,7 +7684,8 @@
       console.log('googleSignInBtn:', googleSignInBtn);
       if (googleSignInBtn) {
         console.log('Adding click listener to googleSignInBtn');
-        googleSignInBtn.addEventListener('click', function() {
+        googleSignInBtn.addEventListener('click', function(event) {
+          event.stopPropagation();
           console.log('[googleSignInBtn] click handler running');
           handleGoogleSignIn();
         });
