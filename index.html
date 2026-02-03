@@ -7,9 +7,30 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   
   <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="./firebase-setup.js"></script>
+  <script>
+    const statusEl = document.getElementById("authStatus");
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    loginBtn.addEventListener("click", () => window.HaradaAuth.loginWithGoogle());
+    logoutBtn.addEventListener("click", () => window.HaradaAuth.logout());
+
+    window.HaradaAuth.onAuth((user) => {
+      if (user) {
+        statusEl.textContent = `Signed in as ${user.displayName || user.email}`;
+        loginBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+      } else {
+        statusEl.textContent = "Not signed in";
+        loginBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+      }
+    });
+  </script>
   
   <style>
     /* Global box-sizing fix for all elements */
@@ -2409,6 +2430,11 @@
   </style>
 </head>
 <body>
+  <div style="padding:10px; display:flex; gap:10px; align-items:center;">
+    <span id="authStatus">Loading…</span>
+    <button id="loginBtn">Sign in</button>
+    <button id="logoutBtn" style="display:none;">Sign out</button>
+  </div>
   <div class="header-container">
     <h1>Harada Open Window 64</h1>
     <button class="edit-mode-btn" id="editModeBtn" onclick="toggleEditMode()">Edit Mode</button>
@@ -2667,7 +2693,7 @@
 
   <!-- Account/Auth Button & Overlay -->
   <button class="settings-btn" id="accountBtn" title="Account" onclick="openAuth()" style="bottom: 0; right: 0; border-radius: 12px 0 0 0; background: #007aff; filter: brightness(1.1);">👤</button>
-  <div class="settings-overlay" id="authOverlay">
+  <div class="settings-overlay" id="authOverlay" onclick="if(event.target === this) closeAuth()">
     <div class="settings-panel" style="max-width: 400px;">
       <div class="settings-header">
         <h2 id="authTitle">Sign In</h2>
@@ -2913,6 +2939,8 @@
     try {
       firebase.initializeApp(firebaseConfig);
       db = firebase.firestore();
+      // Firebase custom setup
+      // (firebase-setup.js will run after this)
       
       // Enable offline persistence
       db.enablePersistence({ synchronizeTabs: true })
@@ -2945,6 +2973,9 @@
           
           // Set up real-time listeners after sign in
           setupFirebaseListeners();
+        } else {
+          // No user signed in - try anonymous
+          signInAnonymously();
         }
       });
       
@@ -2954,7 +2985,17 @@
     }
     
     // Auth functions
-
+    function signInAnonymously() {
+      firebase.auth().signInAnonymously()
+        .then((userCredential) => {
+          currentUser = userCredential.user;
+          console.log('✅ Signed in anonymously:', currentUser.uid);
+        })
+        .catch((error) => {
+          console.error('Anonymous auth error:', error);
+          showSyncStatus('Connection failed', true);
+        });
+    }
     
     function signIn(email, password) {
       return firebase.auth().signInWithEmailAndPassword(email, password);
@@ -7646,8 +7687,7 @@
       console.log('signInBtn:', signInBtn);
       if (signInBtn) {
         console.log('Adding click listener to signInBtn');
-        signInBtn.addEventListener('click', function(event) {
-          event.stopPropagation();
+        signInBtn.addEventListener('click', function() {
           console.log('[signInBtn] click handler running');
           handleSignIn();
         });
@@ -7659,8 +7699,7 @@
       console.log('signUpBtn:', signUpBtn);
       if (signUpBtn) {
         console.log('Adding click listener to signUpBtn');
-        signUpBtn.addEventListener('click', function(event) {
-          event.stopPropagation();
+        signUpBtn.addEventListener('click', function() {
           console.log('[signUpBtn] click handler running');
           handleSignUp();
         });
@@ -7684,8 +7723,7 @@
       console.log('googleSignInBtn:', googleSignInBtn);
       if (googleSignInBtn) {
         console.log('Adding click listener to googleSignInBtn');
-        googleSignInBtn.addEventListener('click', function(event) {
-          event.stopPropagation();
+        googleSignInBtn.addEventListener('click', function() {
           console.log('[googleSignInBtn] click handler running');
           handleGoogleSignIn();
         });
@@ -7711,7 +7749,7 @@
       if (continueAnonymousBtn) {
         continueAnonymousBtn.addEventListener('click', () => {
           closeAuth();
-          // signInAnonymously(); // Anonymous auth disabled
+          signInAnonymously();
         });
       }
       
