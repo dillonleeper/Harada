@@ -2509,8 +2509,8 @@
       <thead>
         <tr>
           <th>Pillar</th>
-          <th>Tasks Completed Today</th>
-          <th>Total Completions (All Time)</th>
+          <th id="sortToday" style="cursor:pointer;">Tasks Completed Today <span id="sortTodayIcon">⇅</span></th>
+          <th id="sortAllTime" style="cursor:pointer;">Total Completions (All Time) <span id="sortAllTimeIcon">⇅</span></th>
         </tr>
       </thead>
       <tbody id="statsBody"></tbody>
@@ -5646,17 +5646,37 @@
         }
       });
 
-      lifePillars.forEach((p) => {
+
+      // --- Sorting logic ---
+      if (!window.statsSortState) {
+        window.statsSortState = { by: null, dir: 1 };
+      }
+      const sortState = window.statsSortState;
+      // Prepare sortable data
+      const rows = lifePillars.map((p) => {
+        const todayCount = pillarTotalsToday[p.id];
+        const allTimeCount = Math.max(pillarTotalsAllTime[p.id], todayCount);
+        return {
+          pillar: p,
+          todayCount,
+          allTimeCount
+        };
+      });
+      // Sort if needed
+      if (sortState.by === 'today') {
+        rows.sort((a, b) => sortState.dir * (b.todayCount - a.todayCount));
+      } else if (sortState.by === 'all') {
+        rows.sort((a, b) => sortState.dir * (b.allTimeCount - a.allTimeCount));
+      }
+
+      // Render rows
+      rows.forEach(({pillar: p, todayCount, allTimeCount}) => {
         const tr = document.createElement("tr");
         const tdName = document.createElement("td");
         const tdToday = document.createElement("td");
         const tdAll = document.createElement("td");
 
-        // Name cell (plain text)
         tdName.textContent = p.name;
-
-        // Today progress cell (out of 8)
-        const todayCount = pillarTotalsToday[p.id];
         const todayPercent = Math.min((todayCount / 8) * 100, 100);
         tdToday.className = "progress-cell";
         tdToday.innerHTML = `
@@ -5665,10 +5685,6 @@
             <div class="progress-value">${todayCount}</div>
           </div>
         `;
-
-        // All time progress cell (out of 365)
-        // Ensure all-time is at least as much as today (data integrity check)
-        const allTimeCount = Math.max(pillarTotalsAllTime[p.id], todayCount);
         const allTimePercent = Math.min((allTimeCount / 365) * 100, 100);
         tdAll.className = "progress-cell";
         tdAll.innerHTML = `
@@ -5677,19 +5693,44 @@
             <div class="progress-value">${allTimeCount}</div>
           </div>
         `;
-
         tr.appendChild(tdName);
         tr.appendChild(tdToday);
         tr.appendChild(tdAll);
-        
-        // Debug: Verify three cells
         const cellCount = tr.children.length;
         if (cellCount !== 3) {
           console.warn(`⚠️ Row for ${p.name} has ${cellCount} cells instead of 3!`);
         }
-        
         statsBody.appendChild(tr);
       });
+
+      // --- Sorting header click handlers ---
+      const sortToday = document.getElementById('sortToday');
+      const sortAllTime = document.getElementById('sortAllTime');
+      const sortTodayIcon = document.getElementById('sortTodayIcon');
+      const sortAllTimeIcon = document.getElementById('sortAllTimeIcon');
+      if (sortToday && sortAllTime) {
+        sortToday.onclick = function() {
+          if (sortState.by === 'today') {
+            sortState.dir = -sortState.dir;
+          } else {
+            sortState.by = 'today';
+            sortState.dir = 1;
+          }
+          updateStatsUI();
+        };
+        sortAllTime.onclick = function() {
+          if (sortState.by === 'all') {
+            sortState.dir = -sortState.dir;
+          } else {
+            sortState.by = 'all';
+            sortState.dir = 1;
+          }
+          updateStatsUI();
+        };
+        // Update icons
+        sortTodayIcon.textContent = sortState.by === 'today' ? (sortState.dir === 1 ? '↓' : '↑') : '⇅';
+        sortAllTimeIcon.textContent = sortState.by === 'all' ? (sortState.dir === 1 ? '↓' : '↑') : '⇅';
+      }
 
       statsSummary.innerHTML = ``;
 
